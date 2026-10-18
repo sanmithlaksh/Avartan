@@ -1,5 +1,6 @@
 // 3D Solar System Engine with First-Person Astronaut Free-Flight & 3D Planetary Placement
 import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { Compass } from 'lucide-react';
 import * as THREE from 'three';
 import { useGame } from '../../context/GameContext';
 import {
@@ -33,6 +34,7 @@ export const SolarSystem3D: React.FC = () => {
     showZodiacTable,
     zodiacTableShown,
     zodiacTableError,
+    setViewMode,
   } = useGame();
 
   // Three.js instances
@@ -82,6 +84,7 @@ export const SolarSystem3D: React.FC = () => {
   const tableHoldStartRef = useRef<number>(0);
   const [tableHoldProgress, setTableHoldProgress] = useState<number>(0);
   const [showTableHoldError, setShowTableHoldError] = useState<boolean>(false);
+  const [webglError, setWebglError] = useState<string | null>(null);
 
   // Camera Tweening for Fast Travel
   const tweenTargetRef = useRef<{
@@ -115,28 +118,50 @@ export const SolarSystem3D: React.FC = () => {
     updateCameraOrientation();
 
     // Renderer — safe WebGLRenderer instantiation with fallback options to prevent context creation failure
-    let renderer: THREE.WebGLRenderer;
+    let renderer: THREE.WebGLRenderer | null = null;
     try {
       renderer = new THREE.WebGLRenderer({
         canvas: canvasRef.current,
-        antialias: true,
+        antialias: false,
         powerPreference: 'default',
-        failIfMajorPerformanceCaveat: false
+        failIfMajorPerformanceCaveat: false,
+        preserveDrawingBuffer: false
       });
     } catch (e1) {
-      console.warn('Falling back to basic WebGLRenderer without antialias:', e1);
-      renderer = new THREE.WebGLRenderer({
-        canvas: canvasRef.current,
-        antialias: false,
-        powerPreference: 'default'
-      });
+      console.warn('WebGL initialization failed, checking software renderer:', e1);
+      try {
+        renderer = new THREE.WebGLRenderer({
+          canvas: canvasRef.current,
+          antialias: false,
+          powerPreference: 'low-power'
+        });
+      } catch (e2) {
+        console.error('All WebGL context attempts failed:', e2);
+        setWebglError('WebGL context could not be created on this device/browser.');
+        return;
+      }
     }
+
+    if (!renderer) {
+      setWebglError('Unable to create WebGL context.');
+      return;
+    }
+
     rendererRef.current = renderer;
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2.0));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.5;
-    renderer.shadowMap.enabled = false; // Not needed for space scene; saves GPU
+    renderer.toneMappingExposure = 1.4;
+    renderer.shadowMap.enabled = false;
+
+    // Listen for WebGL context loss
+    const canvas = canvasRef.current;
+    const handleContextLost = (event: Event) => {
+      event.preventDefault();
+      console.warn('WebGL context lost.');
+      setWebglError('WebGL Context Lost. Switched to 2D view.');
+    };
+    canvas.addEventListener('webglcontextlost', handleContextLost, false);
 
     // ── LIGHTING ──────────────────────────────────────────────
     // Very dim ambient for deep-space fill (prevents absolute black back-faces)
@@ -1396,6 +1421,32 @@ export const SolarSystem3D: React.FC = () => {
     move.applyQuaternion(cameraRef.current.quaternion);
     velocityRef.current.add(move);
   };
+
+  if (webglError) {
+    return (
+      <div className="relative w-full h-full flex flex-col items-center justify-center bg-space-950 p-6 text-center select-none">
+        <div className="p-4 rounded-2xl bg-space-900/90 border border-cyan-500/40 max-w-md shadow-[0_0_50px_rgba(0,243,255,0.25)] flex flex-col items-center gap-4">
+          <div className="w-12 h-12 rounded-full bg-cyan-500/20 border border-cyan-400 flex items-center justify-center text-cyan-300">
+            <Compass className="w-6 h-6 animate-spin-very-slow" />
+          </div>
+          <div className="flex flex-col gap-1">
+            <h3 className="font-orbit font-bold text-lg text-slate-100">
+              3D HARDWARE ACCELERATION UNAVAILABLE
+            </h3>
+            <p className="text-xs text-slate-400 font-sans">
+              Your browser or GPU has disabled or exhausted WebGL context. Seamlessly switch to the high-precision 2D Heliocentric Array.
+            </p>
+          </div>
+          <button
+            onClick={() => setViewMode('2d')}
+            className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-orbit font-bold text-xs uppercase tracking-wider hover:brightness-110 active:scale-95 transition-all shadow-md cursor-pointer"
+          >
+            SWITCH TO 2D HELIOCENTRIC ARRAY
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div ref={containerRef} className="relative w-full h-full overflow-hidden select-none bg-space-950">
