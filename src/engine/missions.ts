@@ -4,10 +4,10 @@ import { findValidNodesForSector, ZODIAC_SECTORS, PLANET_DEFINITIONS } from './a
 
 export const PRESET_MISSIONS: Mission[] = [
   {
-    id: 'mission-hidden-orbit-master',
+    id: 'mission-avartan-master',
     type: 'SYSTEM_RECOVERY',
-    title: 'THE HIDDEN ORBIT: Celestial Restoration',
-    codeName: 'OP-HIDDEN-ORBIT',
+    title: 'AVARTAN: Celestial Restoration',
+    codeName: 'OP-AVARTAN',
     briefing: 'Ancient stellar maps have been erased. Activate the outer boundary, reveal the celestial reference wheel, and restore all seven planetary alignments from memory to recover the lost navigation sequence.',
     targets: [
       { planetId: 'mercury', targetSectorId: 7 }, // Scorpio (code 8)

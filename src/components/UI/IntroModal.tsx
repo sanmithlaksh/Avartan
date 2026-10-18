@@ -41,7 +41,7 @@ export const IntroModal: React.FC = () => {
           </div>
 
           <h2 className="text-2xl md:text-3xl font-orbit font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-200 to-indigo-300">
-            THE HIDDEN ORBIT
+            AVARTAN
           </h2>
 
           <p className="text-sm text-slate-300 leading-relaxed font-sans">
