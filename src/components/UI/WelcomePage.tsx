@@ -1,70 +1,30 @@
-// Mesmerizing Space Welcome Page featuring Pentagram Week 2026, Wave Gradient, and Carousel Imagery
-import React, { useState, useEffect } from 'react';
+// Mesmerizing Space Welcome Page featuring Pentagram & Gradient Presents Avartan
+import React from 'react';
 import { InteractiveCosmicCanvas } from './InteractiveCosmicCanvas';
-import { KeyRound, ChevronRight, ChevronLeft, Calendar, Sparkles } from 'lucide-react';
+import { KeyRound, ChevronRight, Calendar, Sparkles } from 'lucide-react';
 
 interface WelcomePageProps {
   onEnterLogin: () => void;
   onQuickTrial: () => void;
 }
 
-const CAROUSEL_SLIDES = [
-  {
-    id: 'avartan-banner',
-    image: '/assets/avartan_banner.png',
-    title: 'AVARTAN',
-    subtitle: 'PENTAGRAM WEEK 2026',
-    date: '28th - 31st October 2026',
-    tag: 'FLAGSHIP EVENT'
-  },
-  {
-    id: 'pentagram-logo',
-    image: '/assets/pentagram_logo.png',
-    title: 'PENTAGRAM',
-    subtitle: 'ANNUAL TECHFEST CONVERGENCE',
-    date: '28th - 31st October 2026',
-    tag: 'THE FESTIVAL'
-  },
-  {
-    id: 'wave-gradient',
-    image: '/assets/wave_gradient.png',
-    title: 'SYNCHRONICITY',
-    subtitle: 'AUDIO-VISUAL HARMONIC DIMENSION',
-    date: '28th - 31st October 2026',
-    tag: 'EXPERIENCE'
-  }
-];
-
 export const WelcomePage: React.FC<WelcomePageProps> = ({ onEnterLogin }) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  // Auto-advance carousel every 6 seconds
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide(prev => (prev + 1) % CAROUSEL_SLIDES.length);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const slide = CAROUSEL_SLIDES[currentSlide];
-
   return (
     <div className="relative w-screen h-screen flex flex-col items-center justify-between overflow-hidden bg-space-950 text-slate-100 select-none">
       {/* 1. Stagnant Galaxy / Cosmic Starfield Background with Cursor-Responsive Stars */}
       <InteractiveCosmicCanvas />
 
-      {/* 2. Blurred Ambient Gradient Backdrop derived from the current slide */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden flex items-center justify-center opacity-35">
+      {/* 2. Blurred Ambient Gradient Backdrop derived from the Pentagram banner & gradient logo */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden flex items-center justify-center opacity-30">
         <img
-          key={slide.image}
-          src={slide.image}
+          src="/assets/avartan_banner.png"
           alt="Ambient blur"
-          className="w-[120vw] h-[120vh] object-cover filter blur-[90px] scale-125 transition-all duration-1000"
+          className="w-[125vw] h-[125vh] object-cover filter blur-[100px] scale-125 pointer-events-none"
         />
       </div>
 
-      {/* 3. Subtle dark vignette overlay to preserve high readability */}
-      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-space-950/80 via-space-950/40 to-space-950/90 pointer-events-none" />
+      {/* 3. Subtle dark vignette overlay for crisp contrast */}
+      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-space-950/75 via-space-950/30 to-space-950/85 pointer-events-none" />
 
       {/* Top Header */}
       <header className="relative z-10 w-full px-6 py-5 flex items-center justify-between border-b border-cyan-500/20 backdrop-blur-md bg-space-950/40">
@@ -89,83 +49,65 @@ export const WelcomePage: React.FC<WelcomePageProps> = ({ onEnterLogin }) => {
           className="px-4 py-2 rounded-xl bg-cyan-500/10 border border-cyan-400/40 text-cyan-300 hover:bg-cyan-500/20 text-xs font-orbit font-bold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-sm"
         >
           <KeyRound className="w-3.5 h-3.5 text-cyan-400" />
-          <span>Login / Register</span>
+          <span>Login Terminal</span>
         </button>
       </header>
 
-      {/* Main Body: Sliding Carousel with Blurred Backdrop Card */}
+      {/* Main Body: Glassmorphism Box with High-Impact Presentation */}
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 max-w-4xl mx-auto w-full">
-        {/* Carousel Showcase Card */}
-        <div className="relative w-full max-w-2xl rounded-3xl bg-space-900/60 border border-cyan-500/30 p-6 md:p-8 backdrop-blur-2xl shadow-[0_0_80px_rgba(0,243,255,0.2)] flex flex-col items-center text-center overflow-hidden transition-all duration-700">
+        <div className="relative w-full max-w-3xl rounded-3xl bg-space-900/60 border border-cyan-400/30 p-8 md:p-12 backdrop-blur-2xl shadow-[0_0_90px_rgba(0,243,255,0.22)] flex flex-col items-center text-center overflow-hidden transition-all duration-700">
           
-          {/* Tag Pill */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-950/70 border border-cyan-400/40 text-cyan-300 text-[11px] font-mono tracking-wider mb-4 shadow-[0_0_15px_rgba(0,243,255,0.25)]">
+          {/* Subtle neon glow orbs inside glass box */}
+          <div className="absolute -top-20 -left-20 w-52 h-52 rounded-full bg-cyan-500/15 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-20 -right-20 w-52 h-52 rounded-full bg-fuchsia-500/15 blur-3xl pointer-events-none" />
+
+          {/* Top Tag Pill */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-950/70 border border-cyan-400/40 text-cyan-300 text-xs font-mono tracking-wider mb-6 shadow-[0_0_20px_rgba(0,243,255,0.25)]">
             <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-            <span>{slide.tag}</span>
+            <span className="font-bold">PENTAGRAM WEEK 2026</span>
           </div>
 
-          {/* Central Image with Soft Glow */}
-          <div className="relative w-full h-52 sm:h-64 flex items-center justify-center my-2 overflow-hidden rounded-2xl bg-black/40 border border-cyan-500/20">
-            <img
-              key={slide.id}
-              src={slide.image}
-              alt={slide.title}
-              className="max-h-full max-w-full object-contain p-3 drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] transition-all duration-700 hover:scale-105"
-            />
-          </div>
-
-          {/* Title & Subtitle */}
-          <h1 className="text-3xl sm:text-5xl font-orbit font-extrabold tracking-tight text-white mt-4 drop-shadow-[0_0_25px_rgba(255,255,255,0.4)]">
-            {slide.title}
-          </h1>
-
-          <p className="text-sm sm:text-base font-orbit font-semibold text-cyan-300 tracking-wider mt-1">
-            {slide.subtitle}
-          </p>
-
-          {/* Date Information */}
-          <div className="inline-flex items-center gap-2 mt-3 px-4 py-1.5 rounded-xl bg-space-950/70 border border-cyan-500/20 text-slate-300 font-mono text-xs">
-            <Calendar className="w-3.5 h-3.5 text-amber-400" />
-            <span>{slide.date}</span>
-          </div>
-
-          {/* Carousel Navigation Arrows */}
-          <button
-            onClick={() => setCurrentSlide((currentSlide - 1 + CAROUSEL_SLIDES.length) % CAROUSEL_SLIDES.length)}
-            className="absolute left-3 top-1/2 -translate-y-1/2 p-2 rounded-xl bg-space-950/70 border border-cyan-500/30 text-slate-300 hover:text-cyan-300 hover:border-cyan-400 transition-all cursor-pointer"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-
-          <button
-            onClick={() => setCurrentSlide((currentSlide + 1) % CAROUSEL_SLIDES.length)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-xl bg-space-950/70 border border-cyan-500/30 text-slate-300 hover:text-cyan-300 hover:border-cyan-400 transition-all cursor-pointer"
-            aria-label="Next slide"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
-
-          {/* Slide Indicator Dots */}
-          <div className="flex gap-2 mt-5">
-            {CAROUSEL_SLIDES.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentSlide(idx)}
-                className={`h-2 rounded-full transition-all cursor-pointer ${
-                  idx === currentSlide
-                    ? 'w-8 bg-cyan-400 shadow-[0_0_10px_#00f3ff]'
-                    : 'w-2 bg-slate-700 hover:bg-slate-500'
-                }`}
-                aria-label={`Slide ${idx + 1}`}
+          {/* Main Logo & Announcement Row: Pentagram (Left) - Main Title - Gradient Wave (Right) */}
+          <div className="w-full flex items-center justify-between gap-4 sm:gap-6 my-2">
+            {/* Pentagram Logo Near Left */}
+            <div className="shrink-0 flex items-center justify-center w-20 h-20 sm:w-28 sm:h-28 rounded-2xl bg-black/40 border border-white/10 p-2.5 backdrop-blur-md shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:scale-105 transition-transform duration-300">
+              <img
+                src="/assets/pentagram_logo.png"
+                alt="Pentagram Emblem"
+                className="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]"
               />
-            ))}
+            </div>
+
+            {/* Central High-Impact Typography */}
+            <div className="flex-1 flex flex-col items-center justify-center">
+              <span className="text-xs sm:text-base font-orbit font-extrabold uppercase tracking-[0.25em] text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-sky-200 to-fuchsia-300 drop-shadow-[0_0_15px_rgba(0,243,255,0.4)]">
+                Pentagram &amp; Gradient Presents
+              </span>
+
+              <h1 className="text-4xl sm:text-6xl md:text-7xl font-orbit font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-slate-100 to-cyan-300 mt-1 mb-2 drop-shadow-[0_0_40px_rgba(0,243,255,0.6)]">
+                AVARTAN
+              </h1>
+
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-xl bg-space-950/80 border border-cyan-500/30 text-slate-200 font-mono text-xs sm:text-sm shadow-inner">
+                <Calendar className="w-3.5 h-3.5 text-amber-400" />
+                <span className="tracking-wide">28th - 31st October 2026</span>
+              </div>
+            </div>
+
+            {/* Gradient Logo Near Right */}
+            <div className="shrink-0 flex items-center justify-center w-20 h-20 sm:w-28 sm:h-28 rounded-2xl bg-black/40 border border-white/10 p-2.5 backdrop-blur-md shadow-[0_0_30px_rgba(192,132,252,0.3)] hover:scale-105 transition-transform duration-300">
+              <img
+                src="/assets/wave_gradient.png"
+                alt="Gradient Logo"
+                className="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(236,72,153,0.5)]"
+              />
+            </div>
           </div>
 
-          {/* Enter Action Button */}
+          {/* Action Button */}
           <button
             onClick={onEnterLogin}
-            className="mt-6 w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600 text-slate-950 font-orbit font-black text-sm uppercase tracking-widest flex items-center justify-center gap-2.5 hover:brightness-110 active:scale-95 transition-all shadow-[0_0_35px_rgba(0,243,255,0.45)] cursor-pointer"
+            className="mt-8 px-10 py-4 rounded-2xl bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600 text-slate-950 font-orbit font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 hover:brightness-110 active:scale-95 transition-all shadow-[0_0_40px_rgba(0,243,255,0.5)] cursor-pointer"
           >
             <KeyRound className="w-4 h-4 text-slate-950" />
             <span>ENTER MISSION PORTAL</span>

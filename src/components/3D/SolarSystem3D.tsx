@@ -236,21 +236,21 @@ export const SolarSystem3D: React.FC = () => {
           0.04 + Math.sin(elapsed * 1.8) * 0.03 + Math.sin(elapsed * 3.1) * 0.02;
       }
 
-      // Pulse Boundary Scanner if holding (Hold for 15.0 seconds: first 10s silent, last 5s full warnings)
+      // Pulse Boundary Scanner if holding (Hold for 10.0 seconds)
       if (isHoldingBoundaryRef.current && !zodiacRevealed) {
         const holdDuration = (Date.now() - holdStartTimeRef.current) / 1000;
-        const prog = Math.min(100, Math.round((holdDuration / 15.0) * 100)); // Exactly 15.0 seconds
+        const prog = Math.min(100, Math.round((holdDuration / 10.0) * 100)); // Exactly 10.0 seconds
         setDiscoveryProgress(prog);
         if (boundaryScannerMeshRef.current) {
-          boundaryScannerMeshRef.current.rotation.z += delta * (holdDuration > 10 ? 8 : 2);
-          const warningPhase = holdDuration > 10 ? (holdDuration - 10) / 5.0 : 0;
+          boundaryScannerMeshRef.current.rotation.z += delta * (holdDuration > 6 ? 8 : 3);
+          const warningPhase = holdDuration > 6 ? (holdDuration - 6) / 4.0 : 0;
           (boundaryScannerMeshRef.current.material as THREE.MeshBasicMaterial).opacity =
-            holdDuration <= 10
-              ? 0.05 + (holdDuration / 10) * 0.15 // First 10 sec: subtle, non-alarming
-              : 0.2 + warningPhase * 0.8 + Math.sin(elapsed * 18) * 0.15 * warningPhase; // Last 5 sec: flashing warnings
+            holdDuration <= 6
+              ? 0.05 + (holdDuration / 6) * 0.15 // First 6 sec: subtle glow
+              : 0.2 + warningPhase * 0.8 + Math.sin(elapsed * 18) * 0.15 * warningPhase; // Last 4 sec: flashing warnings
         }
-        // Play audio warning ONLY after 10 seconds has passed
-        if (holdDuration > 10 && holdDuration <= 10.1) {
+        // Play audio warning after 6 seconds has passed
+        if (holdDuration > 6 && holdDuration <= 6.1) {
           soundFx.playBoundaryCharging();
         }
         if (prog >= 100) {
@@ -1419,6 +1419,7 @@ export const SolarSystem3D: React.FC = () => {
         targetedObject={targetedObject}
         onFlyTo={handleFlyTo}
         onVirtualMove={handleVirtualMove}
+        tableHoldProgress={tableHoldProgress}
       />
     </div>
   );

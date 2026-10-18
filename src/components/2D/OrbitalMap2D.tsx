@@ -103,14 +103,14 @@ export const OrbitalMap2D: React.FC = () => {
       return;
     }
 
-    // First hold: unlock the zodiac wheel (5 seconds)
+    // First hold: unlock the zodiac wheel (10 seconds)
     setIsHoldingBoundary(true);
     soundFx.playBoundaryCharging();
 
     const startTime = Date.now();
     const interval = setInterval(() => {
       const elapsed = Date.now() - startTime;
-      const prog = Math.min(100, Math.round((elapsed / 5000) * 100)); // Exactly 5.0 seconds
+      const prog = Math.min(100, Math.round((elapsed / 10000) * 100)); // Exactly 10.0 seconds
       setDiscoveryProgress(prog);
       if (prog >= 100) {
         clearInterval(interval);
@@ -341,7 +341,7 @@ export const OrbitalMap2D: React.FC = () => {
                 fontWeight="bold"
                 className="font-orbit animate-pulse"
               >
-                DECRYPTING CELESTIAL BOUNDARY... {discoveryProgress}% (HOLD 5s)
+                DECRYPTING CELESTIAL BOUNDARY... {discoveryProgress}% (HOLD 10s)
               </text>
             </g>
           )}

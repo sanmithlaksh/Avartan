@@ -1,11 +1,9 @@
-// Team Authentication and Registration Page
+// Team Authentication Terminal Page
 import React, { useState } from 'react';
 import { InteractiveCosmicCanvas } from './InteractiveCosmicCanvas';
 import { backendService } from '../../utils/supabase';
 import { TeamAccount } from '../../engine/types';
 import {
-  Lock,
-  User,
   Users,
   KeyRound,
   ChevronRight,
@@ -20,11 +18,8 @@ interface LoginPageProps {
 }
 
 export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBackToWelcome }) => {
-  const [mode, setMode] = useState<'login' | 'register'>('login');
   const [teamName, setTeamName] = useState('');
   const [password, setPassword] = useState('');
-  const [name1, setName1] = useState('');
-  const [name2, setName2] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -56,46 +51,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBackToWe
     }
   };
 
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!teamName.trim() || !password.trim() || !name1.trim()) {
-      setErrorMessage('Please provide Team Name, Password, and at least Name 1.');
-      return;
-    }
-
-    setIsLoading(true);
-    setErrorMessage(null);
-
-    const newAccount: TeamAccount = {
-      'Name 1': name1.trim(),
-      'Name 2': name2.trim() || 'Co-Pilot',
-      'Team Name': teamName.trim(),
-      'Password': password.trim(),
-      'Current level': 1,
-      'levels completion': 0,
-      'level 1 points': 0,
-      'level 2 points': 0,
-      'level 3 points': 0,
-      'total level points': 0
-    };
-
-    try {
-      const res = await backendService.registerTeam(newAccount);
-      if (res.success && res.team) {
-        setSuccessMessage('Squadron enrolled successfully. Entering portal...');
-        setTimeout(() => {
-          onLoginSuccess(res.team!);
-        }, 700);
-      } else {
-        setErrorMessage(res.message);
-      }
-    } catch (err: any) {
-      setErrorMessage(err.message || 'Registration failed.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   return (
     <div className="relative w-screen h-screen flex items-center justify-center overflow-hidden bg-space-950 text-slate-100 select-none p-4">
       {/* Interactive Cosmic Background with stagnant starfield and cursor reactive stars */}
@@ -114,54 +69,29 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBackToWe
       </button>
 
       {/* Card Container */}
-      <div className="relative z-10 w-full max-w-md rounded-2xl bg-space-900/90 border border-cyan-500/40 p-6 md:p-8 backdrop-blur-2xl shadow-[0_0_60px_rgba(0,243,255,0.25)] flex flex-col gap-5">
-        {/* Header with Pentagram Logo */}
-        <div className="flex flex-col gap-1 text-center items-center">
-          <img
-            src="/assets/pentagram_logo.png"
-            alt="Pentagram Logo"
-            className="w-12 h-12 object-contain mb-1 drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]"
-          />
+      <div className="relative z-10 w-full max-w-md rounded-2xl bg-space-900/90 border border-cyan-500/40 p-6 md:p-8 backdrop-blur-2xl shadow-[0_0_60px_rgba(0,243,255,0.25)] flex flex-col gap-6">
+        {/* Header with Pentagram Logo & Gradient Logo */}
+        <div className="flex flex-col gap-2 text-center items-center">
+          <div className="flex items-center gap-4 mb-1">
+            <img
+              src="/assets/pentagram_logo.png"
+              alt="Pentagram Logo"
+              className="w-12 h-12 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]"
+            />
+            <div className="w-px h-8 bg-cyan-500/30" />
+            <img
+              src="/assets/wave_gradient.png"
+              alt="Gradient Logo"
+              className="w-12 h-12 object-contain drop-shadow-[0_0_15px_rgba(236,72,153,0.4)]"
+            />
+          </div>
+
           <h2 className="text-xl md:text-2xl font-orbit font-extrabold text-slate-100 tracking-wide">
-            {mode === 'login' ? 'MISSION ACCESS TERMINAL' : 'SQUADRON ENROLLMENT'}
+            MISSION ACCESS TERMINAL
           </h2>
           <span className="text-xs text-slate-400 font-sans">
-            {mode === 'login'
-              ? 'Enter your Team Name and Password to access your portal'
-              : 'Register your 2-member team for tournament ranking'}
+            Enter your Team Name and Password to enter Avartan
           </span>
-        </div>
-
-        {/* Tab Toggle */}
-        <div className="flex rounded-xl bg-space-950/80 p-1 border border-cyan-500/20 text-xs font-orbit">
-          <button
-            type="button"
-            onClick={() => {
-              setMode('login');
-              setErrorMessage(null);
-            }}
-            className={`flex-1 py-2 rounded-lg font-bold transition-all cursor-pointer ${
-              mode === 'login'
-                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            Team Login
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setMode('register');
-              setErrorMessage(null);
-            }}
-            className={`flex-1 py-2 rounded-lg font-bold transition-all cursor-pointer ${
-              mode === 'register'
-                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            New Registration
-          </button>
         </div>
 
         {/* Feedback Alerts */}
@@ -179,121 +109,47 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBackToWe
           </div>
         )}
 
-        {/* Forms */}
-        {mode === 'login' ? (
-          <form onSubmit={handleLogin} className="flex flex-col gap-4">
-            <div>
-              <label className="block text-[11px] font-orbit uppercase tracking-wider text-slate-400 mb-1.5 flex items-center gap-1.5">
-                <Users className="w-3.5 h-3.5 text-cyan-400" />
-                Team Name
-              </label>
-              <input
-                type="text"
-                value={teamName}
-                onChange={e => setTeamName(e.target.value)}
-                placeholder="Enter your team name"
-                className="w-full px-4 py-2.5 rounded-xl bg-space-950 border border-cyan-500/30 text-cyan-200 font-orbit text-sm placeholder-slate-600 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400"
-                required
-              />
-            </div>
+        {/* Login Form */}
+        <form onSubmit={handleLogin} className="flex flex-col gap-4">
+          <div>
+            <label className="block text-[11px] font-orbit uppercase tracking-wider text-slate-400 mb-1.5 flex items-center gap-1.5">
+              <Users className="w-3.5 h-3.5 text-cyan-400" />
+              Team Name
+            </label>
+            <input
+              type="text"
+              value={teamName}
+              onChange={e => setTeamName(e.target.value)}
+              placeholder="Enter your team name"
+              className="w-full px-4 py-2.5 rounded-xl bg-space-950 border border-cyan-500/30 text-cyan-200 font-orbit text-sm placeholder-slate-600 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400"
+              required
+            />
+          </div>
 
-            <div>
-              <label className="block text-[11px] font-orbit uppercase tracking-wider text-slate-400 mb-1.5 flex items-center gap-1.5">
-                <KeyRound className="w-3.5 h-3.5 text-cyan-400" />
-                Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder="Enter password"
-                className="w-full px-4 py-2.5 rounded-xl bg-space-950 border border-cyan-500/30 text-cyan-200 font-orbit text-sm placeholder-slate-600 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400"
-                required
-              />
-            </div>
+          <div>
+            <label className="block text-[11px] font-orbit uppercase tracking-wider text-slate-400 mb-1.5 flex items-center gap-1.5">
+              <KeyRound className="w-3.5 h-3.5 text-cyan-400" />
+              Password
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              placeholder="Enter password"
+              className="w-full px-4 py-2.5 rounded-xl bg-space-950 border border-cyan-500/30 text-cyan-200 font-orbit text-sm placeholder-slate-600 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400"
+              required
+            />
+          </div>
 
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="mt-2 w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600 text-slate-950 font-orbit font-extrabold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all shadow-[0_0_25px_rgba(0,243,255,0.4)] disabled:opacity-50 cursor-pointer"
-            >
-              {isLoading ? 'AUTHENTICATING...' : 'ACCESS MISSION PORTAL'}
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={handleRegister} className="flex flex-col gap-3">
-            <div className="grid grid-cols-2 gap-2">
-              <div>
-                <label className="block text-[10px] font-orbit uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1">
-                  <User className="w-3 h-3 text-cyan-400" />
-                  Name 1
-                </label>
-                <input
-                  type="text"
-                  value={name1}
-                  onChange={e => setName1(e.target.value)}
-                  placeholder="Primary Pilot"
-                  className="w-full px-3 py-2 rounded-xl bg-space-950 border border-cyan-500/30 text-cyan-200 font-sans text-xs placeholder-slate-600 focus:outline-none focus:border-cyan-400"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-[10px] font-orbit uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1">
-                  <User className="w-3 h-3 text-cyan-400" />
-                  Name 2
-                </label>
-                <input
-                  type="text"
-                  value={name2}
-                  onChange={e => setName2(e.target.value)}
-                  placeholder="Co-Pilot (Optional)"
-                  className="w-full px-3 py-2 rounded-xl bg-space-950 border border-cyan-500/30 text-cyan-200 font-sans text-xs placeholder-slate-600 focus:outline-none focus:border-cyan-400"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-[10px] font-orbit uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1">
-                <Users className="w-3 h-3 text-cyan-400" />
-                Team Name
-              </label>
-              <input
-                type="text"
-                value={teamName}
-                onChange={e => setTeamName(e.target.value)}
-                placeholder="Squadron Name"
-                className="w-full px-3 py-2 rounded-xl bg-space-950 border border-cyan-500/30 text-cyan-200 font-orbit text-xs placeholder-slate-600 focus:outline-none focus:border-cyan-400"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-[10px] font-orbit uppercase tracking-wider text-slate-400 mb-1 flex items-center gap-1">
-                <KeyRound className="w-3 h-3 text-cyan-400" />
-                Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder="Squadron Access Password"
-                className="w-full px-3 py-2 rounded-xl bg-space-950 border border-cyan-500/30 text-cyan-200 font-orbit text-xs placeholder-slate-600 focus:outline-none focus:border-cyan-400"
-                required
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="mt-2 w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600 text-slate-950 font-orbit font-extrabold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all shadow-[0_0_20px_rgba(0,243,255,0.4)] disabled:opacity-50 cursor-pointer"
-            >
-              {isLoading ? 'ENROLLING...' : 'REGISTER SQUADRON'}
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </form>
-        )}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="mt-2 w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600 text-slate-950 font-orbit font-extrabold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all shadow-[0_0_25px_rgba(0,243,255,0.4)] disabled:opacity-50 cursor-pointer"
+          >
+            {isLoading ? 'AUTHENTICATING...' : 'ACCESS MISSION PORTAL'}
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </form>
       </div>
     </div>
   );

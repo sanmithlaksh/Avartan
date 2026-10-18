@@ -27,6 +27,7 @@ interface AstronautHUDProps {
   targetedObject: { type: 'planet' | 'node' | 'boundary' | null; name: string; distance: number } | null;
   onFlyTo: (target: 'sun' | 'earth' | PlanetId | 'reset') => void;
   onVirtualMove: (direction: 'forward' | 'backward' | 'left' | 'right' | 'up' | 'down') => void;
+  tableHoldProgress?: number;
 }
 
 export const AstronautHUD: React.FC<AstronautHUDProps> = ({
@@ -37,7 +38,8 @@ export const AstronautHUD: React.FC<AstronautHUDProps> = ({
   cameraCoords,
   targetedObject,
   onFlyTo,
-  onVirtualMove
+  onVirtualMove,
+  tableHoldProgress = 0
 }) => {
   const { selectedPlanetId, selectPlanet, planets, zodiacRevealed, discoveryProgress } = useGame();
 
@@ -45,7 +47,7 @@ export const AstronautHUD: React.FC<AstronautHUDProps> = ({
 
   return (
     <div className="absolute inset-0 pointer-events-none select-none z-10 flex flex-col justify-between p-3 md:p-5">
-      {/* 5-Second Barrier Decryption Progress HUD Gauge */}
+      {/* 10-Second Boundary Decryption Progress HUD Gauge (First Hold) */}
       {discoveryProgress > 0 && !zodiacRevealed && (
         <div className="absolute top-16 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2 px-5 py-3 rounded-2xl bg-space-950/95 border border-cyan-400 backdrop-blur-xl shadow-[0_0_35px_rgba(0,243,255,0.45)]">
           <div className="flex items-center gap-2 text-xs font-orbit font-extrabold text-cyan-300 tracking-wider">
@@ -59,7 +61,25 @@ export const AstronautHUD: React.FC<AstronautHUDProps> = ({
               style={{ width: `${discoveryProgress}%` }}
             />
           </div>
-          <div className="text-[10px] font-mono text-slate-400">Continuous hold for 5 seconds required to unlock Zodiac</div>
+          <div className="text-[10px] font-mono text-cyan-400">Continuous hold for 10 seconds required to unlock Zodiac</div>
+        </div>
+      )}
+
+      {/* 10-Second Planetary Reference Table Progress HUD Gauge (Second Hold in 3D View) */}
+      {tableHoldProgress > 0 && zodiacRevealed && (
+        <div className="absolute top-16 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2 px-5 py-3 rounded-2xl bg-space-950/95 border border-fuchsia-400 backdrop-blur-xl shadow-[0_0_35px_rgba(236,72,153,0.45)]">
+          <div className="flex items-center gap-2 text-xs font-orbit font-extrabold text-fuchsia-300 tracking-wider">
+            <Compass className="w-4 h-4 text-fuchsia-400 animate-spin" />
+            <span>REVEALING POSITION REFERENCE TABLE...</span>
+            <span className="font-mono text-fuchsia-200">{tableHoldProgress}%</span>
+          </div>
+          <div className="w-72 h-2.5 bg-space-900 rounded-full overflow-hidden border border-fuchsia-500/50 p-0.5">
+            <div
+              className="h-full bg-gradient-to-r from-fuchsia-500 via-pink-400 to-purple-400 rounded-full transition-all duration-75 shadow-[0_0_10px_#ff00ff]"
+              style={{ width: `${tableHoldProgress}%` }}
+            />
+          </div>
+          <div className="text-[10px] font-mono text-fuchsia-400">Continuous hold for 10 seconds (One-time reference reveal)</div>
         </div>
       )}
 
