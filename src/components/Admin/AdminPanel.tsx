@@ -1,21 +1,24 @@
 // Administrator Game Configuration and Celestial Ephemeris Management Panel
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGame } from '../../context/GameContext';
-import { PRESET_MISSIONS, generateDynamicMission, validateMissionSolvability } from '../../engine/missions';
+import { PRESET_MISSIONS, validateMissionSolvability } from '../../engine/missions';
 import { PLANET_DEFINITIONS, ZODIAC_SECTORS } from '../../engine/astronomy';
 import { backendService } from '../../utils/supabase';
+import { TeamAccount } from '../../engine/types';
 import {
   Settings,
   Shield,
   Clock,
   Compass,
   Database,
-  Sparkles,
   RotateCcw,
   CheckCircle2,
   X,
-  Shuffle,
-  EyeOff
+  EyeOff,
+  Users,
+  Award,
+  Layers,
+  Edit3
 } from 'lucide-react';
 
 const EARTH_PRESETS = [
@@ -34,12 +37,28 @@ export const AdminPanel: React.FC = () => {
     currentMissionIndex,
     setMissionByIndex,
     currentMission,
-    restartGame
+    restartGame,
+    activeAccount,
+    updateActiveTeamLevel
   } = useGame();
 
   const [supabaseUrl, setSupabaseUrl] = useState(backendService.getCredentials().url);
   const [supabaseKey, setSupabaseKey] = useState(backendService.getCredentials().key);
   const [dbStatus, setDbStatus] = useState<string | null>(null);
+  const [teams, setTeams] = useState<TeamAccount[]>([]);
+  const [selectedTeam, setSelectedTeam] = useState<TeamAccount | null>(null);
+
+  // Load teams roster
+  useEffect(() => {
+    if (!showAdminModal) return;
+    backendService.fetchAllTeams().then(list => {
+      setTeams(list);
+      if (activeAccount) {
+        const found = list.find(t => t['Team Name'] === activeAccount['Team Name']);
+        if (found) setSelectedTeam(found);
+      }
+    });
+  }, [showAdminModal, activeAccount]);
 
   if (!showAdminModal) return null;
 
@@ -50,12 +69,24 @@ export const AdminPanel: React.FC = () => {
     setTimeout(() => setDbStatus(null), 3500);
   };
 
-  // Inspect valid solutions for administrator
+  const handleUpdateTeamLevel = (team: TeamAccount, newLevel: number) => {
+    const updated: TeamAccount = {
+      ...team,
+      'Current level': newLevel,
+      'levels completion': 0 // As specified: in testing phase levels completion remains 0
+    };
+    backendService.updateTeamAccount(updated);
+    setTeams(prev => prev.map(t => (t['Team Name'] === team['Team Name'] ? updated : t)));
+    if (activeAccount && activeAccount['Team Name'] === team['Team Name']) {
+      updateActiveTeamLevel(newLevel);
+    }
+  };
+
   const validation = validateMissionSolvability(currentMission, settings.earthStartingNode);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-space-950/85 backdrop-blur-2xl animate-fade-in select-none">
-      <div className="relative w-full max-w-3xl rounded-2xl bg-space-900/95 border border-cyan-500/40 p-6 md:p-8 shadow-[0_0_60px_rgba(0,243,255,0.3)] flex flex-col gap-6 max-h-[90vh] overflow-y-auto">
+      <div className="relative w-full max-w-4xl rounded-2xl bg-space-900/95 border border-cyan-500/40 p-6 md:p-8 shadow-[0_0_60px_rgba(0,243,255,0.3)] flex flex-col gap-6 max-h-[90vh] overflow-y-auto">
         {/* Close Button */}
         <button
           onClick={() => setShowAdminModal(false)}
@@ -71,29 +102,134 @@ export const AdminPanel: React.FC = () => {
           </div>
           <div className="flex flex-col">
             <h2 className="text-xl font-orbit font-extrabold text-slate-100 tracking-wide">
-              ADMINISTRATIVE GAME CALIBRATION
+              ADMINISTRATIVE GAME & USER MANAGEMENT CONSOLE
             </h2>
             <span className="text-xs text-slate-400">
-              Configure Earth Ephemeris, Mission Sequences, Timer, and Backend Database
+              Manage 45-50 Participating Squadrons, Testing Level Overrides, and Supabase Sync
             </span>
           </div>
         </div>
 
-        {/* Section 1: Earth Vantage & Reference Position */}
+        {/* Section 1: Testing Level Controls & Active Level Override */}
+        <div className="p-4 rounded-xl bg-space-950/70 border border-cyan-500/30 flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-orbit uppercase tracking-wider text-cyan-400 flex items-center gap-1.5">
+              <Edit3 className="w-4 h-4 text-amber-400" />
+              Testing Phase: Level Override for Active Squadron
+            </span>
+            <span className="text-[11px] font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">
+              Levels Completion Locked to 0 (Testing Mode)
+            </span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-xs text-slate-300 font-sans">
+              Switch active simulation level:
+            </span>
+            <div className="flex gap-2">
+              {[1, 2, 3].map(lvl => (
+                <button
+                  key={lvl}
+                  onClick={() => updateActiveTeamLevel(lvl)}
+                  className={`px-4 py-1.5 rounded-lg text-xs font-orbit font-bold transition-all ${
+                    currentMissionIndex + 1 === lvl
+                      ? 'bg-amber-400 text-slate-950 shadow-[0_0_15px_rgba(251,191,36,0.5)]'
+                      : 'bg-space-900 border border-cyan-500/30 text-slate-300 hover:border-cyan-400'
+                  }`}
+                >
+                  Level 0{lvl}
+                </button>
+              ))}
+            </div>
+            <span className="text-xs font-mono text-slate-400 ml-auto">
+              Current Mission: <strong className="text-cyan-300 font-bold">{currentMission.title}</strong>
+            </span>
+          </div>
+        </div>
+
+        {/* Section 2: 45-50 User & Team Management Table */}
+        <div className="p-4 rounded-xl bg-space-950/70 border border-cyan-500/20 flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-orbit uppercase tracking-wider text-cyan-400 flex items-center gap-1.5">
+              <Users className="w-4 h-4" />
+              Squadron Roster & Score Card ({teams.length} Teams Enrolled)
+            </span>
+            <span className="text-[10px] text-slate-400 font-mono">
+              Columns: Name 1, Name 2, Team, Password, Level, Points
+            </span>
+          </div>
+
+          <div className="max-h-56 overflow-y-auto rounded-lg border border-cyan-500/20 bg-space-900/50">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-space-950 text-[10px] font-orbit uppercase tracking-wider text-slate-400 border-b border-cyan-500/20 sticky top-0">
+                <tr>
+                  <th className="py-2 px-3">Team Name</th>
+                  <th className="py-2 px-3">Name 1 / Name 2</th>
+                  <th className="py-2 px-2">Password</th>
+                  <th className="py-2 px-2 text-center">Current Level</th>
+                  <th className="py-2 px-2 text-center">Levels Compl.</th>
+                  <th className="py-2 px-2 text-right">L1 Pts</th>
+                  <th className="py-2 px-2 text-right">L2 Pts</th>
+                  <th className="py-2 px-2 text-right">L3 Pts</th>
+                  <th className="py-2 px-3 text-right">Total Pts</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-cyan-500/10 font-mono text-[11px]">
+                {teams.map((t, idx) => (
+                  <tr key={idx} className="hover:bg-cyan-950/30 transition-colors">
+                    <td className="py-2 px-3 font-bold text-cyan-300 font-orbit">
+                      {t['Team Name']}
+                    </td>
+                    <td className="py-2 px-3 text-slate-300 font-sans">
+                      {t['Name 1'] || 'N/A'}{t['Name 2'] ? ` / ${t['Name 2']}` : ''}
+                    </td>
+                    <td className="py-2 px-2 text-slate-400">
+                      {t['Password']}
+                    </td>
+                    <td className="py-2 px-2 text-center">
+                      <select
+                        value={t['Current level']}
+                        onChange={e => handleUpdateTeamLevel(t, parseInt(e.target.value))}
+                        className="bg-space-950 border border-cyan-500/40 rounded px-1.5 py-0.5 text-amber-300 font-bold focus:outline-none"
+                      >
+                        <option value={1}>1</option>
+                        <option value={2}>2</option>
+                        <option value={3}>3</option>
+                      </select>
+                    </td>
+                    <td className="py-2 px-2 text-center text-slate-400 font-bold">
+                      {t['levels completion'] || 0}
+                    </td>
+                    <td className="py-2 px-2 text-right text-slate-300">
+                      {t['level 1 points'] || 0}
+                    </td>
+                    <td className="py-2 px-2 text-right text-slate-300">
+                      {t['level 2 points'] || 0}
+                    </td>
+                    <td className="py-2 px-2 text-right text-slate-300">
+                      {t['level 3 points'] || 0}
+                    </td>
+                    <td className="py-2 px-3 text-right font-bold text-amber-400">
+                      {t['total level points'] || 0}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Section 3: Earth Vantage & Reference Position */}
         <div className="p-4 rounded-xl bg-space-950/70 border border-cyan-500/20 flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-orbit uppercase tracking-wider text-cyan-400 flex items-center gap-1.5">
               <Compass className="w-4 h-4" />
-              Earth Reference Position (Locked Observer)
+              Earth Reference Vantage (Locked Pivot)
             </span>
             <span className="text-xs font-mono text-slate-300">
               Current: Node {settings.earthStartingNode} ({settings.earthStartingNode * 30}°)
             </span>
           </div>
-
-          <p className="text-xs text-slate-400 font-sans">
-            A calendar month alone does not define an exact astronomical coordinate. Select a defined astronomical epoch or orbital node.
-          </p>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {EARTH_PRESETS.map((preset) => (
@@ -118,138 +254,27 @@ export const AdminPanel: React.FC = () => {
           </div>
         </div>
 
-        {/* Section 2: Mission Stages & Math Verification */}
-        <div className="p-4 rounded-xl bg-space-950/70 border border-cyan-500/20 flex flex-col gap-3">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-orbit uppercase tracking-wider text-cyan-400 flex items-center gap-1.5">
-              <Shield className="w-4 h-4" />
-              Active Mission Selection & Math Solver
-            </span>
-            <span className="text-xs font-mono text-emerald-400 flex items-center gap-1">
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              {validation.isSolvable ? 'Mathematically Verified' : 'Unsolvable'}
-            </span>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            {PRESET_MISSIONS.map((m, idx) => (
-              <button
-                key={m.id}
-                onClick={() => setMissionByIndex(idx)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-orbit transition-all ${
-                  currentMissionIndex === idx
-                    ? 'bg-cyan-500 text-slate-950 font-bold shadow-md'
-                    : 'bg-space-900 border border-cyan-500/20 text-slate-300 hover:border-cyan-400'
-                }`}
-              >
-                Stage 0{idx + 1}: {m.title.split(':')[0]}
-              </button>
-            ))}
-          </div>
-
-          {/* Admin Solution Inspector */}
-          <div className="p-3 rounded-lg bg-space-900/60 border border-cyan-500/10 flex flex-col gap-1.5">
-            <span className="text-[10px] font-orbit uppercase tracking-wider text-amber-400 flex items-center gap-1">
-              <EyeOff className="w-3 h-3" />
-              Authoritative Solution Key (Admin Eyes Only)
-            </span>
-            <div className="text-xs font-mono text-slate-300 flex flex-col gap-1">
-              {currentMission.targets.map(t => {
-                const validNodes = validation.solutionMap[t.planetId] || [];
-                const pName = PLANET_DEFINITIONS[t.planetId].name;
-                const sName = ZODIAC_SECTORS[t.targetSectorId].name;
-                return (
-                  <div key={t.planetId} className="flex items-center gap-2">
-                    <span className="text-cyan-300 font-semibold">{pName}</span>
-                    <span className="text-slate-500">→</span>
-                    <span className="text-amber-300">{sName}</span>:
-                    <span className="text-emerald-400 font-bold">
-                      {validNodes.length > 0
-                        ? `Valid Nodes: [${validNodes.map(n => `Node ${n} (${n * 30}°)`).join(', ')}]`
-                        : 'No valid node for this configuration!'}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-
-        {/* Section 3: Game Parameters (Timer, Attempts, Hints) */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {/* Timer Duration */}
-          <div className="p-3.5 rounded-xl bg-space-950/70 border border-cyan-500/20 flex flex-col gap-2">
-            <span className="text-[11px] font-orbit uppercase tracking-wider text-slate-400 flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5 text-cyan-400" />
-              Timer Duration
-            </span>
-            <select
-              value={settings.missionDurationSeconds}
-              onChange={e => updateSettings({ missionDurationSeconds: parseInt(e.target.value) })}
-              className="p-2 rounded-lg bg-space-900 border border-cyan-500/30 text-xs font-mono text-slate-200 focus:outline-none"
-            >
-              <option value={300}>5 Minutes (300s)</option>
-              <option value={360}>6 Minutes (360s - Recommended)</option>
-              <option value={420}>7 Minutes (420s)</option>
-              <option value={600}>10 Minutes (600s)</option>
-            </select>
-          </div>
-
-          {/* Max Attempts */}
-          <div className="p-3.5 rounded-xl bg-space-950/70 border border-cyan-500/20 flex flex-col gap-2">
-            <span className="text-[11px] font-orbit uppercase tracking-wider text-slate-400 flex items-center gap-1">
-              <Shield className="w-3.5 h-3.5 text-cyan-400" />
-              Max Attempts
-            </span>
-            <select
-              value={settings.maxAttempts}
-              onChange={e => updateSettings({ maxAttempts: parseInt(e.target.value) })}
-              className="p-2 rounded-lg bg-space-900 border border-cyan-500/30 text-xs font-mono text-slate-200 focus:outline-none"
-            >
-              <option value={2}>2 Attempts (Hard)</option>
-              <option value={3}>3 Attempts (Standard)</option>
-              <option value={5}>5 Attempts (Relaxed)</option>
-            </select>
-          </div>
-
-          {/* Hints Enabled */}
-          <div className="p-3.5 rounded-xl bg-space-950/70 border border-cyan-500/20 flex flex-col justify-between">
-            <span className="text-[11px] font-orbit uppercase tracking-wider text-slate-400">
-              Tactical Hints
-            </span>
-            <label className="flex items-center gap-2 cursor-pointer mt-2">
-              <input
-                type="checkbox"
-                checked={settings.hintsEnabled}
-                onChange={e => updateSettings({ hintsEnabled: e.target.checked })}
-                className="rounded bg-space-900 border-cyan-500 text-cyan-500 focus:ring-0"
-              />
-              <span className="text-xs text-slate-300 font-orbit">Enable In-Game Hints</span>
-            </label>
-          </div>
-        </div>
-
-        {/* Section 4: Supabase PostgreSQL Integration */}
+        {/* Section 4: Supabase Integration Settings */}
         <form onSubmit={handleSaveSupabase} className="p-4 rounded-xl bg-space-950/70 border border-cyan-500/20 flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-orbit uppercase tracking-wider text-cyan-400 flex items-center gap-1.5">
               <Database className="w-4 h-4" />
-              Supabase Backend Credentials (Optional)
+              Supabase REST Configuration
             </span>
-            <span className="text-[10px] text-slate-400">Offline fallback works automatically</span>
+            <span className="text-[10px] text-emerald-400 font-mono">Realtime Postgres Engine</span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <input
               type="text"
-              placeholder="https://xyzcompany.supabase.co"
+              placeholder="https://xyz.supabase.co/rest/v1"
               value={supabaseUrl}
               onChange={e => setSupabaseUrl(e.target.value)}
               className="p-2 rounded-lg bg-space-900 border border-cyan-500/30 text-xs font-mono text-slate-200 focus:outline-none"
             />
             <input
               type="password"
-              placeholder="Supabase Anon Public API Key"
+              placeholder="API Publishable Key"
               value={supabaseKey}
               onChange={e => setSupabaseKey(e.target.value)}
               className="p-2 rounded-lg bg-space-900 border border-cyan-500/30 text-xs font-mono text-slate-200 focus:outline-none"
@@ -263,7 +288,7 @@ export const AdminPanel: React.FC = () => {
           <div className="flex justify-end">
             <button
               type="submit"
-              className="px-4 py-2 rounded-lg bg-cyan-500/20 border border-cyan-400 text-cyan-300 text-xs font-orbit font-bold uppercase tracking-wider hover:bg-cyan-500/30 transition-all"
+              className="px-4 py-2 rounded-lg bg-cyan-500/20 border border-cyan-400 text-cyan-300 text-xs font-orbit font-bold uppercase tracking-wider hover:bg-cyan-500/30 transition-all cursor-pointer"
             >
               Update Supabase Credentials
             </button>
@@ -274,7 +299,7 @@ export const AdminPanel: React.FC = () => {
         <div className="flex items-center justify-between pt-2 border-t border-cyan-500/20">
           <button
             onClick={restartGame}
-            className="px-4 py-2 rounded-xl bg-rose-950/60 border border-rose-500/40 text-rose-300 font-orbit font-bold text-xs uppercase tracking-wider hover:bg-rose-900/60 transition-all flex items-center gap-1.5"
+            className="px-4 py-2 rounded-xl bg-rose-950/60 border border-rose-500/40 text-rose-300 font-orbit font-bold text-xs uppercase tracking-wider hover:bg-rose-900/60 transition-all flex items-center gap-1.5 cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             Restart Simulation
@@ -282,7 +307,7 @@ export const AdminPanel: React.FC = () => {
 
           <button
             onClick={() => setShowAdminModal(false)}
-            className="px-6 py-2.5 rounded-xl bg-cyan-500 text-slate-950 font-orbit font-bold text-xs uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-md"
+            className="px-6 py-2.5 rounded-xl bg-cyan-500 text-slate-950 font-orbit font-bold text-xs uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-md cursor-pointer"
           >
             Save & Exit
           </button>

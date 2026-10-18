@@ -8,17 +8,18 @@ import {
   Volume2,
   VolumeX,
   Settings,
-  Sparkles,
   Layers,
   Box,
   Compass,
   AlertTriangle,
-  KeyRound
+  KeyRound,
+  LogOut
 } from 'lucide-react';
 
 export const Header: React.FC = () => {
   const {
     teamName,
+    activeAccount,
     score,
     timeRemaining,
     attemptsRemaining,
@@ -31,8 +32,8 @@ export const Header: React.FC = () => {
     setShowLeaderboardModal,
     setShowAdminModal,
     setShowCodeModal,
-    currentMission,
-    currentMissionIndex
+    currentMissionIndex,
+    logoutTeam
   } = useGame();
 
   const minutes = Math.floor(timeRemaining / 60);
@@ -55,11 +56,16 @@ export const Header: React.FC = () => {
               THE HIDDEN ORBIT
             </h1>
             <span className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-mono rounded bg-cyan-950/60 text-cyan-300 border border-cyan-500/30">
-              STAGE 0{currentMissionIndex + 1}
+              LEVEL 0{currentMissionIndex + 1}
             </span>
           </div>
           <span className="text-[11px] text-slate-400 font-sans tracking-wide">
-            Assigned: <strong className="text-slate-200 font-semibold">{teamName}</strong>
+            Team: <strong className="text-slate-200 font-semibold">{teamName}</strong>
+            {activeAccount && activeAccount['Name 1'] && (
+              <span className="hidden md:inline text-slate-400 ml-1">
+                ({activeAccount['Name 1']}{activeAccount['Name 2'] ? ` & ${activeAccount['Name 2']}` : ''})
+              </span>
+            )}
           </span>
         </div>
       </div>
@@ -194,6 +200,15 @@ export const Header: React.FC = () => {
           title="Admin Game Configuration"
         >
           <Settings className="w-4 h-4" />
+        </button>
+
+        {/* Logout Button */}
+        <button
+          onClick={logoutTeam}
+          className="p-2 rounded-xl bg-space-900/60 border border-rose-500/30 text-rose-400 hover:bg-rose-500/20 hover:border-rose-400 transition-all"
+          title="Switch Team / Logout"
+        >
+          <LogOut className="w-4 h-4" />
         </button>
       </div>
     </header>

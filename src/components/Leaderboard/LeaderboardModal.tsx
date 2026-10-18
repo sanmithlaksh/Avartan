@@ -1,9 +1,9 @@
 // Real-time Leaderboard & Tournament Standings Modal
 import React, { useEffect, useState } from 'react';
 import { useGame } from '../../context/GameContext';
-import { TeamScoreEntry } from '../../engine/types';
+import { TeamAccount } from '../../engine/types';
 import { backendService } from '../../utils/supabase';
-import { Trophy, Medal, Clock, ShieldCheck, X, RefreshCw, Database } from 'lucide-react';
+import { Trophy, Medal, X, RefreshCw, Database, Users } from 'lucide-react';
 
 export const LeaderboardModal: React.FC = () => {
   const {
@@ -12,14 +12,14 @@ export const LeaderboardModal: React.FC = () => {
     teamName
   } = useGame();
 
-  const [scores, setScores] = useState<TeamScoreEntry[]>([]);
+  const [teams, setTeams] = useState<TeamAccount[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (!showLeaderboardModal) return;
     setLoading(true);
-    const unsubscribe = backendService.subscribe((list) => {
-      setScores(list);
+    const unsubscribe = backendService.subscribeTeams((list) => {
+      setTeams(list);
       setLoading(false);
     });
     return () => unsubscribe();
@@ -31,7 +31,7 @@ export const LeaderboardModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-space-950/85 backdrop-blur-2xl animate-fade-in select-none">
-      <div className="relative w-full max-w-3xl rounded-2xl bg-space-900/95 border border-cyan-500/40 p-6 md:p-8 shadow-[0_0_60px_rgba(0,243,255,0.3)] flex flex-col gap-5 max-h-[90vh]">
+      <div className="relative w-full max-w-4xl rounded-2xl bg-space-900/95 border border-cyan-500/40 p-6 md:p-8 shadow-[0_0_60px_rgba(0,243,255,0.3)] flex flex-col gap-5 max-h-[90vh]">
         {/* Close Button */}
         <button
           onClick={() => setShowLeaderboardModal(false)}
@@ -51,7 +51,7 @@ export const LeaderboardModal: React.FC = () => {
                 CELESTIAL ALIGNMENT LEADERBOARD
               </h2>
               <span className="text-xs text-slate-400">
-                Official Tournament Rankings • Round 1
+                Official Tournament Rankings • All Enrolled Squadrons (45-50 Teams)
               </span>
             </div>
           </div>
@@ -63,7 +63,7 @@ export const LeaderboardModal: React.FC = () => {
                 : 'bg-space-950 border-cyan-500/30 text-cyan-400'
             }`}>
               <Database className="w-3 h-3" />
-              {credentials.isConfigured ? 'Supabase Live' : 'Local Storage Mode'}
+              {credentials.isConfigured ? 'Supabase Live Sync' : 'Local Storage Mode'}
             </span>
           </div>
         </div>
@@ -73,17 +73,20 @@ export const LeaderboardModal: React.FC = () => {
           <table className="w-full text-left text-xs">
             <thead className="bg-space-900/80 text-[10px] font-orbit uppercase tracking-wider text-slate-400 border-b border-cyan-500/20 sticky top-0 backdrop-blur-md">
               <tr>
-                <th className="py-3 px-4">Rank</th>
-                <th className="py-3 px-4">Team Call-Sign</th>
-                <th className="py-3 px-4 text-right">Score</th>
-                <th className="py-3 px-4 text-center">Time Taken</th>
-                <th className="py-3 px-4 text-center">Attempts</th>
-                <th className="py-3 px-4">Launch Code</th>
+                <th className="py-3 px-3">Rank</th>
+                <th className="py-3 px-3">Team Name</th>
+                <th className="py-3 px-3">Members (Name 1 / Name 2)</th>
+                <th className="py-3 px-2 text-center">Current Level</th>
+                <th className="py-3 px-2 text-center">Levels Compl.</th>
+                <th className="py-3 px-2 text-right">L1 Pts</th>
+                <th className="py-3 px-2 text-right">L2 Pts</th>
+                <th className="py-3 px-2 text-right">L3 Pts</th>
+                <th className="py-3 px-3 text-right">Total Points</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-cyan-500/10">
-              {scores.map((entry, index) => {
-                const isCurrentTeam = entry.teamName.toLowerCase() === teamName.toLowerCase();
+              {teams.map((entry, index) => {
+                const isCurrentTeam = entry['Team Name'].toLowerCase() === teamName.toLowerCase();
                 const rankColor =
                   index === 0
                     ? 'text-amber-300 font-bold'
@@ -100,15 +103,15 @@ export const LeaderboardModal: React.FC = () => {
                       isCurrentTeam ? 'bg-cyan-950/40 font-semibold text-cyan-200' : 'hover:bg-space-900/40'
                     }`}
                   >
-                    <td className="py-3 px-4 font-orbit">
+                    <td className="py-3 px-3 font-orbit">
                       <div className="flex items-center gap-1.5">
                         {index < 3 ? <Medal className={`w-4 h-4 ${rankColor}`} /> : null}
                         <span className={rankColor}>#{index + 1}</span>
                       </div>
                     </td>
 
-                    <td className="py-3 px-4 font-semibold text-slate-200 font-sans">
-                      {entry.teamName}
+                    <td className="py-3 px-3 font-semibold text-slate-200 font-sans">
+                      {entry['Team Name']}
                       {isCurrentTeam && (
                         <span className="ml-2 text-[9px] font-mono px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">
                           YOU
@@ -116,20 +119,32 @@ export const LeaderboardModal: React.FC = () => {
                       )}
                     </td>
 
-                    <td className="py-3 px-4 text-right font-mono font-bold text-amber-300">
-                      {entry.score} PTS
+                    <td className="py-3 px-3 text-slate-400 font-sans">
+                      {entry['Name 1']}{entry['Name 2'] ? ` & ${entry['Name 2']}` : ''}
                     </td>
 
-                    <td className="py-3 px-4 text-center font-mono text-slate-300">
-                      {Math.floor(entry.timeElapsedSeconds / 60)}m {entry.timeElapsedSeconds % 60}s
+                    <td className="py-3 px-2 text-center font-mono text-cyan-400 font-bold">
+                      L{entry['Current level']}
                     </td>
 
-                    <td className="py-3 px-4 text-center font-mono text-slate-400">
-                      {entry.attemptsUsed}
+                    <td className="py-3 px-2 text-center font-mono text-slate-400">
+                      {entry['levels completion'] || 0}
                     </td>
 
-                    <td className="py-3 px-4 font-mono text-[11px] text-cyan-400">
-                      {entry.launchCode || 'ORBIT-RECOVERED'}
+                    <td className="py-3 px-2 text-right font-mono text-slate-300">
+                      {entry['level 1 points'] || 0}
+                    </td>
+
+                    <td className="py-3 px-2 text-right font-mono text-slate-300">
+                      {entry['level 2 points'] || 0}
+                    </td>
+
+                    <td className="py-3 px-2 text-right font-mono text-slate-300">
+                      {entry['level 3 points'] || 0}
+                    </td>
+
+                    <td className="py-3 px-3 text-right font-mono font-bold text-amber-300">
+                      {entry['total level points'] || 0} PTS
                     </td>
                   </tr>
                 );
@@ -141,16 +156,16 @@ export const LeaderboardModal: React.FC = () => {
         {/* Footer */}
         <div className="flex items-center justify-between pt-2 border-t border-cyan-500/20 text-xs">
           <button
-            onClick={() => backendService.resetLeaderboard()}
+            onClick={() => backendService.fetchAllTeams().then(setTeams)}
             className="text-[11px] text-slate-500 hover:text-slate-300 flex items-center gap-1 font-orbit"
           >
             <RefreshCw className="w-3 h-3" />
-            Reset Default Roster
+            Refresh Live Roster
           </button>
 
           <button
             onClick={() => setShowLeaderboardModal(false)}
-            className="px-5 py-2 rounded-xl bg-space-900 border border-cyan-500/30 text-cyan-300 hover:border-cyan-400 font-orbit font-bold text-xs uppercase tracking-wider transition-all"
+            className="px-5 py-2 rounded-xl bg-space-900 border border-cyan-500/30 text-cyan-300 hover:border-cyan-400 font-orbit font-bold text-xs uppercase tracking-wider transition-all cursor-pointer"
           >
             Close
           </button>

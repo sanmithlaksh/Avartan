@@ -91,6 +91,23 @@ export interface TeamScoreEntry {
   missionCompleted: boolean;
 }
 
+// User & Team Account schema matching exact Supabase column specifications
+export interface TeamAccount {
+  id?: number | string;
+  'Name 1': string;
+  'Name 2': string;
+  'Team Name': string;
+  'Password': string;
+  'Current level': number;
+  'levels completion': number;
+  'level 1 points': number;
+  'level 2 points': number;
+  'level 3 points': number;
+  'total level points': number;
+  created_at?: string;
+  updated_at?: string;
+}
+
 export interface GameSettings {
   earthStartingNode: number; // 0-11 (default 3 = 90 deg / June Solstice)
   earthDateLabel: string;
@@ -105,6 +122,8 @@ export interface GameSettings {
 }
 
 export type GamePhase = 
+  | 'welcome'
+  | 'login'
   | 'intro'
   | 'exploration'
   | 'positioning'

@@ -14,6 +14,9 @@ import { LeaderboardModal } from './components/Leaderboard/LeaderboardModal';
 import { AdminPanel } from './components/Admin/AdminPanel';
 import { CodeTerminalModal } from './components/UI/CodeTerminalModal';
 import { ZodiacReferenceTable } from './components/UI/ZodiacReferenceTable';
+import { WelcomePage } from './components/UI/WelcomePage';
+import { LoginPage } from './components/UI/LoginPage';
+import { DEFAULT_TRIAL_ACCOUNT } from './utils/supabase';
 
 const GameViewport: React.FC = () => {
   const { viewMode } = useGame();
@@ -48,29 +51,64 @@ const GameViewport: React.FC = () => {
   );
 };
 
+const GameRoot: React.FC = () => {
+  const { phase, setPhase, setActiveAccount } = useGame();
+
+  // If in welcome phase, render the interactive celestial welcome page
+  if (phase === 'welcome') {
+    return (
+      <WelcomePage
+        onEnterLogin={() => setPhase('login')}
+        onQuickTrial={() => {
+          setActiveAccount(DEFAULT_TRIAL_ACCOUNT);
+          setPhase('intro');
+        }}
+      />
+    );
+  }
+
+  // If in login phase, render login and registration page
+  if (phase === 'login') {
+    return (
+      <LoginPage
+        onLoginSuccess={(team) => {
+          setActiveAccount(team);
+          setPhase('intro');
+        }}
+        onBackToWelcome={() => setPhase('welcome')}
+      />
+    );
+  }
+
+  // Active Game Interface
+  return (
+    <div className="w-screen h-screen flex flex-col bg-space-950 text-slate-100 overflow-hidden font-sans">
+      {/* Navigation & Status Header */}
+      <Header />
+
+      {/* Core Game Viewport & Mission Control */}
+      <GameViewport />
+
+      {/* Bottom Planet Selection & Node Calibration Bar */}
+      <PlanetSelector />
+
+      {/* Global Cinematic and Game State Modals */}
+      <IntroModal />
+      <DiscoveryModal />
+      <LaunchSequenceModal />
+      <HintsModal />
+      <LeaderboardModal />
+      <AdminPanel />
+      <CodeTerminalModal />
+      <ZodiacReferenceTable />
+    </div>
+  );
+};
+
 export function App() {
   return (
     <GameProvider>
-      <div className="w-screen h-screen flex flex-col bg-space-950 text-slate-100 overflow-hidden font-sans">
-        {/* Navigation & Status Header */}
-        <Header />
-
-        {/* Core Game Viewport & Mission Control */}
-        <GameViewport />
-
-        {/* Bottom Planet Selection & Node Calibration Bar */}
-        <PlanetSelector />
-
-        {/* Global Cinematic and Game State Modals */}
-        <IntroModal />
-        <DiscoveryModal />
-        <LaunchSequenceModal />
-        <HintsModal />
-        <LeaderboardModal />
-        <AdminPanel />
-        <CodeTerminalModal />
-        <ZodiacReferenceTable />
-      </div>
+      <GameRoot />
     </GameProvider>
   );
 }

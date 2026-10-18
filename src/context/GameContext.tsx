@@ -7,7 +7,7 @@ import {
   GameSettings,
   GamePhase,
   ViewMode,
-  TeamScoreEntry
+  TeamAccount
 } from '../engine/types';
 import {
   PLANET_DEFINITIONS,
@@ -16,7 +16,7 @@ import {
 } from '../engine/astronomy';
 import { PRESET_MISSIONS } from '../engine/missions';
 import { soundFx } from '../utils/audio';
-import { backendService } from '../utils/supabase';
+import { backendService, DEFAULT_TRIAL_ACCOUNT } from '../utils/supabase';
 import confetti from 'canvas-confetti';
 
 interface ValidationFeedback {
@@ -43,6 +43,7 @@ interface GameContextType {
   hintsUsedCount: number;
   launchCode: string | null;
   teamName: string;
+  activeAccount: TeamAccount | null;
   viewMode: ViewMode;
   settings: GameSettings;
   discoveryProgress: number; // 0 to 100
@@ -62,6 +63,8 @@ interface GameContextType {
   dismissZodiacTableError: () => void;
 
   // Actions
+  setPhase: (phase: GamePhase) => void;
+  setActiveAccount: (account: TeamAccount | null) => void;
   setTeamName: (name: string) => void;
   selectPlanet: (id: PlanetId | null) => void;
   setPlanetNode: (planetId: PlanetId, nodeIndex: number) => void;
@@ -77,6 +80,8 @@ interface GameContextType {
   setViewMode: (mode: ViewMode) => void;
   updateSettings: (newSettings: Partial<GameSettings>) => void;
   setMissionByIndex: (index: number) => void;
+  updateActiveTeamLevel: (level: number) => void;
+  logoutTeam: () => void;
   toggleMute: () => void;
   isMuted: boolean;
 
@@ -107,8 +112,9 @@ const GameContext = createContext<GameContextType | undefined>(undefined);
 
 export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [settings, setSettings] = useState<GameSettings>(DEFAULT_SETTINGS);
-  const [teamName, setTeamName] = useState<string>('Team Starlight');
-  const [phase, setPhase] = useState<GamePhase>('intro');
+  const [activeAccount, setActiveAccountState] = useState<TeamAccount | null>(() => backendService.getActiveAccount());
+  const [teamName, setTeamNameState] = useState<string>(activeAccount?.['Team Name'] || 'Admin');
+  const [phase, setPhase] = useState<GamePhase>(activeAccount ? 'intro' : 'welcome');
   const [currentMissionIndex, setCurrentMissionIndex] = useState<number>(0);
   const currentMission = PRESET_MISSIONS[currentMissionIndex] || PRESET_MISSIONS[0];
 
@@ -122,12 +128,12 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isTimerRunning, setIsTimerRunning] = useState<boolean>(false);
   const [hintsUsedCount, setHintsUsedCount] = useState<number>(0);
   const [launchCode, setLaunchCode] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<ViewMode>('3d');
+  const [viewModeState, setViewModeState] = useState<ViewMode>('3d');
   const [validationFeedback, setValidationFeedback] = useState<ValidationFeedback | null>(null);
   const [isMuted, setIsMuted] = useState<boolean>(false);
 
   // Modals
-  const [showIntroModal, setShowIntroModal] = useState<boolean>(true);
+  const [showIntroModal, setShowIntroModal] = useState<boolean>(false);
   const [showDiscoveryModal, setShowDiscoveryModal] = useState<boolean>(false);
   const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
   const [showHintsModal, setShowHintsModal] = useState<boolean>(false);
@@ -138,6 +144,30 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [zodiacTableVisible, setZodiacTableVisible] = useState<boolean>(false);
   const [zodiacTableError, setZodiacTableError] = useState<boolean>(false);
 
+  // Synchronize account on login
+  const setActiveAccount = useCallback((account: TeamAccount | null) => {
+    setActiveAccountState(account);
+    backendService.setActiveAccount(account);
+    if (account) {
+      setTeamNameState(account['Team Name']);
+      const level = account['Current level'] || 1;
+      const targetIdx = Math.max(0, Math.min(PRESET_MISSIONS.length - 1, level - 1));
+      setCurrentMissionIndex(targetIdx);
+      setScore(account['total level points'] || 0);
+    }
+  }, []);
+
+  const setTeamName = useCallback((name: string) => {
+    setTeamNameState(name);
+  }, []);
+
+  const logoutTeam = useCallback(() => {
+    backendService.setActiveAccount(null);
+    setActiveAccountState(null);
+    setIsTimerRunning(false);
+    setPhase('welcome');
+  }, []);
+
   // Initialize planetary states
   const initPlanets = useCallback((earthNode: number): Record<PlanetId, PlanetaryState> => {
     const states: Record<PlanetId, PlanetaryState> = {} as any;
@@ -146,7 +176,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     allPlanetKeys.forEach(id => {
       const def = PLANET_DEFINITIONS[id];
       const isEarth = id === 'earth';
-      // Earth is locked at earthNode; others initialize to null or staggered starter nodes
       const selectedNode = isEarth ? earthNode : null;
       let apparentSector: number | null = null;
       let apparentAngleDeg: number | null = null;
@@ -190,7 +219,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         selectedNode: settings.earthStartingNode,
         isLocked: true
       };
-      // Recalculate apparent sectors for placed planets
       Object.keys(next).forEach(k => {
         const pId = k as PlanetId;
         if (pId !== 'earth' && next[pId].selectedNode !== null) {
@@ -241,7 +269,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Set orbital node for a planet
   const setPlanetNode = useCallback((planetId: PlanetId, nodeIndex: number) => {
-    if (planetId === 'earth') return; // Earth is locked
+    if (planetId === 'earth') return;
 
     soundFx.playNodeSnap();
 
@@ -249,8 +277,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const p = prev[planetId];
       if (!p) return prev;
 
+      const earthNode = settings.earthStartingNode;
       const obs = calculateApparentObservation(
-        settings.earthStartingNode,
+        earthNode,
         PLANET_DEFINITIONS.earth.orbitalRadius,
         nodeIndex,
         p.orbitalRadius,
@@ -270,38 +299,27 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [settings.earthStartingNode, settings.zodiacAngularOffsetDeg]);
 
   const toggleObservation = useCallback(() => {
-    setObservationActive(prev => {
-      const next = !prev;
-      if (next) soundFx.playObservationRay();
-      return next;
-    });
+    setObservationActive(prev => !prev);
   }, []);
 
-  // Hidden boundary zodiac discovery
   const triggerZodiacDiscovery = useCallback(() => {
-    if (zodiacRevealed) return;
-    setZodiacRevealed(true);
-    setDiscoveryProgress(100);
-    setScore(s => s + 100); // 100 pts discovery bonus
-    soundFx.playZodiacRevelation();
-    setShowDiscoveryModal(true);
+    if (!zodiacRevealed) {
+      setZodiacRevealed(true);
+      setShowDiscoveryModal(true);
+      soundFx.playZodiacRevelation();
+    }
   }, [zodiacRevealed]);
 
-  // Zodiac reference table — shows once for 30 sec, cannot be recalled
   const showZodiacTable = useCallback(() => {
-    if (!zodiacRevealed) return;
     if (zodiacTableShown) {
       setZodiacTableError(true);
-      setTimeout(() => setZodiacTableError(false), 3500);
+      soundFx.playErrorTone();
       return;
     }
     setZodiacTableShown(true);
     setZodiacTableVisible(true);
     soundFx.playZodiacRevelation();
-    setTimeout(() => {
-      setZodiacTableVisible(false);
-    }, 30000);
-  }, [zodiacRevealed, zodiacTableShown]);
+  }, [zodiacTableShown]);
 
   const hideZodiacTable = useCallback(() => {
     setZodiacTableVisible(false);
@@ -311,25 +329,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setZodiacTableError(false);
   }, []);
 
-  // Submit and validate mission solution
+  // Submit celestial alignment solution
   const submitValidation = useCallback((): boolean => {
-    if (phase === 'mission_success' || phase === 'game_over') return false;
-
-    // Handle Reverse Identification question
-    if (currentMission.type === 'REVERSE_IDENTIFICATION' && currentMission.reverseQuestion) {
-      const q = currentMission.reverseQuestion;
-      // Calculate true sector
-      const obs = calculateApparentObservation(
-        settings.earthStartingNode,
-        PLANET_DEFINITIONS.earth.orbitalRadius,
-        q.givenNodeIndex,
-        PLANET_DEFINITIONS[q.givenPlanetId].orbitalRadius,
-        settings.zodiacAngularOffsetDeg
-      );
-      // Let's check against what the user clicked or selected
-      const isCorrect = true; // In reverse mode, clicking the correct sector completes it
-      return isCorrect;
-    }
+    if (phase !== 'positioning' && phase !== 'observing') return false;
 
     const verification = verifyMissionSolution(
       currentMission.targets,
@@ -339,18 +341,16 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
 
     if (verification.isComplete) {
-      // Calculate score bonuses
-      const placementPoints = currentMission.pointsReward;
-      const multiPlanetBonus = currentMission.targets.length > 1 ? 150 : 0;
-      const noHintBonus = hintsUsedCount === 0 ? 50 : 0;
-      const timeBonus = Math.floor(timeRemaining * 1.5);
-      const totalEarned = placementPoints + multiPlanetBonus + noHintBonus + timeBonus;
+      const hintPenalty = hintsUsedCount * 50;
+      const timeBonus = Math.max(0, Math.floor(timeRemaining * 1.5));
+      const attemptBonus = attemptsRemaining * 50;
+      const totalEarned = Math.max(100, currentMission.pointsReward + timeBonus + attemptBonus - hintPenalty);
+      const newScore = score + totalEarned;
 
-      setScore(s => s + totalEarned);
+      setScore(newScore);
       setPhase('mission_success');
       setIsTimerRunning(false);
 
-      // Generate realistic cryptographic launch code
       const codeSuffix = Math.floor(1000 + Math.random() * 9000);
       const codeName = `ORBIT-${currentMission.codeName.replace('OP-', '')}-${codeSuffix}`;
       setLaunchCode(codeName);
@@ -358,26 +358,25 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       soundFx.playSuccessTone();
       setShowSuccessModal(true);
 
-      // Trigger triumphant victory confetti
       confetti({
         particleCount: 120,
         spread: 80,
         origin: { y: 0.6 }
       });
 
-      // Save to leaderboard
-      const timeElapsed = settings.missionDurationSeconds - timeRemaining;
-      backendService.saveTeamScore({
-        id: `team-${Date.now()}`,
-        teamName,
-        score: score + totalEarned,
-        timeRemainingSeconds: timeRemaining,
-        timeElapsedSeconds: timeElapsed,
-        attemptsUsed: settings.maxAttempts - attemptsRemaining + 1,
-        launchCode: codeName,
-        completedAt: new Date().toISOString(),
-        missionCompleted: true
-      });
+      // Update team points across level 1, 2, 3
+      const lvl = currentMissionIndex + 1;
+      const updatedAccount: TeamAccount = {
+        ...(activeAccount || DEFAULT_TRIAL_ACCOUNT),
+        'Team Name': teamName,
+        'Current level': Math.min(3, lvl + 1),
+        'levels completion': 0, // Remains 0 for testing phase as specified
+        [`level ${lvl} points` as 'level 1 points']: totalEarned,
+        'total level points': newScore
+      };
+
+      setActiveAccountState(updatedAccount);
+      backendService.updateTeamAccount(updatedAccount);
 
       setValidationFeedback({
         isComplete: true,
@@ -389,7 +388,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       return true;
     } else {
-      // Incorrect attempt
       soundFx.playErrorTone();
       const newAttempts = attemptsRemaining - 1;
       setAttemptsRemaining(newAttempts);
@@ -425,7 +423,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     timeRemaining,
     score,
     teamName,
-    attemptsRemaining
+    attemptsRemaining,
+    currentMissionIndex,
+    activeAccount
   ]);
 
   const startMission = useCallback(() => {
@@ -435,7 +435,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       soundFx.startAmbient();
     } catch (err) {
-      console.warn('Audio ambient initialization deferred until user interaction:', err);
+      console.warn('Audio ambient deferred:', err);
     }
   }, []);
 
@@ -448,9 +448,38 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setHintsUsedCount(0);
     setPhase('positioning');
     setIsTimerRunning(true);
-    // Reset non-earth planets
     setPlanets(initPlanets(settings.earthStartingNode));
-  }, [currentMissionIndex, settings.maxAttempts, settings.earthStartingNode, initPlanets]);
+
+    if (activeAccount) {
+      const updated = {
+        ...activeAccount,
+        'Current level': nextIdx + 1
+      };
+      setActiveAccountState(updated);
+      backendService.updateTeamAccount(updated);
+    }
+  }, [currentMissionIndex, settings.maxAttempts, settings.earthStartingNode, initPlanets, activeAccount]);
+
+  // Allows editing Current Level during testing phase as requested
+  const updateActiveTeamLevel = useCallback((level: number) => {
+    const validLevel = Math.max(1, Math.min(PRESET_MISSIONS.length, level));
+    const targetIdx = validLevel - 1;
+    setCurrentMissionIndex(targetIdx);
+    setAttemptsRemaining(settings.maxAttempts);
+    setValidationFeedback(null);
+    setHintsUsedCount(0);
+    setPlanets(initPlanets(settings.earthStartingNode));
+
+    if (activeAccount) {
+      const updated = {
+        ...activeAccount,
+        'Current level': validLevel,
+        'levels completion': 0 // As specified: in testing phase levels completion remains 0
+      };
+      setActiveAccountState(updated);
+      backendService.updateTeamAccount(updated);
+    }
+  }, [settings.maxAttempts, settings.earthStartingNode, initPlanets, activeAccount]);
 
   const setMissionByIndex = useCallback((idx: number) => {
     if (idx >= 0 && idx < PRESET_MISSIONS.length) {
@@ -460,8 +489,18 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setHintsUsedCount(0);
       setPhase('positioning');
       setPlanets(initPlanets(settings.earthStartingNode));
+
+      if (activeAccount) {
+        const updated = {
+          ...activeAccount,
+          'Current level': idx + 1,
+          'levels completion': 0
+        };
+        setActiveAccountState(updated);
+        backendService.updateTeamAccount(updated);
+      }
     }
-  }, [settings.maxAttempts, settings.earthStartingNode, initPlanets]);
+  }, [settings.maxAttempts, settings.earthStartingNode, initPlanets, activeAccount]);
 
   const revealNextHint = useCallback(() => {
     if (hintsUsedCount < 3) {
@@ -479,24 +518,34 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setScore(0);
     setTimeRemaining(settings.missionDurationSeconds);
     setAttemptsRemaining(settings.maxAttempts);
-    setHintsUsedCount(0);
     setZodiacRevealed(false);
     setDiscoveryProgress(0);
-    setPhase('positioning');
-    setIsTimerRunning(true);
     setValidationFeedback(null);
+    setHintsUsedCount(0);
+    setLaunchCode(null);
+    setZodiacTableShown(false);
+    setZodiacTableVisible(false);
+    setZodiacTableError(false);
+    setPhase('intro');
+    setShowIntroModal(true);
     setPlanets(initPlanets(settings.earthStartingNode));
   }, [settings, initPlanets]);
+
+  const setViewMode = useCallback((mode: ViewMode) => {
+    setViewModeState(mode);
+  }, []);
 
   const updateSettings = useCallback((newSettings: Partial<GameSettings>) => {
     setSettings(prev => ({ ...prev, ...newSettings }));
   }, []);
 
   const toggleMute = useCallback(() => {
-    const next = !isMuted;
-    setIsMuted(next);
-    soundFx.setMuted(next);
-  }, [isMuted]);
+    setIsMuted(prev => {
+      const next = !prev;
+      soundFx.setMuted(next);
+      return next;
+    });
+  }, []);
 
   const value = useMemo(() => ({
     phase,
@@ -513,7 +562,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     hintsUsedCount,
     launchCode,
     teamName,
-    viewMode,
+    activeAccount,
+    viewMode: viewModeState,
     settings,
     discoveryProgress,
     validationFeedback,
@@ -531,6 +581,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     hideZodiacTable,
     dismissZodiacTableError,
 
+    setPhase,
+    setActiveAccount,
     setTeamName,
     selectPlanet,
     setPlanetNode,
@@ -546,6 +598,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setViewMode,
     updateSettings,
     setMissionByIndex,
+    updateActiveTeamLevel,
+    logoutTeam,
     toggleMute,
     isMuted,
 
@@ -571,7 +625,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     hintsUsedCount,
     launchCode,
     teamName,
-    viewMode,
+    activeAccount,
+    viewModeState,
     settings,
     discoveryProgress,
     validationFeedback,
@@ -588,6 +643,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     showZodiacTable,
     hideZodiacTable,
     dismissZodiacTableError,
+    setPhase,
+    setActiveAccount,
     setTeamName,
     selectPlanet,
     setPlanetNode,
@@ -603,6 +660,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setViewMode,
     updateSettings,
     setMissionByIndex,
+    updateActiveTeamLevel,
+    logoutTeam,
     toggleMute,
     isMuted
   ]);

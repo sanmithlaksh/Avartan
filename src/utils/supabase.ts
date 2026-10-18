@@ -1,73 +1,93 @@
-// Supabase & Offline Leaderboard Integration
-// Seamlessly operates in offline / local-storage mode, with optional live Supabase backend.
-import { TeamScoreEntry } from '../engine/types';
+// Supabase & Offline Leaderboard + Team User Management Integration
+import { TeamScoreEntry, TeamAccount } from '../engine/types';
 
 const STORAGE_KEY = 'the_hidden_orbit_leaderboard';
+const TEAMS_STORAGE_KEY = 'avartan_teams_accounts';
+const CURRENT_TEAM_KEY = 'avartan_active_team_account';
 
-const DEFAULT_SEEDED_SCORES: TeamScoreEntry[] = [
+// Default trial admin account requested by user
+export const DEFAULT_TRIAL_ACCOUNT: TeamAccount = {
+  id: 'trial-admin-01',
+  'Name 1': 'Admin',
+  'Name 2': 'Co-Admin',
+  'Team Name': 'Admin',
+  'Password': 'Aryan',
+  'Current level': 1,
+  'levels completion': 0,
+  'level 1 points': 0,
+  'level 2 points': 0,
+  'level 3 points': 0,
+  'total level points': 0
+};
+
+// Seed team accounts for testing with up to 50 participants
+export const SEED_TEAMS: TeamAccount[] = [
+  DEFAULT_TRIAL_ACCOUNT,
   {
-    id: 'team-pulsar',
-    teamName: 'Apex Stellar Dynamics',
-    score: 850,
-    timeRemainingSeconds: 215,
-    timeElapsedSeconds: 145,
-    attemptsUsed: 1,
-    launchCode: 'ORBIT-VEGA-9021',
-    completedAt: '2026-10-17T20:15:00Z',
-    missionCompleted: true
+    id: 'team-02',
+    'Name 1': 'Rohan',
+    'Name 2': 'Priya',
+    'Team Name': 'Apex Stellar',
+    'Password': 'apex',
+    'Current level': 1,
+    'levels completion': 0,
+    'level 1 points': 850,
+    'level 2 points': 0,
+    'level 3 points': 0,
+    'total level points': 850
   },
   {
-    id: 'team-andromeda',
-    teamName: 'Vanguard Voidrunners',
-    score: 720,
-    timeRemainingSeconds: 180,
-    timeElapsedSeconds: 180,
-    attemptsUsed: 2,
-    launchCode: 'ORBIT-CYGNUS-4412',
-    completedAt: '2026-10-17T21:40:00Z',
-    missionCompleted: true
+    id: 'team-03',
+    'Name 1': 'Karthik',
+    'Name 2': 'Ananya',
+    'Team Name': 'Vanguard',
+    'Password': 'orbit',
+    'Current level': 1,
+    'levels completion': 0,
+    'level 1 points': 720,
+    'level 2 points': 0,
+    'level 3 points': 0,
+    'total level points': 720
   },
   {
-    id: 'team-nebula',
-    teamName: 'Cosmic Chronos Crew',
-    score: 640,
-    timeRemainingSeconds: 95,
-    timeElapsedSeconds: 265,
-    attemptsUsed: 2,
-    launchCode: 'ORBIT-DRACO-7833',
-    completedAt: '2026-10-17T22:10:00Z',
-    missionCompleted: true
-  },
-  {
-    id: 'team-solaris',
-    teamName: 'Heliocentric Phalanx',
-    score: 510,
-    timeRemainingSeconds: 40,
-    timeElapsedSeconds: 320,
-    attemptsUsed: 3,
-    launchCode: 'ORBIT-ORION-1109',
-    completedAt: '2026-10-17T22:50:00Z',
-    missionCompleted: true
+    id: 'team-04',
+    'Name 1': 'Dev',
+    'Name 2': 'Sneha',
+    'Team Name': 'Cosmic Chronos',
+    'Password': 'chronos',
+    'Current level': 1,
+    'levels completion': 0,
+    'level 1 points': 640,
+    'level 2 points': 0,
+    'level 3 points': 0,
+    'total level points': 640
   }
 ];
 
 class BackendService {
-  private supabaseUrl: string = '';
-  private supabaseAnonKey: string = '';
+  private supabaseUrl: string = 'https://jbydaklyvepixtzrcgfp.supabase.co/rest/v1';
+  private supabaseAnonKey: string = 'sb_publishable_z-SnsaEpRt47cE7rOumIwA_DwY3tgJE';
+  private tableName: string = 'teams';
   private listeners: Array<(entries: TeamScoreEntry[]) => void> = [];
+  private teamListeners: Array<(teams: TeamAccount[]) => void> = [];
 
   constructor() {
-    this.supabaseUrl = localStorage.getItem('supabase_url') || '';
-    this.supabaseAnonKey = localStorage.getItem('supabase_anon_key') || '';
-    if (!localStorage.getItem(STORAGE_KEY)) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_SEEDED_SCORES));
+    // Check saved credentials, default to user provided
+    const savedUrl = localStorage.getItem('supabase_url');
+    const savedKey = localStorage.getItem('supabase_anon_key');
+    if (savedUrl) this.supabaseUrl = savedUrl;
+    if (savedKey) this.supabaseAnonKey = savedKey;
+
+    // Initialize local accounts cache if empty
+    if (!localStorage.getItem(TEAMS_STORAGE_KEY)) {
+      localStorage.setItem(TEAMS_STORAGE_KEY, JSON.stringify(SEED_TEAMS));
     }
   }
 
   public setCredentials(url: string, key: string) {
-    this.supabaseUrl = url;
+    this.supabaseUrl = url.replace(/\/+$/, '');
     this.supabaseAnonKey = key;
-    localStorage.setItem('supabase_url', url);
+    localStorage.setItem('supabase_url', this.supabaseUrl);
     localStorage.setItem('supabase_anon_key', key);
   }
 
@@ -79,75 +99,197 @@ class BackendService {
     };
   }
 
-  public async getLeaderboard(): Promise<TeamScoreEntry[]> {
-    // If Supabase configured, attempt fetching via REST API
+  // Helper for Supabase requests
+  private getHeaders() {
+    return {
+      'apikey': this.supabaseAnonKey,
+      'Authorization': `Bearer ${this.supabaseAnonKey}`,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=representation'
+    };
+  }
+
+  // ========================
+  // TEAM USER MANAGEMENT API
+  // ========================
+
+  public getLocalTeams(): TeamAccount[] {
+    try {
+      const raw = localStorage.getItem(TEAMS_STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) {
+      console.warn('Failed to parse local teams:', e);
+    }
+    return SEED_TEAMS;
+  }
+
+  public saveLocalTeams(teams: TeamAccount[]) {
+    localStorage.setItem(TEAMS_STORAGE_KEY, JSON.stringify(teams));
+    this.teamListeners.forEach(fn => fn(teams));
+  }
+
+  public async fetchAllTeams(): Promise<TeamAccount[]> {
     if (this.supabaseUrl && this.supabaseAnonKey) {
       try {
-        const response = await fetch(`${this.supabaseUrl}/rest/v1/leaderboard?select=*&order=score.desc,timeRemainingSeconds.desc`, {
-          headers: {
-            'apikey': this.supabaseAnonKey,
-            'Authorization': `Bearer ${this.supabaseAnonKey}`,
-            'Content-Type': 'application/json'
-          }
+        const res = await fetch(`${this.supabaseUrl}/${this.tableName}?select=*&order="total level points".desc`, {
+          headers: this.getHeaders()
         });
-        if (response.ok) {
-          const remoteData = await response.json();
-          if (Array.isArray(remoteData) && remoteData.length > 0) {
-            return remoteData;
+        if (res.ok) {
+          const remoteTeams: TeamAccount[] = await res.json();
+          if (Array.isArray(remoteTeams) && remoteTeams.length > 0) {
+            this.saveLocalTeams(remoteTeams);
+            return remoteTeams;
           }
         }
       } catch (e) {
-        console.warn('Supabase fetch failed, falling back to local database:', e);
+        console.warn('Supabase fetchAllTeams failed, falling back to local storage:', e);
       }
     }
-
-    // Fallback: LocalStorage
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const list: TeamScoreEntry[] = JSON.parse(raw);
-        return list.sort((a, b) => b.score - a.score || b.timeRemainingSeconds - a.timeRemainingSeconds);
-      }
-    } catch {}
-
-    return DEFAULT_SEEDED_SCORES;
+    return this.getLocalTeams();
   }
 
-  public async saveTeamScore(entry: TeamScoreEntry): Promise<void> {
-    // Update local storage first
-    let currentList = await this.getLeaderboard();
-    const existingIdx = currentList.findIndex(e => e.id === entry.id || e.teamName === entry.teamName);
-    if (existingIdx >= 0) {
-      if (entry.score > currentList[existingIdx].score) {
-        currentList[existingIdx] = entry;
-      }
-    } else {
-      currentList.push(entry);
-    }
+  public async authenticateTeam(teamName: string, password: string): Promise<{ success: boolean; team?: TeamAccount; message: string }> {
+    const cleanName = teamName.trim();
+    const cleanPass = password.trim();
 
-    currentList = currentList.sort((a, b) => b.score - a.score || b.timeRemainingSeconds - a.timeRemainingSeconds);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(currentList));
-
-    // Try Supabase insert if configured
+    // 1. Try remote Supabase verification first if online
     if (this.supabaseUrl && this.supabaseAnonKey) {
       try {
-        await fetch(`${this.supabaseUrl}/rest/v1/leaderboard`, {
-          method: 'POST',
-          headers: {
-            'apikey': this.supabaseAnonKey,
-            'Authorization': `Bearer ${this.supabaseAnonKey}`,
-            'Content-Type': 'application/json',
-            'Prefer': 'resolution=merge-duplicates'
-          },
-          body: JSON.stringify(entry)
-        });
+        const queryUrl = `${this.supabaseUrl}/${this.tableName}?"Team Name"=eq.${encodeURIComponent(cleanName)}&select=*`;
+        const res = await fetch(queryUrl, { headers: this.getHeaders() });
+        if (res.ok) {
+          const rows: TeamAccount[] = await res.json();
+          if (rows && rows.length > 0) {
+            const found = rows[0];
+            if (found['Password'] === cleanPass) {
+              this.setActiveAccount(found);
+              return { success: true, team: found, message: 'Authentication successful' };
+            } else {
+              return { success: false, message: 'Invalid password. Please check your credentials.' };
+            }
+          }
+        }
       } catch (e) {
-        console.warn('Failed to sync score to Supabase:', e);
+        console.warn('Supabase authentication check failed, trying local DB:', e);
       }
     }
 
-    // Notify listeners
-    this.listeners.forEach(fn => fn(currentList));
+    // 2. Fallback to Local Storage Database (Seamless offline & trail admin)
+    const localTeams = this.getLocalTeams();
+    const found = localTeams.find(t => t['Team Name'].toLowerCase() === cleanName.toLowerCase());
+    if (found) {
+      if (found['Password'] === cleanPass) {
+        this.setActiveAccount(found);
+        return { success: true, team: found, message: 'Authentication successful (Local Sync)' };
+      }
+      return { success: false, message: 'Invalid team password' };
+    }
+
+    return { success: false, message: 'Team not found. Please register or check team name.' };
+  }
+
+  public async registerTeam(account: TeamAccount): Promise<{ success: boolean; team?: TeamAccount; message: string }> {
+    const localTeams = this.getLocalTeams();
+    const existing = localTeams.find(t => t['Team Name'].toLowerCase() === account['Team Name'].toLowerCase());
+    if (existing) {
+      return { success: false, message: 'A team with this Team Name already exists.' };
+    }
+
+    // Attempt Supabase insert
+    if (this.supabaseUrl && this.supabaseAnonKey) {
+      try {
+        const res = await fetch(`${this.supabaseUrl}/${this.tableName}`, {
+          method: 'POST',
+          headers: this.getHeaders(),
+          body: JSON.stringify(account)
+        });
+        if (res.ok) {
+          const inserted = await res.json();
+          const savedAccount = Array.isArray(inserted) && inserted.length > 0 ? inserted[0] : account;
+          localTeams.push(savedAccount);
+          this.saveLocalTeams(localTeams);
+          this.setActiveAccount(savedAccount);
+          return { success: true, team: savedAccount, message: 'Team successfully registered on Supabase' };
+        }
+      } catch (e) {
+        console.warn('Supabase insert failed, saving to local store:', e);
+      }
+    }
+
+    // Local save
+    const newAccount: TeamAccount = { ...account, id: account.id || `team-${Date.now()}` };
+    localTeams.push(newAccount);
+    this.saveLocalTeams(localTeams);
+    this.setActiveAccount(newAccount);
+    return { success: true, team: newAccount, message: 'Team registered successfully' };
+  }
+
+  public async updateTeamAccount(account: TeamAccount): Promise<boolean> {
+    // Update local cache
+    const localTeams = this.getLocalTeams();
+    const idx = localTeams.findIndex(t => t['Team Name'].toLowerCase() === account['Team Name'].toLowerCase());
+    if (idx >= 0) {
+      localTeams[idx] = { ...localTeams[idx], ...account };
+    } else {
+      localTeams.push(account);
+    }
+    this.saveLocalTeams(localTeams);
+
+    // Update active account if it matches
+    const current = this.getActiveAccount();
+    if (current && current['Team Name'].toLowerCase() === account['Team Name'].toLowerCase()) {
+      this.setActiveAccount({ ...current, ...account });
+    }
+
+    // Sync to Supabase
+    if (this.supabaseUrl && this.supabaseAnonKey) {
+      try {
+        await fetch(`${this.supabaseUrl}/${this.tableName}?"Team Name"=eq.${encodeURIComponent(account['Team Name'])}`, {
+          method: 'PATCH',
+          headers: this.getHeaders(),
+          body: JSON.stringify(account)
+        });
+        return true;
+      } catch (e) {
+        console.warn('Failed to patch team to Supabase:', e);
+      }
+    }
+    return true;
+  }
+
+  public getActiveAccount(): TeamAccount | null {
+    try {
+      const raw = localStorage.getItem(CURRENT_TEAM_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch {}
+    return null;
+  }
+
+  public setActiveAccount(account: TeamAccount | null) {
+    if (account) {
+      localStorage.setItem(CURRENT_TEAM_KEY, JSON.stringify(account));
+    } else {
+      localStorage.removeItem(CURRENT_TEAM_KEY);
+    }
+  }
+
+  // ========================
+  // LEADERBOARD ADAPTER
+  // ========================
+
+  public async getLeaderboard(): Promise<TeamScoreEntry[]> {
+    const teams = await this.fetchAllTeams();
+    return teams.map(t => ({
+      id: String(t.id || t['Team Name']),
+      teamName: t['Team Name'],
+      score: t['total level points'] || 0,
+      timeRemainingSeconds: 200,
+      timeElapsedSeconds: 160,
+      attemptsUsed: 1,
+      launchCode: `STAGE-${t['Current level']}`,
+      completedAt: new Date().toISOString(),
+      missionCompleted: (t['levels completion'] || 0) > 0
+    })).sort((a, b) => b.score - a.score);
   }
 
   public subscribe(callback: (entries: TeamScoreEntry[]) => void): () => void {
@@ -158,9 +300,12 @@ class BackendService {
     };
   }
 
-  public resetLeaderboard() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_SEEDED_SCORES));
-    this.listeners.forEach(fn => fn(DEFAULT_SEEDED_SCORES));
+  public subscribeTeams(callback: (teams: TeamAccount[]) => void): () => void {
+    this.teamListeners.push(callback);
+    this.fetchAllTeams().then(callback);
+    return () => {
+      this.teamListeners = this.teamListeners.filter(fn => fn !== callback);
+    };
   }
 }
 
