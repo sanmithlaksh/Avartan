@@ -1,0 +1,132 @@
+// Mesmerizing Space Welcome Page featuring Pentagram Presents Avartan
+import React, { useState } from 'react';
+import { InteractiveCosmicCanvas } from './InteractiveCosmicCanvas';
+import { AdminScoresModal } from '../Admin/AdminScoresModal';
+import { KeyRound, ChevronRight, Calendar, Sparkles, Shield } from 'lucide-react';
+
+interface WelcomePageProps {
+  onEnterLogin: () => void;
+  onQuickTrial: () => void;
+}
+
+export const WelcomePage: React.FC<WelcomePageProps> = ({ onEnterLogin }) => {
+  const [showAdminTerminal, setShowAdminTerminal] = useState(false);
+
+  return (
+    <div className="relative w-screen h-screen flex flex-col items-center justify-between overflow-hidden bg-space-950 text-slate-100 select-none">
+      {/* 1. Stagnant Galaxy / Cosmic Starfield Background with Cursor-Responsive Stars */}
+      <InteractiveCosmicCanvas />
+
+      {/* 2. Blurred Ambient Backdrop derived from the Pentagram banner */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden flex items-center justify-center opacity-30">
+        <img
+          src="/assets/avartan_banner.png"
+          alt="Ambient blur"
+          className="w-[125vw] h-[125vh] object-cover filter blur-[100px] scale-125 pointer-events-none"
+        />
+      </div>
+
+      {/* 3. Subtle dark vignette overlay for crisp contrast */}
+      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-space-950/75 via-space-950/30 to-space-950/85 pointer-events-none" />
+
+      {/* Top Header */}
+      <header className="relative z-10 w-full px-6 py-5 flex items-center justify-between border-b border-cyan-500/20 backdrop-blur-md bg-space-950/40">
+        <div className="flex items-center gap-3">
+          <img
+            src="/assets/pentagram_logo.png"
+            alt="Pentagram Logo"
+            className="w-10 h-10 object-contain drop-shadow-[0_0_12px_rgba(255,255,255,0.4)]"
+          />
+          <div className="flex flex-col">
+            <span className="font-orbit font-extrabold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-indigo-300 text-lg">
+              AVARTAN
+            </span>
+            <span className="text-[10px] text-cyan-400 font-mono tracking-widest uppercase">
+              Pentagram Week 2026 • 28th - 31st October
+            </span>
+          </div>
+        </div>
+
+        <button
+          onClick={() => setShowAdminTerminal(true)}
+          data-testid="admin-login-terminal"
+          className="px-4 py-2 rounded-xl bg-cyan-500/10 border border-cyan-400/40 text-cyan-300 hover:bg-cyan-500/20 text-xs font-orbit font-bold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer shadow-sm"
+        >
+          <Shield className="w-3.5 h-3.5 text-cyan-400" />
+          <span>Admin Login</span>
+        </button>
+      </header>
+
+      {/* Main Body: Glassmorphism Box with High-Impact Presentation */}
+      <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 max-w-4xl mx-auto w-full">
+        <div className="relative w-full max-w-3xl rounded-3xl bg-space-900/60 border border-cyan-400/30 p-8 md:p-12 backdrop-blur-2xl shadow-[0_0_90px_rgba(0,243,255,0.22)] flex flex-col items-center text-center overflow-hidden transition-all duration-700">
+          
+          {/* Subtle neon glow orbs inside glass box */}
+          <div className="absolute -top-20 -left-20 w-52 h-52 rounded-full bg-cyan-500/15 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-20 -right-20 w-52 h-52 rounded-full bg-fuchsia-500/15 blur-3xl pointer-events-none" />
+
+          {/* Top Tag Pill */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-950/70 border border-cyan-400/40 text-cyan-300 text-xs font-mono tracking-wider mb-6 shadow-[0_0_20px_rgba(0,243,255,0.25)]">
+            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+            <span className="font-bold">PENTAGRAM WEEK 2026</span>
+          </div>
+
+          {/* Main Logo & Announcement Row: Pentagram (Left) - Main Title */}
+          <div className="w-full flex items-center justify-center gap-4 sm:gap-6 my-2">
+            {/* Pentagram Logo Near Left */}
+            <div className="shrink-0 flex items-center justify-center w-20 h-20 sm:w-28 sm:h-28 rounded-2xl bg-black/40 border border-white/10 p-2.5 backdrop-blur-md shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:scale-105 transition-transform duration-300">
+              <img
+                src="/assets/pentagram_logo.png"
+                alt="Pentagram Emblem"
+                className="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]"
+              />
+            </div>
+
+            {/* Central High-Impact Typography */}
+            <div className="flex-1 flex flex-col items-center justify-center">
+              <span className="text-xs sm:text-base font-orbit font-extrabold uppercase tracking-[0.25em] text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-sky-200 to-fuchsia-300 drop-shadow-[0_0_15px_rgba(0,243,255,0.4)]">
+                Pentagram Presents
+              </span>
+
+              <h1 className="text-4xl sm:text-6xl md:text-7xl font-orbit font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-slate-100 to-cyan-300 mt-1 mb-2 drop-shadow-[0_0_40px_rgba(0,243,255,0.6)]">
+                AVARTAN
+              </h1>
+
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-xl bg-space-950/80 border border-cyan-500/30 text-slate-200 font-mono text-xs sm:text-sm shadow-inner">
+                <Calendar className="w-3.5 h-3.5 text-amber-400" />
+                <span className="tracking-wide">28th - 31st October 2026</span>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Action Button */}
+          <button
+            onClick={onEnterLogin}
+            className="mt-8 px-10 py-4 rounded-2xl bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600 text-slate-950 font-orbit font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 hover:brightness-110 active:scale-95 transition-all shadow-[0_0_40px_rgba(0,243,255,0.5)] cursor-pointer"
+          >
+            <KeyRound className="w-4 h-4 text-slate-950" />
+            <span>ENTER MISSION PORTAL</span>
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      </main>
+
+      {/* Minimal Footer */}
+      <footer className="relative z-10 w-full px-6 py-4 flex items-center justify-between text-xs text-slate-500 font-mono border-t border-cyan-500/10 backdrop-blur-sm bg-space-950/40">
+        <div>
+          <span>AVARTAN • PENTAGRAM WEEK 2026</span>
+        </div>
+        <div>
+          <span>28th - 31st October 2026</span>
+        </div>
+      </footer>
+
+      {/* Administrator password terminal & team scoreboard */}
+      <AdminScoresModal
+        open={showAdminTerminal}
+        onClose={() => setShowAdminTerminal(false)}
+      />
+    </div>
+  );
+};
