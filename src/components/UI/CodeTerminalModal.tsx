@@ -4,8 +4,7 @@ import { useGame } from '../../context/GameContext';
 import {
   PLANET_DEFINITIONS,
   ZODIAC_SECTORS,
-  computeCurrentObservedCode,
-  verifyEnteredCode
+  computeCurrentObservedCode
 } from '../../engine/astronomy';
 import { soundFx } from '../../utils/audio';
 import {
@@ -30,8 +29,7 @@ export const CodeTerminalModal: React.FC<CodeTerminalModalProps> = ({ isOpen: pr
   const {
     currentMission,
     planets,
-    submitValidation,
-    phase,
+    submitRoundCode,
     showCodeModal,
     setShowCodeModal
   } = useGame();
@@ -41,6 +39,7 @@ export const CodeTerminalModal: React.FC<CodeTerminalModalProps> = ({ isOpen: pr
 
   const [enteredCode, setEnteredCode] = useState<string>('');
   const [feedback, setFeedback] = useState<{ success: boolean; message: string } | null>(null);
+  const [confirmArmed, setConfirmArmed] = useState<boolean>(false);
 
   // The code the player's own placements currently read out
   const currentObservedCode = computeCurrentObservedCode(currentMission.targets, planets);
@@ -48,6 +47,7 @@ export const CodeTerminalModal: React.FC<CodeTerminalModalProps> = ({ isOpen: pr
   useEffect(() => {
     if (isOpen) {
       setFeedback(null);
+      setConfirmArmed(false);
     }
   }, [isOpen]);
 
@@ -92,32 +92,24 @@ export const CodeTerminalModal: React.FC<CodeTerminalModalProps> = ({ isOpen: pr
     });
   };
 
-  // Submit and verify entered code
+  // Submit and grade the entered code. One submission only: the round closes and
+  // the score card explains which digits matched.
   const handleSubmitCode = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (!enteredCode.trim()) return;
 
-    const isCodeValid = verifyEnteredCode(enteredCode, currentMission.targets);
-
-    if (isCodeValid) {
-      soundFx.playSuccessTone();
-      setFeedback({
-        success: true,
-        message: 'ACCESS GRANTED: Celestial clearance code authenticated! Unlocking round...'
-      });
-
-      // Submit alignment to trigger validation and launch sequence modal
-      setTimeout(() => {
-        submitValidation();
-        onClose();
-      }, 1000);
-    } else {
-      soundFx.playErrorTone();
+    if (!confirmArmed) {
+      setConfirmArmed(true);
       setFeedback({
         success: false,
-        message: `ACCESS DENIED: Code sequence [${enteredCode}] does not match the recovered alignment. Re-check your placements and try again.`
+        message: 'This is your only submission — the round closes as soon as you authenticate. Press again to confirm.'
       });
+      return;
     }
+
+    setConfirmArmed(false);
+    soundFx.playSuccessTone();
+    submitRoundCode(enteredCode);
   };
 
   return (
@@ -251,11 +243,19 @@ export const CodeTerminalModal: React.FC<CodeTerminalModalProps> = ({ isOpen: pr
             <button
               onClick={() => handleSubmitCode()}
               disabled={!enteredCode.trim()}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600 text-slate-950 font-orbit font-extrabold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all shadow-[0_0_20px_rgba(0,243,255,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
+              className={`w-full py-3 rounded-xl font-orbit font-extrabold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                confirmArmed
+                  ? 'bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 text-slate-950 shadow-[0_0_22px_rgba(251,191,36,0.4)]'
+                  : 'bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600 text-slate-950 shadow-[0_0_20px_rgba(0,243,255,0.3)]'
+              }`}
             >
               <KeyRound className="w-4 h-4" />
-              AUTHENTICATE CODE & UNLOCK ROUND
+              {confirmArmed ? 'CONFIRM — LOCK IN THIS CODE' : 'AUTHENTICATE CODE'}
             </button>
+
+            <p className="text-[10px] font-mono text-amber-300/80 text-center leading-relaxed">
+              One submission: 1000 pts, minus 100 per wrong digit. The next screen shows your score.
+            </p>
           </div>
 
           {/* Right: Sci-Fi Touch Keypad */}

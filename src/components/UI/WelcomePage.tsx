@@ -71,8 +71,8 @@ export const WelcomePage: React.FC<WelcomePageProps> = ({ onEnterLogin }) => {
             <span className="font-bold">PENTAGRAM WEEK 2026</span>
           </div>
 
-          {/* Main Logo & Announcement Row: Pentagram (Left) - Main Title */}
-          <div className="w-full flex items-center justify-center gap-4 sm:gap-6 my-2">
+          {/* Main Logo & Announcement Row: Pentagram (Left) — Title — Avartan mark (Right) */}
+          <div className="w-full flex items-center justify-center gap-3 sm:gap-6 my-2">
             {/* Pentagram Logo Near Left */}
             <div className="shrink-0 flex items-center justify-center w-20 h-20 sm:w-28 sm:h-28 rounded-2xl bg-black/40 border border-white/10 p-2.5 backdrop-blur-md shadow-[0_0_30px_rgba(255,255,255,0.25)] hover:scale-105 transition-transform duration-300">
               <img
@@ -96,6 +96,15 @@ export const WelcomePage: React.FC<WelcomePageProps> = ({ onEnterLogin }) => {
                 <Calendar className="w-3.5 h-3.5 text-amber-400" />
                 <span className="tracking-wide">28th - 31st October 2026</span>
               </div>
+            </div>
+
+            {/* Avartan purple-gradient mark, mirroring the Pentagram emblem */}
+            <div className="shrink-0 flex items-center justify-center w-20 h-20 sm:w-28 sm:h-28 rounded-2xl bg-black/40 border border-fuchsia-400/30 p-2.5 backdrop-blur-md shadow-[0_0_35px_rgba(168,85,247,0.45)] hover:scale-105 transition-transform duration-300">
+              <img
+                src="/assets/wave_gradient.png"
+                alt="Avartan mark"
+                className="w-full h-full object-contain filter drop-shadow-[0_0_18px_rgba(168,85,247,0.7)]"
+              />
             </div>
 
           </div>

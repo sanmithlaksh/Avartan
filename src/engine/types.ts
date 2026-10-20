@@ -124,12 +124,19 @@ export interface GameSettings {
 export type GamePhase = 
   | 'welcome'
   | 'login'
-  | 'intro'
-  | 'exploration'
-  | 'positioning'
-  | 'observing'
-  | 'validation'
-  | 'mission_success'
-  | 'game_over';
+  | 'hub'
+  | 'round_one'
+  | 'round_report'
+  | 'round_two';
+
+// Result card shown the moment Round 1 ends (code graded or clock expired).
+export interface RoundOneReport {
+  points: number;
+  correct: number;
+  total: number;
+  timedOut: boolean;
+  expectedCode: string;
+  enteredCode: string;
+}
 
 export type ViewMode = '3d' | '2d' | 'split';

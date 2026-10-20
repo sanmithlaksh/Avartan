@@ -34,7 +34,8 @@ export const Header: React.FC = () => {
     setShowCodeModal,
     currentMissionIndex,
     isAdmin,
-    logoutTeam
+    logoutTeam,
+    goToHub
   } = useGame();
 
   const minutes = Math.floor(timeRemaining / 60);
@@ -95,16 +96,16 @@ export const Header: React.FC = () => {
           </div>
         </div>
 
-        {/* Attempts Remaining */}
+        {/* Round progress */}
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-space-900/60 border border-cyan-500/20">
           <div className="flex flex-col items-center">
-            <span className="text-[9px] font-orbit uppercase tracking-wider text-slate-400">Attempts</span>
+            <span className="text-[9px] font-orbit uppercase tracking-wider text-slate-400">Rounds</span>
             <div className="flex gap-1.5 mt-0.5">
-              {Array.from({ length: settings.maxAttempts }).map((_, idx) => (
+              {[0, 1, 2].map(idx => (
                 <div
                   key={idx}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    idx < attemptsRemaining
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    idx === currentMissionIndex
                       ? 'bg-cyan-400 shadow-[0_0_8px_#00f3ff]'
                       : 'bg-slate-700 opacity-40'
                   }`}
@@ -156,6 +157,16 @@ export const Header: React.FC = () => {
             <span>Split</span>
           </button>
         </div>
+
+        {/* Back to mission cards */}
+        <button
+          onClick={goToHub}
+          className="px-2.5 py-1.5 rounded-xl bg-space-900/60 border border-cyan-500/20 text-slate-300 hover:text-cyan-200 hover:border-cyan-400 transition-all duration-200 text-xs font-orbit font-bold flex items-center gap-1.5"
+          title="Back to mission cards"
+        >
+          <Layers className="w-3.5 h-3.5" />
+          <span className="hidden sm:inline">CARDS</span>
+        </button>
 
         {/* Code Terminal Button */}
         <button

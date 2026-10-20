@@ -96,6 +96,26 @@ export const AdminPanel: React.FC = () => {
     }
   };
 
+  const handleResetTeam = (team: TeamAccount) => {
+    const confirmed = window.confirm(`Reset scores and progress for team "${team['Team Name']}"?`);
+    if (!confirmed) return;
+    const updated: TeamAccount = {
+      ...team,
+      'Current level': 1,
+      'levels completion': 0,
+      'level 1 points': 0,
+      'level 2 points': 0,
+      'level 3 points': 0,
+      'total level points': 0
+    };
+    backendService.updateTeamAccount(updated);
+    setTeams(prev => prev.map(t => (t['Team Name'] === team['Team Name'] ? updated : t)));
+    if (activeAccount && activeAccount['Team Name'] === team['Team Name']) {
+      // Reset active session state if it's the same team
+      restartGame();
+    }
+  };
+
   const validation = validateMissionSolvability(currentMission, settings.earthStartingNode);
 
   return (
@@ -198,6 +218,7 @@ export const AdminPanel: React.FC = () => {
                   <th className="py-2 px-2 text-right">L2 Pts</th>
                   <th className="py-2 px-2 text-right">L3 Pts</th>
                   <th className="py-2 px-3 text-right">Total Pts</th>
+                  <th className="py-2 px-2 text-center">Reset</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-cyan-500/10 font-mono text-[11px]">
@@ -240,6 +261,16 @@ export const AdminPanel: React.FC = () => {
                     </td>
                     <td className="py-2 px-3 text-right font-bold text-amber-400">
                       {t['total level points'] || 0}
+                    </td>
+                    <td className="py-2 px-2 text-center">
+                      <button
+                        onClick={() => handleResetTeam(t)}
+                        className="px-2 py-1 rounded-md bg-rose-950/60 border border-rose-500/40 text-rose-300 hover:bg-rose-900/60 text-[10px] font-orbit uppercase tracking-wider flex items-center gap-1 mx-auto transition-all"
+                        title="Reset scores and rounds"
+                      >
+                        <RotateCcw className="w-3 h-3" />
+                        Reset
+                      </button>
                     </td>
                   </tr>
                 ))}

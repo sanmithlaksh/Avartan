@@ -23,7 +23,6 @@ export const MissionPanel: React.FC = () => {
     observationActive,
     toggleObservation,
     resetCurrentMission,
-    validationFeedback,
     setShowHintsModal,
     setShowCodeModal
   } = useGame();
@@ -150,27 +149,6 @@ export const MissionPanel: React.FC = () => {
         )}
       </div>
 
-      {/* Validation Feedback Banner */}
-      {validationFeedback && (
-        <div className={`p-3 rounded-xl border flex items-start gap-2.5 text-xs ${
-          validationFeedback.isComplete
-            ? 'bg-emerald-950/60 border-emerald-500/50 text-emerald-200'
-            : 'bg-rose-950/60 border-rose-500/50 text-rose-200'
-        }`}>
-          {validationFeedback.isComplete ? (
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-          ) : (
-            <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
-          )}
-          <div className="flex flex-col gap-0.5">
-            <span className="font-orbit font-bold">
-              {validationFeedback.isComplete ? 'ALIGNMENT SUCCESSFUL' : 'ALIGNMENT DISCREPANCY'}
-            </span>
-            <span>{validationFeedback.message}</span>
-          </div>
-        </div>
-      )}
-
       {/* Action Controls */}
       <div className="mt-auto flex flex-col gap-2 pt-2 border-t border-cyan-500/20">
         {/* Code Terminal Button */}
@@ -179,8 +157,11 @@ export const MissionPanel: React.FC = () => {
           className="w-full py-2.5 px-4 rounded-xl font-orbit font-bold text-xs tracking-wider uppercase flex items-center justify-center gap-2 bg-space-900 hover:bg-cyan-950 border border-cyan-400/50 text-cyan-300 shadow-[0_0_15px_rgba(0,243,255,0.2)] transition-all"
         >
           <KeyRound className="w-4 h-4 text-amber-400" />
-          CHECK COMBINATION & ENTER CODE
+          ENTER CLEARANCE CODE
         </button>
+        <p className="text-[10px] text-slate-500 font-mono text-center leading-relaxed">
+          Digits unlock as each world locks onto a sign — you only get one submission.
+        </p>
 
         {/* Sightline Observe Toggle */}
         <button

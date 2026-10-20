@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useGame } from '../../context/GameContext';
 import { PLANET_DEFINITIONS, ZODIAC_SECTORS } from '../../engine/astronomy';
-import { Eye, Timer, AlertTriangle } from 'lucide-react';
+import { Eye, Timer, AlertTriangle, X, Play } from 'lucide-react';
 
 export const ZodiacReferenceTable: React.FC = () => {
   const {
@@ -57,14 +57,26 @@ export const ZodiacReferenceTable: React.FC = () => {
             </h2>
           </div>
 
-          {/* Countdown */}
-          <div className={`flex flex-col items-center px-3 py-2 rounded-xl border ${
-            urgency ? 'bg-rose-900/80 border-rose-400 shadow-[0_0_15px_rgba(239,68,68,0.5)]' : 'bg-purple-950/80 border-purple-500'
-          }`}>
-            <Timer className={`w-4 h-4 ${urgency ? 'text-rose-400 animate-bounce' : 'text-purple-400'}`} />
-            <span className={`text-2xl font-orbit font-extrabold ${urgency ? 'text-rose-300' : 'text-purple-200'}`}>
-              {secondsLeft}s
-            </span>
+          {/* Countdown + manual close */}
+          <div className="flex items-center gap-2">
+            <div className={`flex flex-col items-center px-3 py-2 rounded-xl border transition-all duration-300 ${
+              urgency ? 'bg-rose-900/80 border-rose-400 shadow-[0_0_15px_rgba(239,68,68,0.5)]' : 'bg-purple-950/80 border-purple-500'
+            }`}>
+              <Timer className={`w-4 h-4 ${urgency ? 'text-rose-400 animate-bounce' : 'text-purple-400'}`} />
+              <span className={`text-2xl font-orbit font-extrabold tabular-nums ${urgency ? 'text-rose-300' : 'text-purple-200'}`}>
+                {secondsLeft}s
+              </span>
+            </div>
+
+            <button
+              type="button"
+              data-testid="close-reference-table"
+              onClick={hideZodiacTable}
+              className="p-2 rounded-xl bg-space-950/80 border border-purple-500/40 text-slate-300 hover:text-white hover:border-purple-300 transition-all duration-200 cursor-pointer"
+              title="Close the table and resume the clock"
+            >
+              <X className="w-4 h-4" />
+            </button>
           </div>
         </div>
 
@@ -124,8 +136,17 @@ export const ZodiacReferenceTable: React.FC = () => {
           />
         </div>
 
+        <button
+          type="button"
+          onClick={hideZodiacTable}
+          className="w-full py-2.5 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-slate-950 font-orbit font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.99] transition-all duration-200 cursor-pointer"
+        >
+          <Play className="w-3.5 h-3.5" />
+          Close & resume countdown
+        </button>
+
         <p className="text-center text-[10px] font-mono text-slate-500">
-          This window will close automatically. It cannot be reopened.
+          The round clock is paused while this table is open. It cannot be shown again.
         </p>
       </div>
     </div>

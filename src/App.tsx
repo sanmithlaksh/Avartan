@@ -6,20 +6,18 @@ import { SolarSystem3D } from './components/3D/SolarSystem3D';
 import { OrbitalMap2D } from './components/2D/OrbitalMap2D';
 import { MissionPanel } from './components/UI/MissionPanel';
 import { PlanetSelector } from './components/UI/PlanetSelector';
-import { IntroModal } from './components/UI/IntroModal';
 import { DiscoveryModal } from './components/UI/DiscoveryModal';
-import { LaunchSequenceModal } from './components/UI/LaunchSequenceModal';
-import { TimeOutModal } from './components/UI/TimeOutModal';
 import { HintsModal } from './components/UI/HintsModal';
 import { LeaderboardModal } from './components/Leaderboard/LeaderboardModal';
 import { AdminPanel } from './components/Admin/AdminPanel';
 import { CodeTerminalModal } from './components/UI/CodeTerminalModal';
+import { RoundHub } from './components/Hub/RoundHub';
+import { RoundReport } from './components/Hub/RoundReport';
 import { PatternRecognitionEvent } from './components/PatternRecognition/PatternRecognitionEvent';
 import { ZodiacReferenceTable } from './components/UI/ZodiacReferenceTable';
 import { WelcomePage } from './components/UI/WelcomePage';
 import { LoginPage } from './components/UI/LoginPage';
 import { InteractiveCosmicCanvas } from './components/UI/InteractiveCosmicCanvas';
-import { DEFAULT_TRIAL_ACCOUNT } from './utils/supabase';
 
 const GameViewport: React.FC = () => {
   const { viewMode } = useGame();
@@ -54,10 +52,10 @@ const GameViewport: React.FC = () => {
   );
 };
 
-// Post-round event stage: the solar system view is unmounted and replaced by a
-// plain deep-space starfield so the event has the whole screen.
-const PatternStage: React.FC = () => (
-  <div className="relative w-screen h-screen overflow-hidden bg-[#030712] flex items-center justify-center animate-fade-in">
+// Round 2 lives on its own stage: the solar system is unmounted and replaced by a
+// plain deep-space starfield so the pattern grids have the whole screen.
+const RoundTwoStage: React.FC = () => (
+  <div className="relative w-screen h-screen overflow-hidden bg-[#030712] flex items-center justify-center p-3 animate-fade-in">
     <InteractiveCosmicCanvas />
     <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_45%,rgba(88,28,135,0.28),transparent_65%)]" />
     <PatternRecognitionEvent />
@@ -65,40 +63,64 @@ const PatternStage: React.FC = () => (
 );
 
 const GameRoot: React.FC = () => {
-  const { phase, setPhase, setActiveAccount, showPatternEvent } = useGame();
+  const { phase, setPhase, setActiveAccount } = useGame();
 
-  // If in welcome phase, render the interactive celestial welcome page
+  // 1. Homepage — always the first screen on launch
   if (phase === 'welcome') {
     return (
       <WelcomePage
         onEnterLogin={() => setPhase('login')}
-        onQuickTrial={() => {
-          setActiveAccount(DEFAULT_TRIAL_ACCOUNT);
-          setPhase('intro');
-        }}
+        onQuickTrial={() => undefined}
       />
     );
   }
 
-  // If in login phase, render login and registration page
+  // 2. Team login
   if (phase === 'login') {
     return (
       <LoginPage
         onLoginSuccess={(team) => {
           setActiveAccount(team);
-          setPhase('intro');
+          setPhase('hub');
         }}
         onBackToWelcome={() => setPhase('welcome')}
       />
     );
   }
 
-  // After the round code is solved, hand the screen over to the event stage
-  if (showPatternEvent) {
-    return <PatternStage />;
+  // 3. Mission cards (round hub)
+  if (phase === 'hub') {
+    return (
+      <>
+        <RoundHub />
+        <LeaderboardModal />
+        <AdminPanel />
+      </>
+    );
   }
 
-  // Active Game Interface
+  // 4. Round 1 score report
+  if (phase === 'round_report') {
+    return (
+      <>
+        <RoundReport />
+        <LeaderboardModal />
+        <AdminPanel />
+      </>
+    );
+  }
+
+  // 5. Round 2 — pattern recognition
+  if (phase === 'round_two') {
+    return (
+      <>
+        <RoundTwoStage />
+        <LeaderboardModal />
+      </>
+    );
+  }
+
+  // 6. Round 1 — active game interface
   return (
     <div className="w-screen h-screen flex flex-col bg-space-950 text-slate-100 overflow-hidden font-sans">
       {/* Navigation & Status Header */}
@@ -111,15 +133,11 @@ const GameRoot: React.FC = () => {
       <PlanetSelector />
 
       {/* Global Cinematic and Game State Modals */}
-      <IntroModal />
       <DiscoveryModal />
-      <LaunchSequenceModal />
       <HintsModal />
       <LeaderboardModal />
       <AdminPanel />
       <CodeTerminalModal />
-      <TimeOutModal />
-      <PatternRecognitionEvent />
       <ZodiacReferenceTable />
     </div>
   );

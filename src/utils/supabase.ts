@@ -164,9 +164,44 @@ class BackendService {
     return this.withRequiredTeams(SEED_TEAMS);
   }
 
-  public saveLocalTeams(teams: TeamAccount[]) {
-    localStorage.setItem(TEAMS_STORAGE_KEY, JSON.stringify(teams));
+  public saveLocalTeams(teams: TeamAccount[]) {    localStorage.setItem(TEAMS_STORAGE_KEY, JSON.stringify(teams));
     this.teamListeners.forEach(fn => fn(teams));
+  }
+
+  // Remote rows and the local cache are kept in step without ever discarding
+  // progress that a squadron earned while the connection was down. For any team
+  // present in both, the further-progressed record wins (levels completed first,
+  // then combined points).
+  private mergeRosters(remote: TeamAccount[], local: TeamAccount[]): TeamAccount[] {
+    const merged: TeamAccount[] = remote.map(t => ({ ...t }));
+    const indexByName = new Map<string, number>();
+    merged.forEach((t, idx) => {
+      indexByName.set(String(t['Team Name'] || '').toLowerCase(), idx);
+    });
+
+    local.forEach(entry => {
+      const name = String(entry['Team Name'] || '').toLowerCase();
+      const existingIdx = indexByName.get(name);
+
+      if (existingIdx === undefined) {
+        indexByName.set(name, merged.length);
+        merged.push({ ...entry });
+        return;
+      }
+
+      const remoteRow = merged[existingIdx];
+      const remoteCompleted = remoteRow['levels completion'] || 0;
+      const localCompleted = entry['levels completion'] || 0;
+      const remoteTotal = remoteRow['total level points'] || 0;
+      const localTotal = entry['total level points'] || 0;
+
+      if (localCompleted > remoteCompleted || (localCompleted === remoteCompleted && localTotal > remoteTotal)) {
+        // Local is ahead: keep the remote identity so future PATCHes still match.
+        merged[existingIdx] = { ...entry, id: remoteRow.id ?? entry.id };
+      }
+    });
+
+    return this.withRequiredTeams(merged);
   }
 
   public async fetchAllTeams(): Promise<TeamAccount[]> {
@@ -178,7 +213,7 @@ class BackendService {
         if (res.ok) {
           const remoteTeams: TeamAccount[] = await res.json();
           if (Array.isArray(remoteTeams) && remoteTeams.length > 0) {
-            const mergedTeams = this.withRequiredTeams(remoteTeams);
+            const mergedTeams = this.mergeRosters(remoteTeams, this.getLocalTeams());
             this.saveLocalTeams(mergedTeams);
             return mergedTeams;
           }
@@ -187,6 +222,7 @@ class BackendService {
         console.warn('Supabase fetchAllTeams failed, falling back to local storage:', e);
       }
     }
+
     return this.getLocalTeams();
   }
 
@@ -286,11 +322,32 @@ class BackendService {
     // Sync to Supabase
     if (this.supabaseUrl && this.supabaseAnonKey) {
       try {
-        await fetch(`${this.supabaseUrl}/${this.tableName}?"Team Name"=eq.${encodeURIComponent(account['Team Name'])}`, {
+        const res = await fetch(`${this.supabaseUrl}/${this.tableName}?"Team Name"=eq.${encodeURIComponent(account['Team Name'])}`, {
           method: 'PATCH',
           headers: this.getHeaders(),
           body: JSON.stringify(account)
         });
+
+        if (res.ok) {
+          // An empty representation means no remote row carried that team name,
+          // so the score would be thrown away by the next roster sync. Create it.
+          const updated: TeamAccount[] = await res.json().catch(() => []);
+          if (Array.isArray(updated) && updated.length === 0) {
+            const insert = await fetch(`${this.supabaseUrl}/${this.tableName}`, {
+              method: 'POST',
+              headers: this.getHeaders(),
+              body: JSON.stringify({
+                ...account,
+                id: account.id ?? `team-${Date.now()}`
+              })
+            });
+            if (!insert.ok) {
+              console.warn('Supabase insert for new team failed:', insert.status);
+            }
+          }
+        } else {
+          console.warn('Supabase patch returned', res.status);
+        }
         return true;
       } catch (e) {
         console.warn('Failed to patch team to Supabase:', e);

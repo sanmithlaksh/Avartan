@@ -1,0 +1,380 @@
+// Mission hub — the three round cards that gate the tournament progression.
+// Round 1 unlocks Round 2, and a finished round can never be replayed.
+import React, { useState } from 'react';
+import { useGame } from '../../context/GameContext';
+import { InteractiveCosmicCanvas } from '../UI/InteractiveCosmicCanvas';
+import { backendService } from '../../utils/supabase';
+import {
+  Rocket,
+  Sparkles,
+  Lock,
+  CheckCircle2,
+  Trophy,
+  LogOut,
+  Shield,
+  Play,
+  X,
+  AlertTriangle,
+  Clock,
+  Grid3x3,
+  Satellite,
+  ChevronRight
+} from 'lucide-react';
+
+type PendingRound = 1 | 2 | null;
+
+const cardStateClass = (state: 'active' | 'locked' | 'done') =>
+  state === 'active'
+    ? 'border-cyan-400/70 bg-space-900/80 shadow-[0_0_45px_rgba(0,243,255,0.28)]'
+    : state === 'done'
+    ? 'border-emerald-500/50 bg-space-900/55 shadow-[0_0_30px_rgba(16,185,129,0.16)]'
+    : 'border-slate-700/60 bg-space-950/70 opacity-60 saturate-50';
+
+export const RoundHub: React.FC = () => {
+  const {
+    teamName,
+    activeAccount,
+    roundOneDone,
+    roundTwoDone,
+    roundOnePoints,
+    roundTwoPoints,
+    totalPoints,
+    startRoundOne,
+    startRoundTwo,
+    logoutTeam,
+    isAdmin,
+    setPhase,
+    setShowAdminModal
+  } = useGame();
+
+  const [pending, setPending] = useState<PendingRound>(null);
+  const [starting, setStarting] = useState(false);
+
+  const roundThreeDone = false;
+  // Round 3 has no playable content yet, but it lights up once the first two
+  // rounds are cleared so the progression stays visible to the squad.
+  const roundThreeUnlocked = roundTwoDone;
+
+  const beginSelected = () => {
+    setStarting(true);
+    window.setTimeout(() => {
+      setStarting(false);
+      if (pending === 1) startRoundOne();
+      else if (pending === 2) startRoundTwo();
+      setPending(null);
+    }, 220);
+  };
+
+  const confirmCopy =
+    pending === 1
+      ? {
+          title: 'START ROUND 01?',
+          badge: 'CELESTIAL ALIGNMENT',
+          warning:
+            'A 6:00 countdown starts the moment you press OK. The clock pauses only while the one-time reference table is open.',
+          notes: [
+            'Memorise the reference table — it can only be shown once.',
+            'Place each world on the sign you memorised and read its digit.',
+            'One submission: 1000 pts, minus 100 for every wrong digit.'
+          ]
+        }
+      : {
+          title: 'START ROUND 02?',
+          badge: 'PATTERN RECOGNITION',
+          warning:
+            'Five patterns. Each one is revealed for 10s, then you get 15s to rebuild it on an empty grid.',
+          notes: [
+            'The pattern appears cell by cell, then vanishes.',
+            'Each correct grid box scores 100 pts, plus a 100 pt perfect bonus.',
+            'Your Round 1 score is already locked in.'
+          ]
+        };
+
+  return (
+    <div className="relative w-screen h-screen overflow-hidden bg-space-950 text-slate-100 flex flex-col select-none">
+      <InteractiveCosmicCanvas />
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_20%,rgba(34,211,238,0.12),transparent_60%)]" />
+
+      {/* Top bar */}
+      <header className="relative z-10 w-full px-5 md:px-8 py-4 flex items-center justify-between border-b border-cyan-500/20 backdrop-blur-md bg-space-950/50">
+        <div className="flex items-center gap-3">
+          <img
+            src="/assets/pentagram_logo.png"
+            alt="Pentagram"
+            className="w-9 h-9 object-contain drop-shadow-[0_0_12px_rgba(255,255,255,0.35)]"
+          />
+          <div className="flex flex-col">
+            <span className="font-orbit font-extrabold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-indigo-300">
+              AVARTAN
+            </span>
+            <span className="text-[10px] text-cyan-400 font-mono tracking-widest uppercase">
+              Mission Hub • {teamName}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-space-900/70 border border-amber-500/30">
+            <Trophy className="w-4 h-4 text-amber-400" />
+            <div className="flex flex-col leading-none">
+              <span className="text-[9px] font-orbit uppercase tracking-wider text-slate-400">Total</span>
+              <span className="text-sm font-mono font-bold text-amber-300">{totalPoints}</span>
+            </div>
+          </div>
+
+          {isAdmin && (
+            <button
+              type="button"
+              onClick={() => setShowAdminModal(true)}
+              className="p-2 rounded-xl bg-space-900/70 border border-cyan-500/20 text-cyan-300 hover:border-cyan-400 transition-all duration-200 cursor-pointer"
+              title="Admin console"
+            >
+              <Shield className="w-4 h-4" />
+            </button>
+          )}
+
+          <button
+            type="button"
+            onClick={() => setPhase('welcome')}
+            className="px-3 py-2 rounded-xl bg-space-900/70 border border-cyan-500/20 text-slate-300 hover:text-cyan-200 hover:border-cyan-400 text-[11px] font-orbit font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer"
+          >
+            Homepage
+          </button>
+
+          <button
+            type="button"
+            onClick={logoutTeam}
+            className="p-2 rounded-xl bg-space-900/70 border border-rose-500/30 text-rose-400 hover:border-rose-400 transition-all duration-200 cursor-pointer"
+            title="Log out"
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
+        </div>
+      </header>
+
+      {/* Cards */}
+      <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 md:px-8 py-6 overflow-y-auto">
+        <div className="w-full max-w-5xl flex flex-col items-center gap-6">
+          <div className="flex flex-col items-center text-center gap-2">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-950/70 border border-cyan-400/40 text-cyan-300 text-[11px] font-mono tracking-widest">
+              <Sparkles className="w-3.5 h-3.5" />
+              SELECT YOUR OPERATION
+            </span>
+            <h1 className="text-2xl md:text-4xl font-orbit font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-sky-200 to-fuchsia-300">
+              MISSION CARDS
+            </h1>
+            <p className="text-xs md:text-sm text-slate-400 max-w-xl">
+              Clear a round to unlock the next operation. Completed rounds stay sealed — your score for them is final.
+            </p>
+          </div>
+
+          <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Round 01 */}
+            <article
+              className={`relative rounded-2xl border p-5 flex flex-col gap-3 backdrop-blur-xl transition-all duration-500 ease-out ${
+                cardStateClass(roundOneDone ? 'done' : 'active')
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-cyan-500/15 border border-cyan-400/40 text-cyan-300 text-[10px] font-orbit font-bold uppercase tracking-widest">
+                  <Rocket className="w-3 h-3" />
+                  Round 01
+                </span>
+                <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-space-950/80 border border-cyan-500/20 text-slate-300">
+                  {roundOneDone ? 'Complete' : 'Active'}
+                </span>
+              </div>
+
+              <h2 className="text-lg font-orbit font-bold text-slate-100">Celestial Alignment</h2>
+              <p className="text-xs text-slate-400 leading-relaxed flex-1">
+                Memorise the one-time reference table, then align all seven worlds with their signs to recover the
+                clearance code. Six minutes on the clock.
+              </p>
+
+              <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
+                <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5 text-cyan-400" /> 6:00</span>
+                <span className="text-amber-300 font-bold">{roundOneDone ? `${roundOnePoints} pts` : '1000 pts'}</span>
+              </div>
+
+              <button
+                type="button"
+                data-testid="round-1-card"
+                disabled={roundOneDone}
+                onClick={() => setPending(1)}
+                className={`w-full py-2.5 rounded-xl font-orbit font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all duration-300 ${
+                  roundOneDone
+                    ? 'bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 cursor-default'
+                    : 'bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600 text-slate-950 hover:brightness-110 active:scale-95 shadow-[0_0_25px_rgba(0,243,255,0.35)] cursor-pointer'
+                }`}
+              >
+                {roundOneDone ? <CheckCircle2 className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+                {roundOneDone ? 'Round Complete' : 'Start Round 01'}
+              </button>
+            </article>
+
+            {/* Round 02 */}
+            <article
+              className={`relative rounded-2xl border p-5 flex flex-col gap-3 backdrop-blur-xl transition-all duration-500 ease-out ${
+                cardStateClass(roundTwoDone ? 'done' : roundOneDone ? 'active' : 'locked')
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-fuchsia-500/15 border border-fuchsia-400/40 text-fuchsia-300 text-[10px] font-orbit font-bold uppercase tracking-widest">
+                  <Grid3x3 className="w-3 h-3" />
+                  Round 02
+                </span>
+                <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-space-950/80 border border-fuchsia-500/20 text-slate-300">
+                  {roundTwoDone ? 'Complete' : roundOneDone ? 'Unlocked' : 'Locked'}
+                </span>
+              </div>
+
+              <h2 className="text-lg font-orbit font-bold text-slate-100">Pattern Recognition</h2>
+              <p className="text-xs text-slate-400 leading-relaxed flex-1">
+                Five deep-space patterns appear one cell at a time for ten seconds each. Rebuild every grid before the
+                fifteen-second window closes.
+              </p>
+
+              <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
+                <span className="flex items-center gap-1.5"><Grid3x3 className="w-3.5 h-3.5 text-fuchsia-400" /> 5 grids</span>
+                <span className="text-amber-300 font-bold">{roundTwoDone ? `${roundTwoPoints} pts` : '5000 pts'}</span>
+              </div>
+
+              <button
+                type="button"
+                data-testid="round-2-card"
+                disabled={!roundOneDone || roundTwoDone}
+                onClick={() => setPending(2)}
+                className={`w-full py-2.5 rounded-xl font-orbit font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-all duration-300 ${
+                  roundTwoDone
+                    ? 'bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 cursor-default'
+                    : roundOneDone
+                    ? 'bg-gradient-to-r from-fuchsia-500 via-purple-500 to-cyan-500 text-slate-950 hover:brightness-110 active:scale-95 shadow-[0_0_25px_rgba(217,70,239,0.35)] cursor-pointer'
+                    : 'bg-space-950/80 border border-slate-700 text-slate-500 cursor-not-allowed'
+                }`}
+              >
+                {roundTwoDone ? (
+                  <CheckCircle2 className="w-4 h-4" />
+                ) : roundOneDone ? (
+                  <Play className="w-4 h-4" />
+                ) : (
+                  <Lock className="w-4 h-4" />
+                )}
+                {roundTwoDone ? 'Round Complete' : roundOneDone ? 'Start Round 02' : 'Clear Round 01 first'}
+              </button>
+            </article>
+
+            {/* Round 03 */}
+            <article
+              className={`relative rounded-2xl border p-5 flex flex-col gap-3 backdrop-blur-xl transition-all duration-500 ease-out ${cardStateClass(
+                roundThreeDone ? 'done' : roundThreeUnlocked ? 'active' : 'locked'
+              )}`}
+            >
+              <div className="flex items-center justify-between">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-purple-500/15 border border-purple-400/40 text-purple-300 text-[10px] font-orbit font-bold uppercase tracking-widest">
+                  <Satellite className="w-3 h-3" />
+                  Round 03
+                </span>
+                <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-space-950/80 border border-purple-500/20 text-slate-300">
+                  {roundThreeUnlocked ? 'Unlocked' : 'Locked'}
+                </span>
+              </div>
+
+              <h2 className="text-lg font-orbit font-bold text-slate-100">Deep-Space Debrief</h2>
+              <p className="text-xs text-slate-400 leading-relaxed flex-1">
+                The final operation stays sealed until mission control transmits it. Finish the first two rounds to be
+                ready when it arrives.
+              </p>
+
+              <div className={`flex items-center justify-between text-[11px] font-mono ${roundThreeUnlocked ? 'text-purple-300' : 'text-slate-500'}`}>
+                <span className="flex items-center gap-1.5"><Lock className="w-3.5 h-3.5" /> {roundThreeUnlocked ? 'Briefing pending' : 'Sealed'}</span>
+                <span>Coming soon</span>
+              </div>
+
+              <button
+                type="button"
+                disabled
+                className={`w-full py-2.5 rounded-xl border font-orbit font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 cursor-not-allowed ${
+                  roundThreeUnlocked
+                    ? 'bg-purple-950/50 border-purple-400/50 text-purple-200'
+                    : 'bg-space-950/80 border-slate-700 text-slate-500'
+                }`}
+              >
+                <Lock className="w-4 h-4" />
+                {roundThreeUnlocked ? 'Awaiting transmission' : 'Locked'}
+              </button>
+            </article>
+          </div>
+
+          <p className="text-[10px] font-mono text-slate-500 tracking-wider uppercase">
+            Squad {activeAccount?.['Team Name'] || teamName} • Level {(activeAccount?.['Current level']) || 1} •
+            {backendService.getCredentials().isConfigured ? ' Cloud sync active' : ' Local save'} ·{' '}
+            {roundOneDone ? (roundTwoDone ? 'Rounds 1 & 2 complete' : 'Round 1 complete') : 'Round 1 pending'}
+          </p>
+        </div>
+      </main>
+
+      {/* Start confirmation */}
+      {pending !== null && (
+        <div className="fixed inset-0 z-[80] flex items-center justify-center p-4 bg-space-950/90 backdrop-blur-2xl animate-fade-in">
+          <div className="relative w-full max-w-lg rounded-2xl bg-space-900/97 border border-cyan-400/60 p-6 md:p-7 flex flex-col gap-4 shadow-[0_0_70px_rgba(0,243,255,0.3)] overflow-hidden">
+            <div className="absolute -top-20 -right-20 w-52 h-52 rounded-full bg-cyan-500/20 blur-3xl pointer-events-none" />
+
+            <button
+              type="button"
+              onClick={() => setPending(null)}
+              className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-space-800 transition-all duration-200 cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-cyan-500/15 border border-cyan-400/50 flex items-center justify-center text-cyan-300">
+                <AlertTriangle className="w-6 h-6" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-400">
+                  {confirmCopy.badge}
+                </span>
+                <h3 className="text-xl font-orbit font-black text-slate-100">{confirmCopy.title}</h3>
+              </div>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-amber-950/40 border border-amber-500/40 flex items-start gap-2.5">
+              <Clock className="w-4 h-4 text-amber-300 shrink-0 mt-0.5" />
+              <span className="text-xs text-amber-200 leading-relaxed">{confirmCopy.warning}</span>
+            </div>
+
+            <ul className="flex flex-col gap-2">
+              {confirmCopy.notes.map(note => (
+                <li key={note} className="flex items-start gap-2 text-xs text-slate-300">
+                  <ChevronRight className="w-3.5 h-3.5 text-cyan-400 shrink-0 mt-0.5" />
+                  <span>{note}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
+              <button
+                type="button"
+                onClick={() => setPending(null)}
+                className="flex-1 py-3 rounded-xl bg-space-950 border border-slate-700 text-slate-300 font-orbit font-bold text-xs uppercase tracking-wider hover:border-slate-500 transition-all duration-200 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                data-testid="confirm-start-round"
+                onClick={beginSelected}
+                disabled={starting}
+                className="flex-1 py-3 rounded-xl bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600 text-slate-950 font-orbit font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all duration-200 shadow-[0_0_25px_rgba(0,243,255,0.4)] cursor-pointer disabled:opacity-70"
+              >
+                <Play className="w-4 h-4" />
+                {starting ? 'Launching…' : 'OK — Start'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
