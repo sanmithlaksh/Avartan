@@ -1,5 +1,6 @@
 // Administrator password-gated scoreboard for the welcome page
 import React, { useEffect, useState } from 'react';
+import { useGame } from '../../context/GameContext';
 import { backendService } from '../../utils/supabase';
 import { TeamAccount } from '../../engine/types';
 import { soundFx } from '../../utils/audio';
@@ -12,7 +13,10 @@ import {
   AlertCircle,
   Medal,
   Users,
-  Database
+  Database,
+  RotateCcw,
+  Plus,
+  Gamepad2
 } from 'lucide-react';
 
 const ADMIN_PASSWORD = 'avartan';
@@ -23,12 +27,18 @@ interface AdminScoresModalProps {
 }
 
 export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClose }) => {
+  const { startDemoRound } = useGame();
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [authenticated, setAuthenticated] = useState(false);
   const [teams, setTeams] = useState<TeamAccount[]>([]);
   const [loading, setLoading] = useState(false);
   const [refreshToken, setRefreshToken] = useState(0);
+  const [showAddTeam, setShowAddTeam] = useState(false);
+  const [newTeamName, setNewTeamName] = useState('');
+  const [newTeamPass, setNewTeamPass] = useState('');
+  const [newTeamName1, setNewTeamName1] = useState('');
+  const [newTeamName2, setNewTeamName2] = useState('');
 
   // Reset the terminal every time the modal is reopened
   useEffect(() => {
@@ -80,6 +90,58 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
       soundFx.playSuccessTone();
     } else {
       setError('ACCESS DENIED — Invalid administrator password.');
+      soundFx.playErrorTone();
+    }
+  };
+
+  const handleResetTeam = async (team: TeamAccount) => {
+    const confirmed = window.confirm(`Reset scores and progress for team "${team['Team Name']}"?`);
+    if (!confirmed) return;
+    const updated: TeamAccount = {
+      ...team,
+      'Current level': 1,
+      'levels completion': 0,
+      'level 1 points': 0,
+      'level 2 points': 0,
+      'level 3 points': 0,
+      'total level points': 0
+    };
+    await backendService.updateTeamAccount(updated);
+    setTeams(prev => prev.map(t => (t['Team Name'] === team['Team Name'] ? updated : t)));
+    setRefreshToken(t => t + 1);
+  };
+
+  const handleAddTeam = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newTeamName.trim() || !newTeamPass.trim()) {
+      setError('Team name and password required');
+      return;
+    }
+    const account: TeamAccount = {
+      id: `team-${Date.now()}`,
+      'Name 1': newTeamName1.trim(),
+      'Name 2': newTeamName2.trim(),
+      'Team Name': newTeamName.trim(),
+      'Password': newTeamPass.trim(),
+      'Current level': 1,
+      'levels completion': 0,
+      'level 1 points': 0,
+      'level 2 points': 0,
+      'level 3 points': 0,
+      'total level points': 0
+    };
+    const res = await backendService.registerTeam(account);
+    if (res.success) {
+      setShowAddTeam(false);
+      setNewTeamName('');
+      setNewTeamPass('');
+      setNewTeamName1('');
+      setNewTeamName2('');
+      setError(null);
+      setRefreshToken(t => t + 1);
+      soundFx.playSuccessTone();
+    } else {
+      setError(res.message || 'Failed to add team');
       soundFx.playErrorTone();
     }
   };
@@ -158,7 +220,7 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
                 <Users className="w-4 h-4" />
                 Team Scores ({teams.length} {teams.length === 1 ? 'Team' : 'Teams'})
               </span>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <span
                   className={`px-2 py-1 rounded text-[10px] font-mono flex items-center gap-1 border ${
                     credentials.isConfigured
@@ -169,6 +231,30 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
                   <Database className="w-3 h-3" />
                   {credentials.isConfigured ? 'Supabase Live Sync' : 'Local Storage Mode'}
                 </span>
+                <button
+                  onClick={() => setShowAddTeam(true)}
+                  className="px-2.5 py-1.5 rounded-lg bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-900/60 text-[10px] font-orbit font-bold uppercase tracking-wider flex items-center gap-1 transition-all cursor-pointer"
+                  title="Add team"
+                >
+                  <Plus className="w-3 h-3" />
+                  Add Team
+                </button>
+                <button
+                  onClick={() => startDemoRound(1)}
+                  className="px-2.5 py-1.5 rounded-lg bg-purple-950/60 border border-purple-400/60 text-purple-200 hover:bg-purple-900/70 text-[10px] font-orbit font-bold uppercase tracking-wider flex items-center gap-1 transition-all cursor-pointer"
+                  title="Demo Play Round 1"
+                >
+                  <Gamepad2 className="w-3 h-3" />
+                  Demo R1
+                </button>
+                <button
+                  onClick={() => startDemoRound(2)}
+                  className="px-2.5 py-1.5 rounded-lg bg-purple-950/60 border border-purple-400/60 text-purple-200 hover:bg-purple-900/70 text-[10px] font-orbit font-bold uppercase tracking-wider flex items-center gap-1 transition-all cursor-pointer"
+                  title="Demo Play Round 2"
+                >
+                  <Gamepad2 className="w-3 h-3" />
+                  Demo R2
+                </button>
                 <button
                   onClick={() => setRefreshToken(t => t + 1)}
                   className="px-2.5 py-1.5 rounded-lg bg-space-950 border border-cyan-500/30 text-cyan-300 hover:border-cyan-400 text-[10px] font-orbit font-bold uppercase tracking-wider flex items-center gap-1 transition-all cursor-pointer"
@@ -192,6 +278,7 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
                     <th className="py-3 px-2 text-right">L2 Pts</th>
                     <th className="py-3 px-2 text-right">L3 Pts</th>
                     <th className="py-3 px-3 text-right">Total Points</th>
+                    <th className="py-3 px-2 text-center">Reset</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-cyan-500/10">
@@ -236,12 +323,21 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
                         <td className="py-3 px-3 text-right font-mono font-bold text-amber-300">
                           {team['total level points'] || 0} PTS
                         </td>
+                        <td className="py-3 px-2 text-center">
+                          <button
+                            onClick={() => handleResetTeam(team)}
+                            className="p-1.5 rounded-lg bg-rose-950/60 border border-rose-500/40 text-rose-300 hover:bg-rose-900/60 transition-all"
+                            title="Reset team"
+                          >
+                            <RotateCcw className="w-3.5 h-3.5" />
+                          </button>
+                        </td>
                       </tr>
                     );
                   })}
                   {teams.length === 0 && (
                     <tr>
-                      <td colSpan={8} className="py-8 text-center text-slate-500 font-mono text-xs">
+                      <td colSpan={9} className="py-8 text-center text-slate-500 font-mono text-xs">
                         {loading ? 'SYNCING TEAM ROSTER...' : 'NO TEAMS FOUND'}
                       </td>
                     </tr>
@@ -254,6 +350,58 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
               <div className="p-3 rounded-xl bg-rose-950/60 border border-rose-500/40 text-rose-300 text-xs flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{error}</span>
+              </div>
+            )}
+
+            {showAddTeam && (
+              <div className="p-4 rounded-xl bg-space-950/80 border border-cyan-500/30 flex flex-col gap-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-orbit uppercase tracking-wider text-cyan-400">Add New Team</span>
+                  <button
+                    onClick={() => setShowAddTeam(false)}
+                    className="p-1 rounded-lg text-slate-400 hover:text-slate-200"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+                <form onSubmit={handleAddTeam} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <input
+                    type="text"
+                    placeholder="Team Name"
+                    value={newTeamName}
+                    onChange={e => setNewTeamName(e.target.value)}
+                    className="px-3 py-2 rounded-lg bg-space-950 border border-cyan-500/30 text-sm text-slate-200"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Password"
+                    value={newTeamPass}
+                    onChange={e => setNewTeamPass(e.target.value)}
+                    className="px-3 py-2 rounded-lg bg-space-950 border border-cyan-500/30 text-sm text-slate-200"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Member 1"
+                    value={newTeamName1}
+                    onChange={e => setNewTeamName1(e.target.value)}
+                    className="px-3 py-2 rounded-lg bg-space-950 border border-cyan-500/30 text-sm text-slate-200"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Member 2"
+                    value={newTeamName2}
+                    onChange={e => setNewTeamName2(e.target.value)}
+                    className="px-3 py-2 rounded-lg bg-space-950 border border-cyan-500/30 text-sm text-slate-200"
+                  />
+                  <div className="sm:col-span-2 flex justify-end">
+                    <button
+                      type="submit"
+                      className="px-4 py-2 rounded-lg bg-emerald-600 text-white text-xs font-orbit uppercase tracking-wider"
+                    >
+                      Add Team
+                    </button>
+                  </div>
+                </form>
               </div>
             )}
 

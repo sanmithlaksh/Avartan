@@ -58,6 +58,7 @@ interface GameContextType {
   patternResult: { correct: number; total: number; accuracy: number; points: number } | null;
   isAdmin: boolean;
   isRoundOne: boolean;
+  isDemoMode: boolean;
 
   // Round progression
   roundOneDone: boolean;
@@ -72,6 +73,7 @@ interface GameContextType {
   goToHub: () => void;
   submitRoundCode: (code: string) => RoundOneReport;
   completePatternEvent: (points: number, correct: number, total: number) => void;
+  startDemoRound: (level: number) => void;
 
   zodiacTableShown: boolean;
   zodiacTableVisible: boolean;
@@ -149,7 +151,27 @@ const persistRefTableShown = (team: string) => {
   }
 };
 
-const splitCode = (code: string): number[] => {
+const splitCode = (code: string, expected?: number[]): number[] => {
+  if (!code) return [];
+  const nonDigitStripped = code.replace(/\D/g, '');
+  if (nonDigitStripped && expected && expected.length > 0) {
+    const expectedStr = expected.map(String);
+    let result: number[] = [];
+    let idx = 0;
+    for (let i = 0; i < expectedStr.length && idx < nonDigitStripped.length; i++) {
+      const len = expectedStr[i].length;
+      const take = nonDigitStripped.substr(idx, len);
+      if (take) {
+        result.push(parseInt(take, 10));
+        idx += len;
+      } else {
+        break;
+      }
+    }
+    if (result.length === expected.length) {
+      return result;
+    }
+  }
   const matches = code.match(/\d+/g);
   return matches ? matches.map(Number) : [];
 };
@@ -194,6 +216,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [validationFeedback, setValidationFeedback] = useState<ValidationFeedback | null>(null);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [roundOneReport, setRoundOneReport] = useState<RoundOneReport | null>(null);
+  const [isDemoMode, setIsDemoMode] = useState<boolean>(false);
 
   // Modals — the hub (round cards) replaced the old auto-opening briefing.
   const [showIntroModal, setShowIntroModal] = useState<boolean>(false);
@@ -330,6 +353,20 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsTimerRunning(false);
     setShowCodeModal(false);
 
+    if (isDemoMode) {
+      if (report.points >= TOTAL_ROUND_ONE_POINTS) {
+        const codeSuffix = Math.floor(1000 + Math.random() * 9000);
+        setLaunchCode(`ORBIT-${currentMission.codeName.replace('OP-', '')}-${codeSuffix}`);
+        soundFx.playSuccessTone();
+        confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+      } else {
+        soundFx.playErrorTone();
+      }
+      setRoundOneReport(report);
+      setPhase('round_report');
+      return;
+    }
+
     const base = activeAccount || DEFAULT_TRIAL_ACCOUNT;
     const updated: TeamAccount = {
       ...base,
@@ -355,7 +392,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setActiveAccountState(updated);
     backendService.updateTeamAccount(updated);
     setPhase('round_report');
-  }, [activeAccount, teamName, currentMission.codeName]);
+  }, [activeAccount, teamName, currentMission.codeName, isDemoMode]);
 
   // Kept in a ref so the ticking effect can finalise without restarting.
   const finaliseRoundOneRef = useRef(finaliseRoundOne);
@@ -471,7 +508,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // ── Round 1 submission: partial credit, 1000 total ────────────────────────
   const submitRoundCode = useCallback((code: string): RoundOneReport => {
     const expectedDigits = currentMission.targets.map(t => t.targetSectorId + 1);
-    const enteredDigits = splitCode(code);
+    const enteredDigits = splitCode(code, expectedDigits);
 
     let correct = 0;
     expectedDigits.forEach((digit, idx) => {
@@ -511,6 +548,12 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const completePatternEvent = useCallback((points: number, correct: number, total: number) => {
     const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
 
+    if (isDemoMode) {
+      setPatternResult({ correct, total, accuracy, points });
+      setPhase('hub');
+      return;
+    }
+
     const base = activeAccount || DEFAULT_TRIAL_ACCOUNT;
     const totalLevelPoints =
       (base['level 1 points'] || 0) + points + (base['level 3 points'] || 0);
@@ -529,7 +572,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setActiveAccountState(updated);
     backendService.updateTeamAccount(updated);
     setPhase('hub');
-  }, [activeAccount, teamName]);
+  }, [activeAccount, teamName, isDemoMode]);
 
   // ── Round progression ─────────────────────────────────────────────────────
   const startRoundOne = useCallback(() => {
@@ -594,10 +637,51 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Admin override — jumps straight into the chosen round.
   const updateActiveTeamLevel = useCallback((level: number) => {
     setShowAdminModal(false);
+    setIsDemoMode(false);
     if (level === 1) startRoundOne();
     else if (level === 2) startRoundTwo();
     else goToHub();
   }, [startRoundOne, startRoundTwo, goToHub]);
+
+  const startDemoRound = useCallback((level: number) => {
+    setShowAdminModal(false);
+    setIsDemoMode(true);
+    if (level === 1) {
+      const fresh = generateRoundOneMission(
+        settings.earthStartingNode,
+        settings.zodiacAngularOffsetDeg
+      );
+      setRoundOneMission(fresh);
+      setCurrentMissionIndex(0);
+      setTimeRemaining(settings.missionDurationSeconds);
+      setAttemptsRemaining(settings.maxAttempts);
+      setPlanets(initPlanets(settings.earthStartingNode));
+      setSelectedPlanetId('saturn');
+      setValidationFeedback(null);
+      setHintsUsedCount(0);
+      setRoundOneReport(null);
+      setLaunchCode(null);
+      setShowCodeModal(false);
+      setZodiacTableVisible(false);
+      setZodiacTableError(false);
+      setPhase('round_one');
+      setIsTimerRunning(true);
+      try {
+        soundFx.startAmbient();
+      } catch (err) {
+        console.warn('Audio ambient deferred:', err);
+      }
+    } else if (level === 2) {
+      setIsTimerRunning(false);
+      setShowCodeModal(false);
+      setCurrentMissionIndex(1);
+      setPhase('round_two');
+    } else {
+      setIsTimerRunning(false);
+      setShowCodeModal(false);
+      setPhase('hub');
+    }
+  }, [settings, initPlanets]);
 
   const setMissionByIndex = useCallback((idx: number) => {
     setCurrentMissionIndex(idx);
@@ -687,6 +771,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     patternResult,
     isAdmin,
     isRoundOne,
+    isDemoMode,
     roundOneDone,
     roundTwoDone,
     roundThreeUnlocked,
@@ -699,6 +784,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     goToHub,
     submitRoundCode,
     completePatternEvent,
+    startDemoRound,
     zodiacTableShown,
     zodiacTableVisible,
     zodiacTableError,
@@ -766,6 +852,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     patternResult,
     isAdmin,
     isRoundOne,
+    isDemoMode,
     roundOneDone,
     roundTwoDone,
     roundThreeUnlocked,
@@ -778,6 +865,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     goToHub,
     submitRoundCode,
     completePatternEvent,
+    startDemoRound,
     zodiacTableShown,
     zodiacTableVisible,
     zodiacTableError,

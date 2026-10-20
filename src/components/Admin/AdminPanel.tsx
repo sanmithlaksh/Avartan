@@ -41,7 +41,8 @@ export const AdminPanel: React.FC = () => {
     currentMission,
     restartGame,
     activeAccount,
-    updateActiveTeamLevel
+    updateActiveTeamLevel,
+    startDemoRound
   } = useGame();
 
   const [supabaseUrl, setSupabaseUrl] = useState(backendService.getCredentials().url);
@@ -172,6 +173,19 @@ export const AdminPanel: React.FC = () => {
                   }`}
                 >
                   Level 0{lvl}
+                </button>
+              ))}
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-slate-400">|</span>
+              <span className="text-xs text-slate-300 font-sans">Demo Play:</span>
+              {[1, 2, 3].map(lvl => (
+                <button
+                  key={`demo-${lvl}`}
+                  onClick={() => startDemoRound(lvl)}
+                  className="px-3 py-1.5 rounded-lg text-xs font-orbit font-bold bg-purple-900/60 border border-purple-400/60 text-purple-200 hover:bg-purple-800/70 transition-all"
+                >
+                  Demo L{lvl}
                 </button>
               ))}
             </div>
