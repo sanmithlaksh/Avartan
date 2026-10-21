@@ -82,11 +82,11 @@ export const RoundHub: React.FC = () => {
           title: 'START ROUND 02?',
           badge: 'PATTERN RECOGNITION',
           warning:
-            'Five patterns. Each one is revealed for 10s, then you get 15s to rebuild it on an empty grid.',
+            'Five charts. Each one is revealed for 10s, then you get 15s to rebuild it on an empty grid.',
           notes: [
-            'The pattern appears cell by cell, then vanishes.',
-            'Each correct grid box scores 100 pts, plus a 100 pt perfect bonus.',
-            'Your Round 1 score is already locked in.'
+            'Levels 1-3 are planet fields with a limited supply of each world.',
+            'Levels 4-5 are real constellations on a larger star chart.',
+            'Each correct token scores 100 pts, plus a 100 pt perfect bonus.'
           ]
         };
 
@@ -98,11 +98,18 @@ export const RoundHub: React.FC = () => {
       {/* Top bar */}
       <header className="relative z-10 w-full px-5 md:px-8 py-4 flex items-center justify-between border-b border-cyan-500/20 backdrop-blur-md bg-space-950/50">
         <div className="flex items-center gap-3">
-          <img
-            src="/assets/pentagram_logo.png"
-            alt="Pentagram"
-            className="w-9 h-9 object-contain drop-shadow-[0_0_12px_rgba(255,255,255,0.35)]"
-          />
+          <div className="flex items-center gap-2">
+            <img
+              src="/assets/pentagram_logo.png"
+              alt="Pentagram"
+              className="w-9 h-9 object-contain drop-shadow-[0_0_12px_rgba(255,255,255,0.35)]"
+            />
+            <img
+              src="/assets/wave_gradient.png"
+              alt="Avartan mark"
+              className="w-8 h-8 object-contain drop-shadow-[0_0_12px_rgba(168,85,247,0.55)]"
+            />
+          </div>
           <div className="flex flex-col">
             <span className="font-orbit font-extrabold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-indigo-300">
               AVARTAN
@@ -230,13 +237,13 @@ export const RoundHub: React.FC = () => {
 
               <h2 className="text-lg font-orbit font-bold text-slate-100">Pattern Recognition</h2>
               <p className="text-xs text-slate-400 leading-relaxed flex-1">
-                Five deep-space patterns appear one cell at a time for ten seconds each. Rebuild every grid before the
-                fifteen-second window closes.
+                Three planet fields with finite planet supplies, then two real constellations. Each chart appears one
+                token at a time for ten seconds, then you rebuild it before the fifteen-second window closes.
               </p>
 
               <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
                 <span className="flex items-center gap-1.5"><Grid3x3 className="w-3.5 h-3.5 text-fuchsia-400" /> 5 grids</span>
-                <span className="text-amber-300 font-bold">{roundTwoDone ? `${roundTwoPoints} pts` : '5000 pts'}</span>
+                <span className="text-amber-300 font-bold">{roundTwoDone ? `${roundTwoPoints} pts` : 'up to 4500 pts'}</span>
               </div>
 
               <button

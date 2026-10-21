@@ -32,11 +32,18 @@ export const WelcomePage: React.FC<WelcomePageProps> = ({ onEnterLogin }) => {
       {/* Top Header */}
       <header className="relative z-10 w-full px-6 py-5 flex items-center justify-between border-b border-cyan-500/20 backdrop-blur-md bg-space-950/40">
         <div className="flex items-center gap-3">
-          <img
-            src="/assets/pentagram_logo.png"
-            alt="Pentagram Logo"
-            className="w-10 h-10 object-contain drop-shadow-[0_0_12px_rgba(255,255,255,0.4)]"
-          />
+          <div className="flex items-center gap-2">
+            <img
+              src="/assets/pentagram_logo.png"
+              alt="Pentagram Logo"
+              className="w-10 h-10 object-contain drop-shadow-[0_0_12px_rgba(255,255,255,0.4)]"
+            />
+            <img
+              src="/assets/wave_gradient.png"
+              alt="Avartan mark"
+              className="w-8 h-8 object-contain drop-shadow-[0_0_12px_rgba(168,85,247,0.6)]"
+            />
+          </div>
           <div className="flex flex-col">
             <span className="font-orbit font-extrabold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-indigo-300 text-lg">
               AVARTAN

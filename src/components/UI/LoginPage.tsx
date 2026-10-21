@@ -78,6 +78,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBackToWe
               alt="Pentagram Logo"
               className="w-12 h-12 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]"
             />
+            <img
+              src="/assets/wave_gradient.png"
+              alt="Avartan mark"
+              className="w-10 h-10 object-contain drop-shadow-[0_0_15px_rgba(168,85,247,0.6)]"
+            />
           </div>
 
           <h2 className="text-xl md:text-2xl font-orbit font-extrabold text-slate-100 tracking-wide">

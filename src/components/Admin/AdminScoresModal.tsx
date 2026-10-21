@@ -16,6 +16,7 @@ import {
   Database,
   RotateCcw,
   Plus,
+  Trash2,
   Gamepad2
 } from 'lucide-react';
 
@@ -39,6 +40,8 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
   const [newTeamPass, setNewTeamPass] = useState('');
   const [newTeamName1, setNewTeamName1] = useState('');
   const [newTeamName2, setNewTeamName2] = useState('');
+  const [dbStatus, setDbStatus] = useState<'checking' | 'online' | 'offline'>('checking');
+  const [dbMessage, setDbMessage] = useState('');
 
   // Reset the terminal every time the modal is reopened
   useEffect(() => {
@@ -79,6 +82,22 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
     };
   }, [open, authenticated, refreshToken]);
 
+  // Probe the database once the admin is signed in so the status chip reflects
+  // the real link rather than just "credentials exist".
+  useEffect(() => {
+    if (!open || !authenticated) return;
+    let cancelled = false;
+    setDbStatus('checking');
+    backendService.checkConnection().then(res => {
+      if (cancelled) return;
+      setDbStatus(res.online ? 'online' : 'offline');
+      setDbMessage(res.message);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [open, authenticated, refreshToken]);
+
   if (!open) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -109,6 +128,26 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
     await backendService.updateTeamAccount(updated);
     setTeams(prev => prev.map(t => (t['Team Name'] === team['Team Name'] ? updated : t)));
     setRefreshToken(t => t + 1);
+  };
+
+  const handleDeleteTeam = async (team: TeamAccount) => {
+    const confirmed = window.confirm(
+      `Permanently remove team "${team['Team Name']}"? Their scores and login will be deleted.`
+    );
+    if (!confirmed) return;
+
+    const res = await backendService.deleteTeam(team);
+    if (!res.success) {
+      setError(res.message || 'Failed to remove team');
+      soundFx.playErrorTone();
+      return;
+    }
+
+    setTeams(prev => prev.filter(t => t['Team Name'] !== team['Team Name']));
+    setRefreshToken(t => t + 1);
+    if (res.message !== 'Team removed.') setError(res.message);
+    else setError(null);
+    soundFx.playSuccessTone();
   };
 
   const handleAddTeam = async (e: React.FormEvent) => {
@@ -145,8 +184,6 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
       soundFx.playErrorTone();
     }
   };
-
-  const credentials = backendService.getCredentials();
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-space-950/90 backdrop-blur-2xl animate-fade-in select-none">
@@ -222,14 +259,21 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
               </span>
               <div className="flex items-center gap-2 flex-wrap">
                 <span
+                  title={dbMessage || undefined}
                   className={`px-2 py-1 rounded text-[10px] font-mono flex items-center gap-1 border ${
-                    credentials.isConfigured
+                    dbStatus === 'online'
                       ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-400'
-                      : 'bg-space-950 border-cyan-500/30 text-cyan-400'
+                      : dbStatus === 'checking'
+                      ? 'bg-space-950 border-cyan-500/30 text-cyan-400'
+                      : 'bg-amber-950/50 border-amber-500/40 text-amber-300'
                   }`}
                 >
                   <Database className="w-3 h-3" />
-                  {credentials.isConfigured ? 'Supabase Live Sync' : 'Local Storage Mode'}
+                  {dbStatus === 'online'
+                    ? 'Supabase Live Sync'
+                    : dbStatus === 'checking'
+                    ? 'Checking Supabase…'
+                    : 'Local Storage Mode'}
                 </span>
                 <button
                   onClick={() => setShowAddTeam(true)}
@@ -266,6 +310,16 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
               </div>
             </div>
 
+            {dbStatus === 'offline' && (
+              <div className="px-3 py-2 rounded-lg bg-amber-950/40 border border-amber-500/30 text-amber-200/90 text-[11px] flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-amber-400" />
+                <span>
+                  Teams are saving to this device only. {dbMessage} — scores will not sync across devices until
+                  the database grants access.
+                </span>
+              </div>
+            )}
+
             <div className="overflow-y-auto rounded-xl border border-cyan-500/20 bg-space-950/60">
               <table className="w-full text-left text-xs">
                 <thead className="bg-space-900/80 text-[10px] font-orbit uppercase tracking-wider text-slate-400 border-b border-cyan-500/20 sticky top-0 backdrop-blur-md">
@@ -278,7 +332,7 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
                     <th className="py-3 px-2 text-right">L2 Pts</th>
                     <th className="py-3 px-2 text-right">L3 Pts</th>
                     <th className="py-3 px-3 text-right">Total Points</th>
-                    <th className="py-3 px-2 text-center">Reset</th>
+                    <th className="py-3 px-2 text-center">Manage</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-cyan-500/10">
@@ -324,13 +378,24 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
                           {team['total level points'] || 0} PTS
                         </td>
                         <td className="py-3 px-2 text-center">
-                          <button
-                            onClick={() => handleResetTeam(team)}
-                            className="p-1.5 rounded-lg bg-rose-950/60 border border-rose-500/40 text-rose-300 hover:bg-rose-900/60 transition-all"
-                            title="Reset team"
-                          >
-                            <RotateCcw className="w-3.5 h-3.5" />
-                          </button>
+                          <div className="flex items-center justify-center gap-1.5">
+                            <button
+                              onClick={() => handleResetTeam(team)}
+                              className="p-1.5 rounded-lg bg-amber-950/60 border border-amber-500/40 text-amber-300 hover:bg-amber-900/60 transition-all cursor-pointer"
+                              title="Reset team scores"
+                              data-testid={`team-reset-${team['Team Name']}`}
+                            >
+                              <RotateCcw className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              onClick={() => handleDeleteTeam(team)}
+                              className="p-1.5 rounded-lg bg-rose-950/60 border border-rose-500/40 text-rose-300 hover:bg-rose-900/60 transition-all cursor-pointer"
+                              title="Remove team"
+                              data-testid={`team-delete-${team['Team Name']}`}
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     );

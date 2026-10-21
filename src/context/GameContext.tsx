@@ -275,6 +275,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsTimerRunning(false);
     setShowCodeModal(false);
     setRoundOneReport(null);
+    setIsDemoMode(false);
     setPhase('welcome');
   }, []);
 
@@ -363,7 +364,9 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         soundFx.playErrorTone();
       }
       setRoundOneReport(report);
-      setPhase('round_report');
+      // Exit demo mode back to admin login portal (welcome page)
+      setIsDemoMode(false);
+      setPhase('welcome');
       return;
     }
 
@@ -550,7 +553,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     if (isDemoMode) {
       setPatternResult({ correct, total, accuracy, points });
-      setPhase('hub');
+      setIsDemoMode(false);
+      setPhase('welcome');
       return;
     }
 
@@ -613,8 +617,15 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsTimerRunning(false);
     setShowCodeModal(false);
     setShowSuccessModal(false);
+    // Leaving a demo round drops the admin back on the login portal, not on the
+    // team mission cards.
+    if (isDemoMode) {
+      setIsDemoMode(false);
+      setPhase('welcome');
+      return;
+    }
     setPhase('hub');
-  }, []);
+  }, [isDemoMode]);
 
   const startMission = startRoundOne;
 
@@ -640,8 +651,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsDemoMode(false);
     if (level === 1) startRoundOne();
     else if (level === 2) startRoundTwo();
-    else goToHub();
-  }, [startRoundOne, startRoundTwo, goToHub]);
+    else setPhase('hub');
+  }, [startRoundOne, startRoundTwo]);
 
   const startDemoRound = useCallback((level: number) => {
     setShowAdminModal(false);
