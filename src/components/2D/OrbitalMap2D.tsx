@@ -95,35 +95,13 @@ export const OrbitalMap2D: React.FC = () => {
     }
   };
 
-  // Outer boundary hold-to-discover (Hold for 5.0 seconds!)
-  // After zodiac is revealed, hold again for 10s to show the one-time position table.
+  // Outer boundary hold-to-discover (Hold for 10.0 seconds!)
+  // Round 1 has no memorisation table, so once the wheel is revealed the
+  // boundary no longer starts a second hold.
   const handleBoundaryPointerDown = () => {
-    if (zodiacRevealed) {
-      // Second hold: reveal the planetary position reference table (one-time only)
-      if (zodiacTableShown) {
-        // Already shown — do nothing (GameContext handles the error state)
-        showZodiacTable();
-        return;
-      }
-      setIsHoldingBoundary(true);
-      soundFx.playBoundaryCharging();
-      const startTime = Date.now();
-      const interval = setInterval(() => {
-        const elapsed = Date.now() - startTime;
-        const prog = Math.min(100, Math.round((elapsed / 10000) * 100)); // 10 seconds
-        setTableHoldProgress(prog);
-        if (prog >= 100) {
-          clearInterval(interval);
-          setIsHoldingBoundary(false);
-          setTableHoldProgress(0);
-          showZodiacTable();
-        }
-      }, 50);
-      holdTimerRef.current = interval;
-      return;
-    }
+    if (zodiacRevealed) return;
 
-    // First hold: unlock the zodiac wheel (10 seconds)
+    // Unlock the zodiac wheel (10 seconds)
     setIsHoldingBoundary(true);
     soundFx.playBoundaryCharging();
 

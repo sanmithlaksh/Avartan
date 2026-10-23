@@ -13,6 +13,8 @@ import {
   Compass,
   AlertTriangle,
   KeyRound,
+  Lock,
+  Flag,
   LogOut
 } from 'lucide-react';
 
@@ -35,16 +37,32 @@ export const Header: React.FC = () => {
     currentMissionIndex,
     isAdmin,
     logoutTeam,
-    goToHub
+    goToHub,
+    codeTerminalUnlocked,
+    codeUnlockSeconds,
+    endRoundOne,
+    isDemoMode
   } = useGame();
 
   const minutes = Math.floor(timeRemaining / 60);
   const seconds = timeRemaining % 60;
   const timeFormatted = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   const isEmergency = timeRemaining <= 30 && timeRemaining > 0;
+  const unlockMinutes = Math.floor(codeUnlockSeconds / 60);
+  const unlockSeconds = codeUnlockSeconds % 60;
+  const unlockFormatted = `${unlockMinutes.toString().padStart(2, '0')}:${unlockSeconds
+    .toString()
+    .padStart(2, '0')}`;
+
+  const handleEndRound = () => {
+    const confirmed = window.confirm(
+      'End Round 1 now? Your latest submitted PIN will be graded and the round will close.'
+    );
+    if (confirmed) endRoundOne();
+  };
 
   return (
-    <header className="h-16 px-4 md:px-6 flex items-center justify-between bg-space-950/80 backdrop-blur-xl border-b border-cyan-500/20 z-30 select-none">
+    <header className="h-16 px-4 md:px-6 flex items-center justify-between bg-space-950/95 border-b border-cyan-500/20 z-30 select-none">
       {/* Left: Branding & Team Info */}
       <div className="flex items-center gap-3">
         <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 via-sky-500/10 to-transparent border border-cyan-400/40 shadow-[0_0_15px_rgba(0,243,255,0.2)]">
@@ -168,14 +186,38 @@ export const Header: React.FC = () => {
           <span className="hidden sm:inline">CARDS</span>
         </button>
 
-        {/* Code Terminal Button */}
+        {/* Code Terminal Button — sealed for the opening window */}
         <button
           onClick={() => setShowCodeModal(true)}
-          className="px-2.5 py-1.5 rounded-xl bg-cyan-950/80 border border-cyan-400/50 text-cyan-300 hover:bg-cyan-500/20 hover:border-cyan-400 transition-all text-xs font-orbit font-bold flex items-center gap-1.5 shadow-[0_0_12px_rgba(0,243,255,0.25)]"
-          title="Planetary Combination & Round Code Terminal"
+          className={`px-2.5 py-1.5 rounded-xl border transition-all text-xs font-orbit font-bold flex items-center gap-1.5 ${
+            codeTerminalUnlocked
+              ? 'bg-cyan-950/80 border-cyan-400/50 text-cyan-300 hover:bg-cyan-500/20 hover:border-cyan-400 shadow-[0_0_12px_rgba(0,243,255,0.25)]'
+              : 'bg-amber-950/50 border-amber-500/40 text-amber-300'
+          }`}
+          title={
+            codeTerminalUnlocked
+              ? 'Planetary Combination & Round Code Terminal'
+              : `PIN terminal unlocks in ${unlockFormatted}`
+          }
         >
-          <KeyRound className="w-3.5 h-3.5 text-amber-400" />
-          <span className="hidden sm:inline">ENTER CODE</span>
+          {codeTerminalUnlocked ? (
+            <KeyRound className="w-3.5 h-3.5 text-amber-400" />
+          ) : (
+            <Lock className="w-3.5 h-3.5 text-amber-300" />
+          )}
+          <span className="hidden sm:inline tabular-nums">
+            {codeTerminalUnlocked ? 'ENTER CODE' : `LOCKED ${unlockFormatted}`}
+          </span>
+        </button>
+
+        {/* End the round early — latest PIN is graded */}
+        <button
+          onClick={handleEndRound}
+          className="px-2.5 py-1.5 rounded-xl bg-rose-950/50 border border-rose-500/40 text-rose-300 hover:bg-rose-900/50 hover:border-rose-400 transition-all text-xs font-orbit font-bold flex items-center gap-1.5"
+          title="End Round 1 and grade the latest submitted PIN"
+        >
+          <Flag className="w-3.5 h-3.5" />
+          <span className="hidden md:inline">{isDemoMode ? 'END DEMO' : 'END ROUND'}</span>
         </button>
 
         {/* Hints */}

@@ -1,4 +1,4 @@
-// Mesmerizing Space Welcome Page featuring Pentagram Presents Avartan
+// Mesmerizing Space Welcome Page featuring Pentagram Presents Void Paradigm
 import React, { useState } from 'react';
 import { InteractiveCosmicCanvas } from './InteractiveCosmicCanvas';
 import { AdminScoresModal } from '../Admin/AdminScoresModal';
@@ -17,12 +17,12 @@ export const WelcomePage: React.FC<WelcomePageProps> = ({ onEnterLogin }) => {
       {/* 1. Stagnant Galaxy / Cosmic Starfield Background with Cursor-Responsive Stars */}
       <InteractiveCosmicCanvas />
 
-      {/* 2. Blurred Ambient Backdrop derived from the Pentagram banner */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden flex items-center justify-center opacity-30">
+      {/* 2. Subtle ambient backdrop */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden flex items-center justify-center opacity-20">
         <img
           src="/assets/avartan_banner.png"
           alt="Ambient blur"
-          className="w-[125vw] h-[125vh] object-cover filter blur-[100px] scale-125 pointer-events-none"
+          className="w-[110vw] h-[110vh] object-cover filter blur-[60px] scale-110 pointer-events-none"
         />
       </div>
 
@@ -30,7 +30,7 @@ export const WelcomePage: React.FC<WelcomePageProps> = ({ onEnterLogin }) => {
       <div className="absolute inset-0 z-[1] bg-gradient-to-b from-space-950/75 via-space-950/30 to-space-950/85 pointer-events-none" />
 
       {/* Top Header */}
-      <header className="relative z-10 w-full px-6 py-5 flex items-center justify-between border-b border-cyan-500/20 backdrop-blur-md bg-space-950/40">
+      <header className="relative z-10 w-full px-6 py-5 flex items-center justify-between border-b border-cyan-500/20 bg-space-950/60">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             <img
@@ -46,7 +46,7 @@ export const WelcomePage: React.FC<WelcomePageProps> = ({ onEnterLogin }) => {
           </div>
           <div className="flex flex-col">
             <span className="font-orbit font-extrabold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-indigo-300 text-lg">
-              AVARTAN
+              VOID PARADIGM
             </span>
             <span className="text-[10px] text-cyan-400 font-mono tracking-widest uppercase">
               Pentagram Week 2026 • 28th - 31st October
@@ -66,7 +66,7 @@ export const WelcomePage: React.FC<WelcomePageProps> = ({ onEnterLogin }) => {
 
       {/* Main Body: Glassmorphism Box with High-Impact Presentation */}
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 max-w-4xl mx-auto w-full">
-        <div className="relative w-full max-w-3xl rounded-3xl bg-space-900/60 border border-cyan-400/30 p-8 md:p-12 backdrop-blur-2xl shadow-[0_0_90px_rgba(0,243,255,0.22)] flex flex-col items-center text-center overflow-hidden transition-all duration-700">
+        <div className="relative w-full max-w-3xl rounded-3xl bg-space-900/70 border border-cyan-400/30 p-8 md:p-12 shadow-[0_0_60px_rgba(0,243,255,0.18)] flex flex-col items-center text-center overflow-hidden transition-all duration-500">
           
           {/* Subtle neon glow orbs inside glass box */}
           <div className="absolute -top-20 -left-20 w-52 h-52 rounded-full bg-cyan-500/15 blur-3xl pointer-events-none" />
@@ -95,8 +95,8 @@ export const WelcomePage: React.FC<WelcomePageProps> = ({ onEnterLogin }) => {
                 Pentagram Presents
               </span>
 
-              <h1 className="text-4xl sm:text-6xl md:text-7xl font-orbit font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-slate-100 to-cyan-300 mt-1 mb-2 drop-shadow-[0_0_40px_rgba(0,243,255,0.6)]">
-                AVARTAN
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-orbit font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-slate-100 to-cyan-300 mt-1 mb-2 drop-shadow-[0_0_40px_rgba(0,243,255,0.6)]">
+                VOID PARADIGM
               </h1>
 
               <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-xl bg-space-950/80 border border-cyan-500/30 text-slate-200 font-mono text-xs sm:text-sm shadow-inner">
@@ -131,7 +131,7 @@ export const WelcomePage: React.FC<WelcomePageProps> = ({ onEnterLogin }) => {
       {/* Minimal Footer */}
       <footer className="relative z-10 w-full px-6 py-4 flex items-center justify-between text-xs text-slate-500 font-mono border-t border-cyan-500/10 backdrop-blur-sm bg-space-950/40">
         <div>
-          <span>AVARTAN • PENTAGRAM WEEK 2026</span>
+          <span>VOID PARADIGM • PENTAGRAM WEEK 2026</span>
         </div>
         <div>
           <span>28th - 31st October 2026</span>

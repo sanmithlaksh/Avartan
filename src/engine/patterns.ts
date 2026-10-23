@@ -2,8 +2,10 @@
 //
 // Every team gets five fresh star maps: three 5x5 planet fields (each planet type
 // comes with a finite supply) followed by two real constellations drawn on a
-// larger 8x8 lattice. No signature is ever issued to the same team twice (history
-// is kept per team on this device).
+// larger 8x8 lattice. Planet fields are rebuilt randomly every run and the two
+// constellation charts are drawn from the full real-sky catalogue, so no two
+// squads see the same set. No signature is ever issued to the same team twice
+// (history is kept per team on this device).
 export const PATTERN_COUNT = 5;
 export const PLANET_LEVELS = 3;
 
@@ -151,91 +153,143 @@ const CONSTELLATIONS: ConstellationDef[] = [
     name: 'Cassiopeia',
     common: 'The Queen',
     gridSize: 8,
-    stars: [
-      [0, 5],
-      [2, 2],
-      [4, 4],
-      [6, 1],
-      [7, 5]
-    ],
-    links: [
-      [0, 1],
-      [1, 2],
-      [2, 3],
-      [3, 4]
-    ]
+    stars: [[0, 5], [2, 2], [4, 4], [6, 1], [7, 5]],
+    links: [[0, 1], [1, 2], [2, 3], [3, 4]]
   },
   {
     name: 'Cygnus',
     common: 'The Swan',
     gridSize: 8,
-    stars: [
-      [4, 0],
-      [4, 3],
-      [4, 7],
-      [1, 4],
-      [7, 3]
-    ],
-    links: [
-      [0, 1],
-      [1, 2],
-      [1, 3],
-      [1, 4]
-    ]
+    stars: [[4, 0], [4, 3], [4, 7], [1, 4], [7, 3]],
+    links: [[0, 1], [1, 2], [1, 3], [1, 4]]
   },
   {
     name: 'Ursa Major',
     common: 'The Big Dipper',
     gridSize: 8,
-    stars: [
-      [0, 7],
-      [1, 6],
-      [2, 5],
-      [4, 4],
-      [3, 2],
-      [5, 1],
-      [7, 3]
-    ],
-    links: [
-      [0, 1],
-      [1, 2],
-      [2, 3],
-      [3, 4],
-      [4, 5],
-      [5, 6],
-      [6, 3]
-    ]
+    stars: [[0, 7], [1, 6], [2, 5], [4, 4], [3, 2], [5, 1], [7, 3]],
+    links: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 3]]
   },
   {
     name: 'Orion',
     common: 'The Hunter',
     gridSize: 8,
-    stars: [
-      [3, 0],
-      [1, 2],
-      [5, 2],
-      [2, 5],
-      [3, 5],
-      [5, 5],
-      [1, 7],
-      [5, 7]
-    ],
-    links: [
-      [0, 1],
-      [0, 2],
-      [1, 2],
-      [1, 3],
-      [2, 5],
-      [3, 4],
-      [4, 5],
-      [3, 6],
-      [5, 7]
-    ]
+    stars: [[3, 0], [1, 2], [5, 2], [2, 5], [3, 5], [5, 5], [1, 7], [5, 7]],
+    links: [[0, 1], [0, 2], [1, 2], [1, 3], [2, 5], [3, 4], [4, 5], [3, 6], [5, 7]]
+  },
+  {
+    name: 'Leo',
+    common: 'The Lion',
+    gridSize: 8,
+    stars: [[1, 7], [2, 6], [3, 5], [4, 4], [5, 2], [6, 4], [5, 6], [7, 5]],
+    links: [[0, 1], [1, 2], [2, 3], [3, 4], [3, 5], [5, 7], [2, 6], [6, 7]]
+  },
+  {
+    name: 'Scorpius',
+    common: 'The Scorpion',
+    gridSize: 8,
+    stars: [[1, 0], [2, 1], [3, 2], [4, 3], [5, 5], [6, 6], [6, 7], [5, 7]],
+    links: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7]]
+  },
+  {
+    name: 'Taurus',
+    common: 'The Bull',
+    gridSize: 8,
+    stars: [[1, 2], [2, 4], [3, 3], [4, 4], [5, 2], [3, 6], [7, 1]],
+    links: [[0, 1], [1, 2], [2, 3], [3, 4], [2, 5], [0, 6]]
+  },
+  {
+    name: 'Gemini',
+    common: 'The Twins',
+    gridSize: 8,
+    stars: [[1, 6], [1, 4], [2, 2], [3, 1], [5, 2], [6, 4], [5, 6], [6, 7]],
+    links: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [2, 5]]
+  },
+  {
+    name: 'Crux',
+    common: 'The Southern Cross',
+    gridSize: 8,
+    stars: [[2, 0], [2, 7], [0, 4], [4, 3]],
+    links: [[0, 1], [2, 3]]
+  },
+  {
+    name: 'Lyra',
+    common: 'The Lyre',
+    gridSize: 8,
+    stars: [[2, 1], [1, 3], [3, 4], [4, 6], [2, 6]],
+    links: [[0, 1], [0, 2], [1, 2], [2, 3], [2, 4]]
+  },
+  {
+    name: 'Aquila',
+    common: 'The Eagle',
+    gridSize: 8,
+    stars: [[1, 2], [3, 3], [5, 2], [4, 5], [2, 7], [6, 6]],
+    links: [[0, 1], [1, 2], [1, 3], [3, 4], [3, 5]]
+  },
+  {
+    name: 'Bootes',
+    common: 'The Herdsman',
+    gridSize: 8,
+    stars: [[3, 0], [4, 2], [5, 4], [4, 6], [2, 7], [1, 5], [1, 3]],
+    links: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 1]]
+  },
+  {
+    name: 'Canis Major',
+    common: 'The Great Dog',
+    gridSize: 8,
+    stars: [[2, 2], [3, 4], [2, 6], [4, 7], [5, 5], [6, 3]],
+    links: [[0, 1], [1, 2], [1, 3], [3, 4], [4, 5]]
+  },
+  {
+    name: 'Perseus',
+    common: 'The Hero',
+    gridSize: 8,
+    stars: [[1, 6], [2, 4], [3, 5], [4, 3], [5, 2], [6, 4], [4, 7], [3, 1]],
+    links: [[0, 1], [1, 2], [2, 3], [3, 4], [2, 6], [3, 5], [3, 7]]
+  },
+  {
+    name: 'Andromeda',
+    common: 'The Chained Princess',
+    gridSize: 8,
+    stars: [[0, 4], [2, 3], [4, 2], [6, 1], [5, 5], [3, 6]],
+    links: [[0, 1], [1, 2], [2, 3], [2, 4], [1, 5]]
+  },
+  {
+    name: 'Pegasus',
+    common: 'The Winged Horse',
+    gridSize: 8,
+    stars: [[1, 3], [4, 2], [5, 5], [2, 6], [0, 1], [6, 0], [7, 4]],
+    links: [[0, 1], [1, 2], [2, 3], [3, 0], [0, 4], [1, 5], [2, 6]]
+  },
+  {
+    name: 'Auriga',
+    common: 'The Charioteer',
+    gridSize: 8,
+    stars: [[2, 5], [1, 3], [2, 1], [4, 0], [6, 2], [5, 5]],
+    links: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 0]]
+  },
+  {
+    name: 'Corona Borealis',
+    common: 'The Northern Crown',
+    gridSize: 8,
+    stars: [[0, 4], [1, 2], [3, 1], [5, 2], [6, 4], [4, 6], [2, 6]],
+    links: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 0]]
+  },
+  {
+    name: 'Delphinus',
+    common: 'The Dolphin',
+    gridSize: 8,
+    stars: [[1, 3], [3, 1], [4, 3], [5, 5], [3, 6]],
+    links: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 0]]
+  },
+  {
+    name: 'Sagittarius',
+    common: 'The Archer',
+    gridSize: 8,
+    stars: [[1, 6], [2, 3], [4, 2], [5, 4], [5, 6], [3, 7], [1, 4]],
+    links: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 0], [1, 6], [6, 0], [2, 4]]
   }
 ];
-
-const EASY_CONSTELLATIONS = ['Cassiopeia', 'Cygnus'];
-const HARD_CONSTELLATIONS = ['Ursa Major', 'Orion'];
 
 const cellAt = (gridSize: number, [col, row]: [number, number]) => row * gridSize + col;
 
@@ -256,14 +310,10 @@ const buildConstellationPattern = (def: ConstellationDef): PatternSpec => {
   };
 };
 
-const pickConstellation = (index: number, usedNames: string[]): ConstellationDef => {
-  const preferred =
-    index === PLANET_LEVELS ? EASY_CONSTELLATIONS : HARD_CONSTELLATIONS;
-  const pool = CONSTELLATIONS.filter(
-    c => preferred.includes(c.name) && !usedNames.includes(c.name)
-  );
-  const fallback = CONSTELLATIONS.filter(c => !usedNames.includes(c.name));
-  const choices = pool.length > 0 ? pool : fallback.length > 0 ? fallback : CONSTELLATIONS;
+/** Draws a genuinely random figure from the full real-sky catalogue. */
+const pickConstellation = (usedNames: string[]): ConstellationDef => {
+  const unseen = CONSTELLATIONS.filter(c => !usedNames.includes(c.name));
+  const choices = unseen.length > 0 ? unseen : CONSTELLATIONS;
   return choices[Math.floor(Math.random() * choices.length)];
 };
 
@@ -289,7 +339,7 @@ export const generatePatternSet = (team: string, count = PATTERN_COUNT): Pattern
       continue;
     }
 
-    const def = pickConstellation(i, constellationNames);
+    const def = pickConstellation(constellationNames);
     constellationNames.push(def.name);
     const candidate = buildConstellationPattern(def);
     used.add(signatureOf(candidate));

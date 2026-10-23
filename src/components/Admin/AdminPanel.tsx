@@ -50,6 +50,7 @@ export const AdminPanel: React.FC = () => {
   const [dbStatus, setDbStatus] = useState<string | null>(null);
   const [teams, setTeams] = useState<TeamAccount[]>([]);
   const [selectedTeam, setSelectedTeam] = useState<TeamAccount | null>(null);
+  const [showDemoChoices, setShowDemoChoices] = useState(false);
 
   // Load the roster and keep it live while the console is open
   useEffect(() => {
@@ -120,7 +121,7 @@ export const AdminPanel: React.FC = () => {
   const validation = validateMissionSolvability(currentMission, settings.earthStartingNode);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-space-950/85 backdrop-blur-2xl animate-fade-in select-none">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-space-950/90 animate-fade-in select-none">
       <div className="relative w-full max-w-4xl rounded-2xl bg-space-900/95 border border-cyan-500/40 p-6 md:p-8 shadow-[0_0_60px_rgba(0,243,255,0.3)] flex flex-col gap-6 max-h-[90vh] overflow-y-auto">
         {/* Close Button */}
         <button
@@ -179,15 +180,31 @@ export const AdminPanel: React.FC = () => {
             <div className="flex items-center gap-2">
               <span className="text-xs text-slate-400">|</span>
               <span className="text-xs text-slate-300 font-sans">Demo Play:</span>
-              {[1, 2, 3].map(lvl => (
-                <button
-                  key={`demo-${lvl}`}
-                  onClick={() => startDemoRound(lvl)}
-                  className="px-3 py-1.5 rounded-lg text-xs font-orbit font-bold bg-purple-900/60 border border-purple-400/60 text-purple-200 hover:bg-purple-800/70 transition-all"
-                >
-                  Demo L{lvl}
-                </button>
-              ))}
+              <button
+                type="button"
+                onClick={() => setShowDemoChoices(v => !v)}
+                className="px-3 py-1.5 rounded-lg text-xs font-orbit font-bold bg-purple-900/60 border border-purple-400/60 text-purple-200 hover:bg-purple-800/70 transition-all"
+              >
+                Demo {showDemoChoices ? '▾' : '▸'}
+              </button>
+              {showDemoChoices && (
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => startDemoRound(1)}
+                    className="px-3 py-1.5 rounded-lg text-xs font-orbit font-bold bg-space-950 border border-cyan-400/50 text-cyan-200 hover:bg-cyan-950/60 transition-all"
+                  >
+                    Round 1
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => startDemoRound(2)}
+                    className="px-3 py-1.5 rounded-lg text-xs font-orbit font-bold bg-space-950 border border-fuchsia-400/50 text-fuchsia-200 hover:bg-fuchsia-950/60 transition-all"
+                  >
+                    Round 2
+                  </button>
+                </div>
+              )}
             </div>
             <span className="text-xs font-mono text-slate-400 ml-auto">
               Current Mission: <strong className="text-cyan-300 font-bold">{currentMission.title}</strong>

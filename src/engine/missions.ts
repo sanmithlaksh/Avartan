@@ -122,7 +122,7 @@ export const PRESET_MISSIONS: Mission[] = [
     type: 'SYSTEM_RECOVERY',
     title: 'AVARTAN: Celestial Restoration',
     codeName: 'OP-AVARTAN',
-    briefing: 'Ancient stellar maps have been erased. Activate the outer boundary, reveal the celestial reference wheel, and restore all seven planetary alignments from memory to recover the lost navigation sequence.',
+    briefing: 'Ancient stellar maps have been erased. Activate the outer boundary, read each world\'s sightline against the zodiac wheel, and restore all seven planetary alignments to recover the lost navigation sequence.',
     targets: [
       { planetId: 'mercury', targetSectorId: 7 }, // Scorpio (code 8)
       { planetId: 'venus',   targetSectorId: 6 }, // Libra   (code 7)
@@ -134,9 +134,9 @@ export const PRESET_MISSIONS: Mission[] = [
     ],
     expectedCode: '8-7-5-5-1-3-1',
     hints: [
-      'Hold the outer celestial boundary ring for 15 seconds to activate the zodiac reference system.',
-      'After activation, hold the boundary again for 10 seconds to reveal the planetary position table — memorise it! It only shows once.',
-      'Place each planet on the correct orbital node so its sightline from Earth matches your memorised sector.'
+      'Hold the outer celestial boundary ring for 10 seconds to activate the zodiac reference system.',
+      'The clearance terminal stays sealed for the first 15 minutes — use that time to map every sightline.',
+      'Place each planet on the correct orbital node so its sightline from Earth matches the target sector.'
     ],
     pointsReward: 1000
   },

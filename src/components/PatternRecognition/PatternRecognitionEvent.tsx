@@ -2,8 +2,9 @@
 //
 // Five deep-space charts, one after another. Levels 1-3 are 5×5 planet fields:
 // a fixed supply of Mercury, Earth and Jupiter must be rebuilt exactly where they
-// appeared. Levels 4-5 are real constellations on an 8×8 star chart. Each grid
-// lights up for ten seconds, then the player rebuilds it in fifteen.
+// appeared. Levels 4-5 are real constellations on an 8×8 star chart, drawn at
+// random from the full catalogue. Each grid draws itself first, then holds for
+// seven seconds, then the player rebuilds it in thirty.
 // Scoring is 100 pts per perfectly rebuilt token plus a 100 pt perfect bonus.
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useGame } from '../../context/GameContext';
@@ -31,18 +32,19 @@ import {
   ChevronRight,
   Sparkles,
   Lock,
-  ArrowLeft,
   Star,
-  MousePointerClick
+  MousePointerClick,
+  Layers,
+  Target
 } from 'lucide-react';
 
-const REVEAL_SECONDS = 10;
-const INPUT_SECONDS = 15;
-const REVEAL_STAGGER_MS = 460;
+const REVEAL_SECONDS = 7;
+const INPUT_SECONDS = 30;
+const REVEAL_STAGGER_MS = 420;
 // The pattern finishes drawing before the memorise clock starts, so players get
-// the full ten seconds with the complete chart on screen.
-const DRAW_START_DELAY_MS = 240;
-const DRAW_HOLD_MS = 700;
+// the full seven seconds with the complete chart on screen.
+const DRAW_START_DELAY_MS = 220;
+const DRAW_HOLD_MS = 650;
 const POINTS_PER_BOX = 100;
 const PERFECT_BONUS = 100;
 
@@ -64,7 +66,7 @@ const PaletteTray: React.FC<{
   disabled: boolean;
   onSelect: (item: PatternItemId) => void;
 }> = ({ entries, remaining, selected, disabled, onSelect }) => (
-  <div className="flex flex-wrap items-center justify-center gap-2">
+  <div className="flex flex-col gap-2 w-full">
     {entries.map(entry => {
       const left = remaining.get(entry.id) ?? 0;
       const empty = left <= 0;
@@ -78,29 +80,30 @@ const PaletteTray: React.FC<{
           disabled={disabled || empty}
           aria-pressed={active}
           aria-label={`${itemLabel(entry.id)}, ${left} left`}
-          className={`flex items-center gap-2 px-2.5 py-1.5 rounded-xl border transition-all duration-200 ${
+          className={`flex items-center gap-3 w-full px-3 py-2 rounded-xl border transition-all duration-200 ${
             active
-              ? 'border-cyan-300 bg-cyan-500/20 shadow-[0_0_18px_rgba(34,211,238,0.35)] scale-[1.03]'
+              ? 'border-cyan-300 bg-cyan-500/20 shadow-[0_0_20px_rgba(34,211,238,0.35)]'
               : empty
               ? 'border-space-700/60 bg-space-950/50 opacity-45'
               : 'border-white/10 bg-space-950/80 hover:border-cyan-400/60 hover:bg-cyan-950/30'
-          } ${disabled || empty ? 'cursor-default' : 'cursor-pointer active:scale-95'}`}
+          } ${disabled || empty ? 'cursor-default' : 'cursor-pointer active:scale-[0.98]'}`}
         >
-          <span className="w-8 h-8 shrink-0">
+          <span className="w-11 h-11 shrink-0">
             <PlanetGlyph item={entry.id} muted={empty} />
           </span>
-          <span className="flex flex-col items-start leading-none">
-            <span className="text-[9px] font-mono uppercase tracking-wider text-slate-400">
+          <span className="flex flex-col items-start leading-tight">
+            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400">
               {itemLabel(entry.id)}
             </span>
             <span
-              className={`font-mono text-sm font-bold tabular-nums ${
+              className={`font-mono text-xl font-bold tabular-nums ${
                 empty ? 'text-slate-500' : 'text-cyan-200'
               }`}
             >
               ×{left}
             </span>
           </span>
+          {active && <span className="ml-auto text-[9px] font-mono text-cyan-300">SELECTED</span>}
         </button>
       );
     })}
@@ -170,8 +173,8 @@ const PatternGrid: React.FC<{
                 y1={y1}
                 x2={x2}
                 y2={y2}
-                stroke="rgba(186,230,253,0.55)"
-                strokeWidth="0.45"
+                stroke="rgba(186,230,253,0.6)"
+                strokeWidth="0.5"
                 strokeLinecap="round"
                 strokeDasharray="2 1.4"
                 style={{ opacity: visible ? 1 : 0, transition: 'opacity 400ms ease-out' }}
@@ -228,9 +231,7 @@ const PatternGrid: React.FC<{
               disabled={!interactive}
               onClick={() => interactive && onToggle?.(cell)}
               aria-label={
-                showItem
-                  ? `Grid node ${cell + 1}, ${itemLabel(showItem)}`
-                  : `Grid node ${cell + 1}`
+                showItem ? `Grid node ${cell + 1}, ${itemLabel(showItem)}` : `Grid node ${cell + 1}`
               }
               className={`relative aspect-square rounded-lg border transition-all duration-300 ease-out flex items-center justify-center ${
                 showItem || revealed ? 'scale-100' : 'scale-[0.96]'
@@ -240,9 +241,8 @@ const PatternGrid: React.FC<{
                   : 'cursor-default'
               }`}
               style={{
-                animation: revealed && revealCount !== undefined
-                  ? 'starReveal 320ms ease-out both'
-                  : undefined
+                animation:
+                  revealed && revealCount !== undefined ? 'starReveal 320ms ease-out both' : undefined
               }}
             >
               {showItem && (
@@ -316,7 +316,7 @@ export const PatternRecognitionEvent: React.FC = () => {
     if ((next?.id ?? null) !== selectedItem) setSelectedItem(next ? next.id : null);
   }, [stage, pattern, selectedItem, remaining]);
 
-  // ── Reveal: tokens light up one after another, then the 10s clock starts ───
+  // ── Reveal: tokens light up one after another, then the 7s clock starts ───
   useEffect(() => {
     if (stage !== 'reveal' || !pattern) return;
 
@@ -461,7 +461,7 @@ export const PatternRecognitionEvent: React.FC = () => {
   const currentResult = results[index];
   const timerTotal = stage === 'reveal' ? REVEAL_SECONDS : INPUT_SECONDS;
   const timerPct = Math.max(0, Math.min(100, (timeLeft / timerTotal) * 100));
-  const isUrgent = stage === 'input' && timeLeft <= 3;
+  const isUrgent = stage === 'input' && timeLeft <= 5;
   const isConstellation = pattern?.type === 'constellation';
   // While the tokens are still appearing the memorise clock has not started yet.
   const drawing = !!pattern && stage === 'reveal' && revealCount < pattern.cells.length;
@@ -474,364 +474,397 @@ export const PatternRecognitionEvent: React.FC = () => {
     );
   }
 
+  const stageTitle =
+    stage === 'reveal'
+      ? drawing
+        ? 'CHART INBOUND'
+        : `MEMORISE — ${REVEAL_SECONDS}s`
+      : stage === 'ready'
+      ? 'CHART HIDDEN'
+      : stage === 'input'
+      ? isConstellation
+        ? `REBUILD ${pattern.name.toUpperCase()}`
+        : 'REBUILD THE FIELD'
+      : stage === 'result'
+      ? currentResult?.perfect
+        ? 'PERFECT RECONSTRUCTION'
+        : 'CHART SCORED'
+      : 'ROUND COMPLETE';
+
   return (
-    <div className="relative z-10 w-full max-w-2xl max-h-[94vh] overflow-y-auto rounded-2xl bg-space-900/92 border border-fuchsia-500/40 p-5 md:p-7 shadow-[0_0_70px_rgba(217,70,239,0.22)] flex flex-col gap-4 backdrop-blur-xl animate-fade-in">
-      {/* Header */}
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/40 shadow-[0_0_15px_rgba(217,70,239,0.25)]">
-            <Grid3x3 className="w-6 h-6" />
+    <div className="relative z-10 w-full h-full max-w-[1680px] rounded-2xl bg-space-900/97 border border-fuchsia-500/40 shadow-[0_0_70px_rgba(217,70,239,0.22)] flex flex-col overflow-y-auto lg:overflow-hidden animate-fade-in">
+      {/* Top bar: identity, chart pips, timer */}
+      <header className="shrink-0 flex flex-wrap items-center justify-between gap-3 px-4 md:px-6 py-3 border-b border-fuchsia-500/20 bg-space-950/40">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="p-2 rounded-xl bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/40 shadow-[0_0_15px_rgba(217,70,239,0.25)]">
+            <Grid3x3 className="w-5 h-5" />
           </div>
-          <div className="flex flex-col">
-            <h2 className="text-lg md:text-xl font-orbit font-extrabold text-slate-100 tracking-wide">
+          <div className="flex flex-col min-w-0">
+            <h2 className="text-base md:text-lg font-orbit font-extrabold text-slate-100 tracking-wide truncate">
               PATTERN RECOGNITION
             </h2>
-            <span className="text-[11px] text-slate-400 font-mono tracking-wider uppercase">
+            <span className="text-[10px] text-slate-400 font-mono tracking-wider uppercase truncate">
               Round 02 • Squad {teamName}
             </span>
           </div>
         </div>
 
-        <div className="text-right shrink-0">
-          <div className="text-[9px] font-mono uppercase tracking-widest text-slate-500">
-            {isConstellation ? 'Constellation chart' : 'Planet field'}
+        <div className="flex items-center gap-3 order-3 sm:order-2 w-full sm:w-auto sm:flex-1 sm:max-w-md">
+          <div className="flex items-center gap-1.5 flex-1">
+            {Array.from({ length: PATTERN_COUNT }, (_, i) => {
+              const done = i < results.length;
+              const active = i === index && stage !== 'summary';
+              return (
+                <div
+                  key={i}
+                  className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${
+                    done
+                      ? results[i]?.perfect
+                        ? 'bg-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.6)]'
+                        : 'bg-fuchsia-400/70'
+                      : active
+                      ? 'bg-cyan-400'
+                      : 'bg-space-800'
+                  }`}
+                />
+              );
+            })}
           </div>
-          <div className={`font-orbit font-bold text-sm ${isConstellation ? 'text-sky-300' : 'text-cyan-300'}`}>
-            {isConstellation ? pattern.name : `${pattern.gridSize}×${pattern.gridSize} grid`}
-          </div>
-        </div>
-      </div>
-
-      {/* Pips */}
-      <div className="flex items-center gap-1.5">
-        {Array.from({ length: PATTERN_COUNT }, (_, i) => {
-          const done = i < results.length;
-          const active = i === index && stage !== 'summary';
-          return (
-            <div
-              key={i}
-              className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${
-                done
-                  ? results[i]?.perfect
-                    ? 'bg-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.6)]'
-                    : 'bg-fuchsia-400/70'
-                  : active
-                  ? 'bg-cyan-400'
-                  : 'bg-space-800'
-              }`}
-            />
-          );
-        })}
-        <span className="ml-1 text-[10px] font-mono text-slate-500 tabular-nums shrink-0">
-          {Math.min(stage === 'summary' ? PATTERN_COUNT : index + 1, PATTERN_COUNT)}/{PATTERN_COUNT}
-        </span>
-      </div>
-
-      {/* Status banner */}
-      <div
-        className={`p-3 rounded-xl border flex items-center justify-between gap-3 transition-colors duration-300 ${
-          isUrgent
-            ? 'bg-rose-950/60 border-rose-500/50 text-rose-200'
-            : 'bg-space-950/70 border-fuchsia-500/25 text-slate-200'
-        }`}
-      >
-        <div className="flex items-center gap-2 text-xs md:text-sm font-orbit font-bold uppercase tracking-wide">
-          {stage === 'reveal' && (
-            <>
-              <Eye className="w-4 h-4 text-fuchsia-300 shrink-0" />
-              {isConstellation ? `Memorise ${pattern.name}` : `Memorise planet field #${index + 1}`}
-            </>
-          )}
-          {stage === 'ready' && (
-            <>
-              <Sparkles className="w-4 h-4 text-cyan-300 shrink-0" />
-              {isConstellation ? `${pattern.name} hidden` : `Pattern #${index + 1} hidden`} — ready to rebuild
-            </>
-          )}
-          {stage === 'input' && (
-            <>
-              <Pencil className="w-4 h-4 text-cyan-300 shrink-0" />
-              {isConstellation ? `Rebuild ${pattern.name}` : 'Rebuild the planet field'}
-            </>
-          )}
-          {stage === 'result' && (
-            <>
-              {currentResult?.perfect ? (
-                <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
-              ) : (
-                <XCircle className="w-4 h-4 text-amber-300 shrink-0" />
-              )}
-              {isConstellation ? pattern.name : `Pattern #${index + 1}`} scored{' '}
-              {currentResult?.points ?? 0} pts
-            </>
-          )}
-          {stage === 'summary' && (
-            <>
-              <Trophy className="w-4 h-4 text-amber-300 shrink-0" />
-              Round 02 complete — {totalPoints} pts
-            </>
-          )}
+          <span className="text-[10px] font-mono text-slate-500 tabular-nums shrink-0">
+            {Math.min(stage === 'summary' ? PATTERN_COUNT : index + 1, PATTERN_COUNT)}/{PATTERN_COUNT}
+          </span>
         </div>
 
-        {drawing && (
-          <div className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-wider text-fuchsia-300 shrink-0">
-            <Sparkles className="w-4 h-4 animate-pulse" />
-            Revealing…
-          </div>
-        )}
-
-        {(stage === 'input' || (stage === 'reveal' && !drawing)) && (
-          <div className="flex items-center gap-1.5 font-mono text-sm md:text-base font-bold tabular-nums shrink-0">
-            <Timer className="w-4 h-4" />
-            {String(timeLeft).padStart(2, '0')}s
-          </div>
-        )}
-      </div>
-
-      {(stage === 'reveal' || stage === 'input') && (
-        <div className="w-full h-1.5 rounded-full bg-space-950 border border-cyan-500/20 overflow-hidden">
-          <div
-            className={`h-full transition-all duration-1000 ease-linear ${
-              isUrgent ? 'bg-rose-500' : 'bg-gradient-to-r from-fuchsia-500 to-cyan-400'
+        <div className="flex items-center gap-2 order-2 sm:order-3 shrink-0">
+          <span
+            className={`px-2.5 py-1.5 rounded-lg border text-[10px] font-mono uppercase tracking-wider ${
+              isConstellation
+                ? 'border-sky-400/40 bg-sky-950/50 text-sky-300'
+                : 'border-cyan-400/40 bg-cyan-950/50 text-cyan-300'
             }`}
-            style={{ width: `${timerPct}%` }}
-          />
+          >
+            {isConstellation ? pattern.name : `${pattern.gridSize}×${pattern.gridSize} field`}
+          </span>
+          {(stage === 'input' || (stage === 'reveal' && !drawing)) && (
+            <span
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border font-mono text-sm font-bold tabular-nums ${
+                isUrgent
+                  ? 'border-rose-500/60 bg-rose-950/60 text-rose-300'
+                  : 'border-cyan-500/30 bg-space-950/80 text-cyan-200'
+              }`}
+            >
+              <Timer className="w-4 h-4" />
+              {String(timeLeft).padStart(2, '0')}s
+            </span>
+          )}
+          {drawing && (
+            <span className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-fuchsia-500/40 bg-fuchsia-950/40 text-fuchsia-200 font-mono text-[10px] uppercase tracking-wider">
+              <Sparkles className="w-3.5 h-3.5 animate-pulse" />
+              Revealing
+            </span>
+          )}
         </div>
-      )}
+      </header>
 
-      {/* Stage body */}
-      <div className="w-full max-w-[440px] mx-auto">
-        {stage === 'reveal' && (
-          <div className="animate-fade-in">
-            <PatternGrid
-              pattern={pattern}
-              revealCount={revealCount}
-              showLinks={isConstellation}
-            />
-            <p className="mt-2 text-center text-[10px] font-mono uppercase tracking-widest text-slate-500">
+      {/* Main stage: info rail | board | control rail */}
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-[minmax(210px,0.85fr)_minmax(0,2fr)_minmax(240px,1fr)] gap-3 md:gap-4 p-3 md:p-4">
+        {/* Left rail — current objective and scoring */}
+        <aside className="flex flex-col gap-3 min-h-0">
+          <div className="rounded-xl border border-fuchsia-500/25 bg-space-950/65 p-3.5 flex flex-col gap-2">
+            <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-widest text-fuchsia-300">
+              {stage === 'reveal' && <Eye className="w-4 h-4" />}
+              {stage === 'ready' && <Lock className="w-4 h-4" />}
+              {stage === 'input' && <Pencil className="w-4 h-4" />}
+              {stage === 'result' && <Target className="w-4 h-4" />}
+              {stage === 'summary' && <Trophy className="w-4 h-4" />}
+              {stage === 'summary' ? 'Final result' : `Chart ${index + 1} of ${PATTERN_COUNT}`}
+            </div>
+            <h3 className="text-lg xl:text-xl font-orbit font-black text-slate-100 leading-tight">
+              {stageTitle}
+            </h3>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              {stage === 'reveal' &&
+                (drawing
+                  ? 'The chart is drawing itself. The memorise clock starts once every token is visible.'
+                  : `Every token is on screen. Hold it in mind — in ${timeLeft}s the chart vanishes.`)}
+              {stage === 'ready' &&
+                `You get ${INPUT_SECONDS} seconds on the empty grid. Tap a token, then tap a box to place it.`}
+              {stage === 'input' &&
+                (isConstellation
+                  ? `Recreate the ${pattern.cells.length}-star figure. Tap the star chip, then each box where a star sat.`
+                  : `Place all ${pattern.cells.length} worlds. Each planet has a limited supply; tap a placed world to return it.`)}
+              {stage === 'result' &&
+                `${currentResult?.correctCells ?? 0} of ${pattern.cells.length} tokens matched the chart.`}
+              {stage === 'summary' &&
+                `All ${PATTERN_COUNT} charts rebuilt. ${totalCorrectBoxes} of ${possibleCells} tokens matched.`}
+            </p>
+
+            {stage === 'reveal' && (
+              <div className="w-full h-1.5 rounded-full bg-space-950 border border-fuchsia-500/20 overflow-hidden mt-1">
+                <div
+                  className="h-full transition-all duration-1000 ease-linear bg-gradient-to-r from-fuchsia-500 to-cyan-400"
+                  style={{ width: `${timerPct}%` }}
+                />
+              </div>
+            )}
+            {stage === 'input' && (
+              <div className="w-full h-1.5 rounded-full bg-space-950 border border-cyan-500/20 overflow-hidden mt-1">
+                <div
+                  className={`h-full transition-all duration-1000 ease-linear ${
+                    isUrgent ? 'bg-rose-500' : 'bg-gradient-to-r from-cyan-400 to-fuchsia-500'
+                  }`}
+                  style={{ width: `${timerPct}%` }}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Scoring legend */}
+          <div className="rounded-xl border border-cyan-500/20 bg-space-950/50 p-3 flex flex-col gap-1.5 text-[10px] font-mono text-slate-400">
+            <span className="text-[9px] uppercase tracking-widest text-cyan-400">Scoring</span>
+            <span>100 pts per correct token</span>
+            <span>+100 perfect-chart bonus</span>
+            {stage === 'input' && (
+              <span className="text-cyan-300 mt-1">
+                {picks.length}/{pattern.cells.length} placed
+              </span>
+            )}
+          </div>
+
+          <div className="mt-auto hidden lg:flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-slate-600">
+            <Layers className="w-3 h-3" />
+            {isDemoMode ? 'Demo session • scores not saved' : 'Tournament chart'}
+          </div>
+        </aside>
+
+        {/* Centre — the chart itself */}
+        <div className="min-h-0 flex flex-col items-center justify-center gap-2">
+          <div
+            className="w-full max-w-full aspect-square mx-auto"
+            style={{ maxWidth: 'min(100%, calc(100dvh - 220px))' }}
+          >
+            {stage === 'reveal' && (
+              <PatternGrid
+                pattern={pattern}
+                revealCount={revealCount}
+                showLinks={isConstellation}
+              />
+            )}
+
+            {stage === 'input' && (
+              <PatternGrid
+                pattern={pattern}
+                picks={picks}
+                interactive
+                onToggle={toggleCell}
+              />
+            )}
+
+            {stage === 'result' && (
+              <PatternGrid
+                pattern={pattern}
+                picks={picks}
+                showVerdicts
+                showLinks={isConstellation}
+              />
+            )}
+
+            {stage === 'ready' && (
+              <div className="w-full h-full rounded-xl border border-cyan-500/20 bg-space-950/50 flex flex-col items-center justify-center gap-3 text-center">
+                <div className="w-16 h-16 rounded-2xl bg-cyan-500/15 border border-cyan-400/50 flex items-center justify-center text-cyan-300">
+                  <Lock className="w-7 h-7" />
+                </div>
+                <span className="font-orbit font-bold text-slate-100">
+                  {isConstellation ? `${pattern.name} locked away` : `Chart #${index + 1} locked away`}
+                </span>
+                <span className="text-xs text-slate-400 max-w-xs">
+                  {pattern.type === 'constellation'
+                    ? `${pattern.cells.length} stars to trace on a fresh chart.`
+                    : `${pattern.cells.length} worlds to place from a limited supply.`}
+                </span>
+              </div>
+            )}
+
+            {stage === 'summary' && (
+              <div className="w-full h-full rounded-xl border border-amber-500/30 bg-space-950/60 flex flex-col items-center justify-center gap-3 text-center p-6">
+                <Trophy className="w-12 h-12 text-amber-300" />
+                <span className="font-orbit font-black text-6xl text-slate-100 tabular-nums">
+                  {totalPoints}
+                </span>
+                <span className="text-xs font-mono uppercase tracking-widest text-slate-400">
+                  Round 02 points
+                </span>
+                <div className="grid grid-cols-3 gap-2 w-full max-w-md mt-2 text-center">
+                  <div className="p-2.5 rounded-lg bg-space-950/70 border border-cyan-500/25">
+                    <div className="text-[9px] font-orbit uppercase tracking-wider text-slate-400">Tokens</div>
+                    <div className="font-mono text-lg font-bold text-cyan-300">
+                      {totalCorrectBoxes}/{possibleCells}
+                    </div>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-space-950/70 border border-emerald-500/25">
+                    <div className="text-[9px] font-orbit uppercase tracking-wider text-slate-400">Perfect</div>
+                    <div className="font-mono text-lg font-bold text-emerald-300">
+                      {perfectCount}/{PATTERN_COUNT}
+                    </div>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-space-950/70 border border-amber-500/25">
+                    <div className="text-[9px] font-orbit uppercase tracking-wider text-slate-400">Bonus</div>
+                    <div className="font-mono text-lg font-bold text-amber-300">
+                      {perfectCount * PERFECT_BONUS}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1.5 w-full max-w-md">
+                  {results.map((r, i) => (
+                    <span
+                      key={i}
+                      className={`flex-1 h-9 rounded-lg flex items-center justify-center gap-1 text-[10px] font-mono border ${
+                        r.perfect
+                          ? 'bg-emerald-950/50 border-emerald-500/40 text-emerald-300'
+                          : r.correctCells > 0
+                          ? 'bg-fuchsia-950/40 border-fuchsia-500/40 text-fuchsia-200'
+                          : 'bg-rose-950/50 border-rose-500/40 text-rose-300'
+                      }`}
+                    >
+                      {r.perfect && <Star className="w-3 h-3" />}
+                      {r.points}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {stage === 'reveal' && (
+            <p className="text-center text-[10px] font-mono uppercase tracking-widest text-slate-500">
               {isConstellation
-                ? `${pattern.cells.length} stars • ${pattern.name}`
+                ? `${pattern.cells.length} stars • real constellation`
                 : `${pattern.cells.length} worlds • ${pattern.palette
                     .map(entry => `${itemLabel(entry.id)} ×${entry.count}`)
                     .join(' · ')}`}
             </p>
-            <p className="mt-1 text-center text-[10px] font-mono text-cyan-400/80">
-              {drawing ? 'Watch the chart fill in…' : '10-second memorise clock running'}
-            </p>
-          </div>
-        )}
+          )}
+        </div>
 
-        {stage === 'ready' && (
-          <div className="animate-fade-in flex flex-col items-center gap-4 py-6">
-            <div className="w-16 h-16 rounded-2xl bg-cyan-500/15 border border-cyan-400/50 flex items-center justify-center text-cyan-300">
-              <Lock className="w-7 h-7" />
-            </div>
-            <div className="text-center flex flex-col gap-1">
-              <span className="font-orbit font-bold text-slate-100">
-                {isConstellation ? `${pattern.name} locked away` : `Pattern #${index + 1} locked away`}
-              </span>
-              <span className="text-xs text-slate-400 max-w-sm">
-                You get <strong className="text-cyan-300">15 seconds</strong> on an empty grid.{' '}
-                {isConstellation
-                  ? `Tap the ${pattern.cells.length} boxes where the stars sat.`
-                  : `Place all ${pattern.cells.length} worlds — each planet has a limited supply.`}
-              </span>
-            </div>
+        {/* Right rail — tokens and the action for this stage */}
+        <aside className="flex flex-col gap-2.5 min-h-0">
+          {stage === 'ready' && (
             <button
               type="button"
               data-testid="pattern-begin-input"
               onClick={beginInput}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-fuchsia-500 text-slate-950 font-orbit font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all duration-200 shadow-[0_0_25px_rgba(0,243,255,0.3)] cursor-pointer"
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-fuchsia-500 text-slate-950 font-orbit font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.99] transition-all duration-200 shadow-[0_0_25px_rgba(0,243,255,0.3)] cursor-pointer"
             >
               <Pencil className="w-4 h-4" />
               {isConstellation ? 'Trace the constellation' : 'Reconstruct the pattern'}
             </button>
-          </div>
-        )}
+          )}
 
-        {stage === 'input' && (
-          <div className="animate-fade-in flex flex-col gap-2.5">
-            <PatternGrid
-              pattern={pattern}
-              picks={picks}
-              interactive
-              onToggle={toggleCell}
-            />
-
-            <PaletteTray
-              entries={pattern.palette}
-              remaining={remaining}
-              selected={selectedItem}
-              disabled={stage !== 'input'}
-              onSelect={selectItem}
-            />
-
-            <div className="flex items-center justify-center gap-1.5 text-[10px] font-mono uppercase tracking-widest text-slate-500">
-              <MousePointerClick className="w-3 h-3" />
-              {picks.length}/{pattern.cells.length} placed
-              {pattern.type === 'planets' && ' • tap a placed world to return it'}
-            </div>
-          </div>
-        )}
-
-        {stage === 'result' && (
-          <div
-            className={`animate-fade-in rounded-xl border p-3.5 flex flex-col gap-2.5 ${
-              currentResult?.perfect
-                ? 'border-emerald-500/50 bg-emerald-950/25'
-                : 'border-amber-500/40 bg-amber-950/20'
-            }`}
-          >
-            <div className="flex items-center justify-between">
-              <span
-                className={`font-orbit font-bold text-sm uppercase tracking-wider ${
-                  currentResult?.perfect ? 'text-emerald-300' : 'text-amber-300'
-                }`}
-              >
-                {currentResult?.perfect
-                  ? 'Perfect reconstruction'
-                  : `${currentResult?.correctCells}/${pattern.cells.length} tokens correct`}
-              </span>
-              <span className="text-[10px] font-mono text-slate-400">
-                +{currentResult?.points ?? 0} pts
-              </span>
-            </div>
-
-            <PatternGrid
-              pattern={pattern}
-              picks={picks}
-              showVerdicts
-              showLinks={isConstellation}
-            />
-
-            <div className="flex flex-wrap items-center gap-3 text-[10px] font-mono text-slate-400">
-              <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded bg-emerald-400/70" /> matched
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded bg-rose-500/70" /> wrong token
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="w-2.5 h-2.5 rounded ring-1 ring-amber-300/70 bg-space-950" /> missed
-              </span>
-            </div>
-          </div>
-        )}
-
-        {stage === 'summary' && (
-          <div className="animate-fade-in flex flex-col gap-3">
-            <div className="flex flex-col items-center gap-1 py-1">
-              <Trophy className="w-9 h-9 text-amber-300" />
-              <span className="font-orbit font-black text-3xl text-slate-100 tabular-nums">
-                {totalPoints}
-              </span>
-              <span className="text-[11px] font-mono uppercase tracking-widest text-slate-400">
-                Round 02 points
-              </span>
-            </div>
-
-            <div className="grid grid-cols-3 gap-2 text-center">
-              <div className="p-2.5 rounded-lg bg-space-950/70 border border-cyan-500/25">
-                <div className="text-[9px] font-orbit uppercase tracking-wider text-slate-400">
-                  Tokens
-                </div>
-                <div className="font-mono text-lg font-bold text-cyan-300">
-                  {totalCorrectBoxes}/{possibleCells}
-                </div>
-              </div>
-              <div className="p-2.5 rounded-lg bg-space-950/70 border border-emerald-500/25">
-                <div className="text-[9px] font-orbit uppercase tracking-wider text-slate-400">
-                  Perfect
-                </div>
-                <div className="font-mono text-lg font-bold text-emerald-300">
-                  {perfectCount}/{PATTERN_COUNT}
-                </div>
-              </div>
-              <div className="p-2.5 rounded-lg bg-space-950/70 border border-amber-500/25">
-                <div className="text-[9px] font-orbit uppercase tracking-wider text-slate-400">
-                  Bonus
-                </div>
-                <div className="font-mono text-lg font-bold text-amber-300">
-                  {perfectCount * PERFECT_BONUS}
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-1.5">
-              {results.map((r, i) => (
-                <span
-                  key={i}
-                  className={`flex-1 h-9 rounded-lg flex items-center justify-center gap-1 text-[10px] font-mono border ${
-                    r.perfect
-                      ? 'bg-emerald-950/50 border-emerald-500/40 text-emerald-300'
-                      : r.correctCells > 0
-                      ? 'bg-fuchsia-950/40 border-fuchsia-500/40 text-fuchsia-200'
-                      : 'bg-rose-950/50 border-rose-500/40 text-rose-300'
-                  }`}
-                >
-                  {r.perfect && <Star className="w-3 h-3" />}
-                  {r.points}
+          {stage === 'input' && (
+            <>
+              <div className="flex items-center justify-between px-0.5">
+                <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
+                  {isConstellation ? 'Star supply' : 'Planet supply'}
                 </span>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Controls */}
-      {stage === 'input' && (
-        <button
-          type="button"
-          data-testid="pattern-lock"
-          onClick={evaluate}
-          className="w-full py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-fuchsia-500 text-slate-950 font-orbit font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.99] transition-all duration-200 shadow-[0_0_24px_rgba(0,243,255,0.3)] cursor-pointer"
-        >
-          <Lock className="w-3.5 h-3.5" />
-          Lock in pattern ({picks.length}/{pattern.cells.length})
-        </button>
-      )}
-
-      {stage === 'result' && (
-        <button
-          type="button"
-          data-testid="pattern-open-next"
-          onClick={openNext}
-          className="w-full py-2.5 rounded-xl bg-gradient-to-r from-fuchsia-500 to-cyan-500 text-slate-950 font-orbit font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.99] transition-all duration-200 shadow-[0_0_24px_rgba(217,70,239,0.3)] cursor-pointer"
-        >
-          {index + 1 >= PATTERN_COUNT ? (
-            <>
-              <Trophy className="w-3.5 h-3.5" />
-              See round summary
-            </>
-          ) : (
-            <>
-              <Eye className="w-3.5 h-3.5" />
-              Open pattern #{index + 2}
-              <ChevronRight className="w-3.5 h-3.5" />
+                <span className="text-[10px] font-mono text-cyan-300 flex items-center gap-1">
+                  <MousePointerClick className="w-3 h-3" />
+                  {picks.length}/{pattern.cells.length}
+                </span>
+              </div>
+              <PaletteTray
+                entries={pattern.palette}
+                remaining={remaining}
+                selected={selectedItem}
+                disabled={stage !== 'input'}
+                onSelect={selectItem}
+              />
+              <button
+                type="button"
+                data-testid="pattern-lock"
+                onClick={evaluate}
+                className="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-fuchsia-500 text-slate-950 font-orbit font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.99] transition-all duration-200 shadow-[0_0_24px_rgba(0,243,255,0.3)] cursor-pointer"
+              >
+                <Lock className="w-3.5 h-3.5" />
+                Lock in pattern
+              </button>
             </>
           )}
-        </button>
-      )}
 
-      {stage === 'summary' && (
-        <div className="flex flex-col sm:flex-row gap-2">
-          <button
-            type="button"
-            data-testid="pattern-continue"
-            onClick={finishRound}
-            disabled={saving}
-            className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-fuchsia-500 to-cyan-500 text-slate-950 font-orbit font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.99] transition-all duration-200 shadow-[0_0_24px_rgba(217,70,239,0.35)] cursor-pointer disabled:opacity-60"
-          >
-            <Trophy className="w-3.5 h-3.5" />
-            {isDemoMode ? 'Exit demo — back to admin login' : 'Save score & return to cards'}
-          </button>
-        </div>
-      )}
+          {stage === 'reveal' && (
+            <div className="rounded-xl border border-fuchsia-500/25 bg-space-950/60 p-3.5 flex flex-col gap-2">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-fuchsia-300">
+                Watch closely
+              </span>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                {drawing
+                  ? 'Tokens are appearing one by one. The clock has not started yet.'
+                  : 'The complete chart is on screen. Study positions and token types.'}
+              </p>
+              <div className="flex items-center gap-2 text-[10px] font-mono text-slate-500">
+                <Eye className="w-3.5 h-3.5" /> {pattern.cells.length} tokens
+              </div>
+            </div>
+          )}
 
-      <p className="text-center text-[10px] font-mono text-slate-500 flex items-center justify-center gap-1.5">
-        <ArrowLeft className="w-3 h-3" />
-        Each grid is scored on its own: 100 pts per correct token, +100 for a perfect grid.
-      </p>
+          {stage === 'result' && (
+            <>
+              <div className="rounded-xl border border-cyan-500/25 bg-space-950/60 p-3.5 flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-slate-400">
+                    Score
+                  </span>
+                  <span className="font-mono font-bold text-amber-300">
+                    +{currentResult?.points ?? 0}
+                  </span>
+                </div>
+                <div className="flex flex-col gap-1 text-[10px] font-mono text-slate-400">
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded bg-emerald-400/70" /> matched
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded bg-rose-500/70" /> wrong token
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded ring-1 ring-amber-300/70 bg-space-950" /> missed
+                  </span>
+                </div>
+              </div>
+              <button
+                type="button"
+                data-testid="pattern-open-next"
+                onClick={openNext}
+                className="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-fuchsia-500 to-cyan-500 text-slate-950 font-orbit font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.99] transition-all duration-200 shadow-[0_0_24px_rgba(217,70,239,0.3)] cursor-pointer"
+              >
+                {index + 1 >= PATTERN_COUNT ? (
+                  <>
+                    <Trophy className="w-3.5 h-3.5" />
+                    See round summary
+                  </>
+                ) : (
+                  <>
+                    <Eye className="w-3.5 h-3.5" />
+                    Open chart #{index + 2}
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </>
+                )}
+              </button>
+            </>
+          )}
+
+          {stage === 'summary' && (
+            <button
+              type="button"
+              data-testid="pattern-continue"
+              onClick={finishRound}
+              disabled={saving}
+              className="mt-auto w-full py-3 rounded-xl bg-gradient-to-r from-fuchsia-500 to-cyan-500 text-slate-950 font-orbit font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.99] transition-all duration-200 shadow-[0_0_24px_rgba(217,70,239,0.35)] cursor-pointer disabled:opacity-60"
+            >
+              <Trophy className="w-3.5 h-3.5" />
+              {isDemoMode ? 'Finish demo — view score' : 'Save score & return to cards'}
+            </button>
+          )}
+        </aside>
+      </div>
     </div>
   );
 };

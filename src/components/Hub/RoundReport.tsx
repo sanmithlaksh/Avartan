@@ -1,6 +1,6 @@
-// End-of-round-1 report. Always shown once the round closes, whether the code
-// was graded or the six-minute clock ran out, and it is the only bridge to
-// Round 2 or back to the mission cards.
+// End-of-round-1 report. Always shown once the round closes, whether the latest
+// PIN was graded early or the 35-minute clock ran out, and it is the only bridge
+// to Round 2 or back to the mission cards.
 import React from 'react';
 import { useGame } from '../../context/GameContext';
 import { InteractiveCosmicCanvas } from '../UI/InteractiveCosmicCanvas';
@@ -28,7 +28,7 @@ export const RoundReport: React.FC = () => {
   if (!roundOneReport) return null;
 
   const { points, correct, total, timedOut, expectedCode, enteredCode } = roundOneReport;
-  const wrong = total - correct;
+  const wrong = enteredCode ? total - correct : 0;
   const perfect = !timedOut && wrong === 0;
 
   const expectedDigits = expectedCode ? expectedCode.split('-') : [];
@@ -62,7 +62,14 @@ export const RoundReport: React.FC = () => {
                 {timedOut ? 'TIME RAN OUT' : perfect ? 'CODE RECOVERED' : 'ROUND CLOSED'}
               </h1>
               <span className="text-xs text-slate-400">
-                Squad {teamName} • {timedOut ? 'clock expired before a code was entered' : 'clearance code graded'}
+                Squad {teamName} •{' '}
+                {enteredCode
+                  ? timedOut
+                    ? 'clock expired — latest PIN graded'
+                    : 'latest clearance PIN graded'
+                  : timedOut
+                  ? 'clock expired before any PIN was submitted'
+                  : 'round ended before any PIN was submitted'}
               </span>
             </div>
           </div>
@@ -77,11 +84,11 @@ export const RoundReport: React.FC = () => {
         <div className="grid grid-cols-3 gap-2.5 text-center">
           <div className="p-3 rounded-xl bg-space-950/70 border border-cyan-500/25">
             <div className="text-[9px] font-orbit uppercase tracking-wider text-slate-400">Correct digits</div>
-            <div className="font-mono text-xl font-bold text-emerald-300">{timedOut ? '—' : `${correct}/${total}`}</div>
+            <div className="font-mono text-xl font-bold text-emerald-300">{`${correct}/${total}`}</div>
           </div>
           <div className="p-3 rounded-xl bg-space-950/70 border border-rose-500/25">
             <div className="text-[9px] font-orbit uppercase tracking-wider text-slate-400">Wrong digits</div>
-            <div className="font-mono text-xl font-bold text-rose-300">{timedOut ? '—' : wrong}</div>
+            <div className="font-mono text-xl font-bold text-rose-300">{wrong}</div>
           </div>
           <div className="p-3 rounded-xl bg-space-950/70 border border-amber-500/25">
             <div className="text-[9px] font-orbit uppercase tracking-wider text-slate-400">Total standing</div>
@@ -93,10 +100,16 @@ export const RoundReport: React.FC = () => {
         <div className="p-3.5 rounded-xl bg-space-950/60 border border-cyan-500/20 flex items-start gap-2.5">
           <Clock className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
           <span className="text-xs text-slate-300 leading-relaxed">
-            {timedOut ? (
-              <>The clock expired before a code was entered, so the round awards the <strong className="text-amber-300">300 point</strong> time-out consolation.</>
+            {!enteredCode ? (
+              <>
+                {timedOut
+                  ? 'The clock expired before any PIN was submitted'
+                  : 'The round was ended before any PIN was submitted'}
+                , so the round scores <strong className="text-amber-300">0 points</strong>.
+              </>
             ) : (
               <>
+                {timedOut ? 'The clock expired, so the latest submitted PIN was graded. ' : 'The latest submitted PIN was graded. '}
                 Base <strong className="text-slate-100">1000</strong> points, minus <strong className="text-rose-300">100</strong> for
                 each wrong digit ({wrong} × 100 = {wrong * 100}) →{' '}
                 <strong className="text-amber-300">{points} points</strong>.{perfect ? ' Perfect sequence!' : ''}
@@ -106,7 +119,7 @@ export const RoundReport: React.FC = () => {
         </div>
 
         {/* Digit-by-digit comparison */}
-        {!timedOut && expectedDigits.length > 0 && (
+        {enteredCode && expectedDigits.length > 0 && (
           <div className="flex flex-col gap-2">
             <span className="text-[10px] font-orbit uppercase tracking-widest text-slate-400">
               Digit breakdown

@@ -11,7 +11,9 @@ import {
   HelpCircle,
   ShieldAlert,
   Sparkles,
-  KeyRound
+  KeyRound,
+  Lock,
+  Flag
 } from 'lucide-react';
 
 export const MissionPanel: React.FC = () => {
@@ -24,11 +26,27 @@ export const MissionPanel: React.FC = () => {
     toggleObservation,
     resetCurrentMission,
     setShowHintsModal,
-    setShowCodeModal
+    setShowCodeModal,
+    codeTerminalUnlocked,
+    codeUnlockSeconds,
+    latestAttempt,
+    endRoundOne,
+    isDemoMode
   } = useGame();
 
+  const unlockFormatted = `${Math.floor(codeUnlockSeconds / 60)
+    .toString()
+    .padStart(2, '0')}:${(codeUnlockSeconds % 60).toString().padStart(2, '0')}`;
+
+  const handleEndRound = () => {
+    const confirmed = window.confirm(
+      'End Round 1 now? Your latest submitted PIN will be graded and the round will close.'
+    );
+    if (confirmed) endRoundOne();
+  };
+
   return (
-    <aside className="w-full lg:w-96 flex flex-col gap-3.5 p-4 bg-space-950/85 backdrop-blur-xl border-l border-cyan-500/20 overflow-y-auto max-h-full select-none z-20">
+    <aside className="w-full lg:w-96 flex flex-col gap-3.5 p-4 bg-space-950/95 border-l border-cyan-500/20 overflow-y-auto max-h-full select-none z-20">
       {/* Mission Badge & Header */}
       <div className="flex flex-col gap-1 p-3.5 rounded-xl bg-space-900/60 border border-cyan-500/20">
         <div className="flex items-center justify-between">
@@ -154,14 +172,41 @@ export const MissionPanel: React.FC = () => {
         {/* Code Terminal Button */}
         <button
           onClick={() => setShowCodeModal(true)}
-          className="w-full py-2.5 px-4 rounded-xl font-orbit font-bold text-xs tracking-wider uppercase flex items-center justify-center gap-2 bg-space-900 hover:bg-cyan-950 border border-cyan-400/50 text-cyan-300 shadow-[0_0_15px_rgba(0,243,255,0.2)] transition-all"
+          className={`w-full py-2.5 px-4 rounded-xl font-orbit font-bold text-xs tracking-wider uppercase flex items-center justify-center gap-2 border transition-all ${
+            codeTerminalUnlocked
+              ? 'bg-space-900 hover:bg-cyan-950 border-cyan-400/50 text-cyan-300 shadow-[0_0_15px_rgba(0,243,255,0.2)]'
+              : 'bg-amber-950/40 border-amber-500/40 text-amber-300'
+          }`}
         >
-          <KeyRound className="w-4 h-4 text-amber-400" />
-          ENTER CLEARANCE CODE
+          {codeTerminalUnlocked ? (
+            <KeyRound className="w-4 h-4 text-amber-400" />
+          ) : (
+            <Lock className="w-4 h-4 text-amber-300" />
+          )}
+          {codeTerminalUnlocked ? 'ENTER CLEARANCE CODE' : `PIN LOCKED • ${unlockFormatted}`}
         </button>
         <p className="text-[10px] text-slate-500 font-mono text-center leading-relaxed">
-          Digits unlock as each world locks onto a sign — you only get one submission.
+          {codeTerminalUnlocked
+            ? 'Unlimited attempts. Only correct or incorrect is shown.'
+            : 'The PIN terminal opens after the opening window.'}
         </p>
+
+        {latestAttempt && (
+          <div className="flex items-center justify-between px-3 py-2 rounded-lg bg-space-950/70 border border-slate-700 text-[10px] font-mono">
+            <span className="text-slate-400 uppercase tracking-wider">Latest PIN</span>
+            <span className={latestAttempt.isCorrect ? 'text-emerald-300' : 'text-rose-300'}>
+              {latestAttempt.isCorrect ? 'CORRECT' : 'INCORRECT'} • try #{latestAttempt.attempts}
+            </span>
+          </div>
+        )}
+
+        <button
+          onClick={handleEndRound}
+          className="w-full py-2 px-4 rounded-xl font-orbit font-bold text-[11px] tracking-wider uppercase flex items-center justify-center gap-2 bg-rose-950/50 hover:bg-rose-900/60 border border-rose-500/40 text-rose-200 transition-all"
+        >
+          <Flag className="w-3.5 h-3.5" />
+          {isDemoMode ? 'END DEMO & GRADE PIN' : 'END ROUND & GRADE PIN'}
+        </button>
 
         {/* Sightline Observe Toggle */}
         <button

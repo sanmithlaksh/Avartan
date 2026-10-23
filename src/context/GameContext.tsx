@@ -8,7 +8,8 @@ import {
   GamePhase,
   ViewMode,
   TeamAccount,
-  RoundOneReport
+  RoundOneReport,
+  RoundOneAttempt
 } from '../engine/types';
 import {
   PLANET_DEFINITIONS,
@@ -68,12 +69,18 @@ interface GameContextType {
   roundOnePoints: number;
   roundTwoPoints: number;
   totalPoints: number;
+  latestAttempt: RoundOneAttempt | null;
+  codeTerminalUnlocked: boolean;
+  codeUnlockSeconds: number;
   startRoundOne: () => void;
   startRoundTwo: () => void;
+  beginRoundTwo: () => void;
   goToHub: () => void;
-  submitRoundCode: (code: string) => RoundOneReport;
+  submitRoundCode: (code: string) => RoundOneAttempt;
+  endRoundOne: () => void;
   completePatternEvent: (points: number, correct: number, total: number) => void;
   startDemoRound: (level: number) => void;
+  exitDemo: () => void;
 
   zodiacTableShown: boolean;
   zodiacTableVisible: boolean;
@@ -119,7 +126,7 @@ interface GameContextType {
 const DEFAULT_SETTINGS: GameSettings = {
   earthStartingNode: 1, // Node 1 = 30 deg (Scorpio Solar Configuration)
   earthDateLabel: 'Scorpio Solar Configuration',
-  missionDurationSeconds: 360,
+  missionDurationSeconds: 2100,
   maxAttempts: 3,
   hintsEnabled: true,
   zodiacAngularOffsetDeg: 0,
@@ -131,7 +138,10 @@ const DEFAULT_SETTINGS: GameSettings = {
 
 const TOTAL_ROUND_ONE_POINTS = 1000;
 const PER_WRONG_PENALTY = 100;
-const TIMEOUT_POINTS = 300;
+// The clearance terminal stays sealed for the first 15 minutes of the round.
+// Demos use a short gate so the whole flow can be exercised quickly.
+const ROUND_ONE_CODE_LOCK_SECONDS = 15 * 60;
+const DEMO_CODE_LOCK_SECONDS = 20;
 
 const refTableKey = (team: string) => `avartan_ref_table_shown:${team.trim().toLowerCase()}`;
 
@@ -216,6 +226,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [validationFeedback, setValidationFeedback] = useState<ValidationFeedback | null>(null);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [roundOneReport, setRoundOneReport] = useState<RoundOneReport | null>(null);
+  const [latestAttempt, setLatestAttempt] = useState<RoundOneAttempt | null>(null);
   const [isDemoMode, setIsDemoMode] = useState<boolean>(false);
 
   // Modals — the hub (round cards) replaced the old auto-opening briefing.
@@ -243,6 +254,15 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const roundThreeUnlocked = roundTwoDone;
   const roundOnePoints = activeAccount?.['level 1 points'] || 0;
   const roundTwoPoints = activeAccount?.['level 2 points'] || 0;
+
+  // Time left until the PIN terminal opens. Demos unlock almost immediately so
+  // the admin can see the whole round without waiting a quarter of an hour.
+  const codeUnlockSeconds = useMemo(() => {
+    const elapsed = Math.max(0, settings.missionDurationSeconds - timeRemaining);
+    const gate = isDemoMode ? DEMO_CODE_LOCK_SECONDS : ROUND_ONE_CODE_LOCK_SECONDS;
+    return Math.max(0, gate - elapsed);
+  }, [settings.missionDurationSeconds, timeRemaining, isDemoMode]);
+  const codeTerminalUnlocked = codeUnlockSeconds <= 0;
 
   const totalPoints = useMemo(() => {
     if (!activeAccount) return 0;
@@ -275,6 +295,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsTimerRunning(false);
     setShowCodeModal(false);
     setRoundOneReport(null);
+    setLatestAttempt(null);
+    setPatternResult(null);
     setIsDemoMode(false);
     setPhase('welcome');
   }, []);
@@ -364,9 +386,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         soundFx.playErrorTone();
       }
       setRoundOneReport(report);
-      // Exit demo mode back to admin login portal (welcome page)
-      setIsDemoMode(false);
-      setPhase('welcome');
+      // Demo scores are temporary: show them before returning to the portal.
+      setPhase('demo_report');
       return;
     }
 
@@ -403,7 +424,15 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     finaliseRoundOneRef.current = finaliseRoundOne;
   }, [finaliseRoundOne]);
 
-  // Round 1 countdown — freezes while the reference table (or any pause) is up.
+  // The latest PIN attempt is mirrored in a ref so the ticking countdown can
+  // grade it without re-registering the interval on every submission.
+  const latestAttemptRef = useRef<RoundOneAttempt | null>(null);
+  useEffect(() => {
+    latestAttemptRef.current = latestAttempt;
+  }, [latestAttempt]);
+
+  // Round 1 countdown. When it hits zero the latest submitted PIN is graded;
+  // with no submission at all the round closes on zero points.
   useEffect(() => {
     if (!isTimerRunning) return;
     const interval = window.setInterval(() => {
@@ -411,13 +440,18 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (prev <= 1) {
           window.clearInterval(interval);
           soundFx.playErrorTone();
+          const attempt = latestAttemptRef.current;
+          let points = attempt?.points ?? 0;
+          if (!attempt || attempt.correct === 0 || !attempt.code || attempt.code.trim() === '') {
+            points = 300;
+          }
           finaliseRoundOneRef.current({
-            points: TIMEOUT_POINTS,
-            correct: 0,
+            points,
+            correct: attempt?.correct ?? 0,
             total: currentMission.targets.length,
             timedOut: true,
             expectedCode: currentMission.targets.map(t => t.targetSectorId + 1).join('-'),
-            enteredCode: ''
+            enteredCode: attempt?.code ?? ''
           });
           return 0;
         }
@@ -508,8 +542,11 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setZodiacTableError(false);
   }, []);
 
-  // ── Round 1 submission: partial credit, 1000 total ────────────────────────
-  const submitRoundCode = useCallback((code: string): RoundOneReport => {
+  // ── Round 1 PIN attempts: unlimited tries, graded when the round ends ─────
+  // The terminal only tells the squad whether the PIN is correct or wrong. It
+  // never reveals which digits matched, and a submission does not close the
+  // round — the last attempt is what counts at the end.
+  const submitRoundCode = useCallback((code: string): RoundOneAttempt => {
     const expectedDigits = currentMission.targets.map(t => t.targetSectorId + 1);
     const enteredDigits = splitCode(code, expectedDigits);
 
@@ -519,29 +556,50 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     const wrong = expectedDigits.length - correct;
-    const points = Math.max(0, TOTAL_ROUND_ONE_POINTS - PER_WRONG_PENALTY * wrong);
+    let points = Math.max(0, TOTAL_ROUND_ONE_POINTS - PER_WRONG_PENALTY * wrong);
+    if (correct === 0 || enteredDigits.length === 0 || code.trim() === '') {
+      points = 300;
+    }
+    const attempts = (latestAttemptRef.current?.attempts ?? 0) + 1;
 
-    const report: RoundOneReport = {
-      points,
+    const attempt: RoundOneAttempt = {
+      code: enteredDigits.length > 0 ? enteredDigits.join('-') : code.trim(),
       correct,
       total: expectedDigits.length,
-      timedOut: false,
-      expectedCode: expectedDigits.join('-'),
-      enteredCode: enteredDigits.join('-')
+      points,
+      isCorrect: wrong === 0,
+      attempts
     };
 
-    finaliseRoundOne(report);
+    setLatestAttempt(attempt);
+    latestAttemptRef.current = attempt;
     setValidationFeedback({
       isComplete: wrong === 0,
       correctCount: correct,
       totalRequired: expectedDigits.length,
-      message: wrong === 0
-        ? 'CLEARANCE CODE CONFIRMED!'
-        : `${correct}/${expectedDigits.length} digits matched. ${wrong} × ${PER_WRONG_PENALTY} pts deducted.`,
+      message: wrong === 0 ? 'PIN CORRECT' : 'PIN INCORRECT',
       details: {} as ValidationFeedback['details']
     });
 
-    return report;
+    return attempt;
+  }, [currentMission.targets]);
+
+  /** Closes Round 1 early. The latest submitted PIN is the one that is graded. */
+  const endRoundOne = useCallback(() => {
+    const attempt = latestAttemptRef.current;
+    const expectedDigits = currentMission.targets.map(t => t.targetSectorId + 1);
+    let points = attempt?.points ?? 0;
+    if (!attempt || attempt.correct === 0 || !attempt.code || attempt.code.trim() === '') {
+      points = 300;
+    }
+    finaliseRoundOne({
+      points,
+      correct: attempt?.correct ?? 0,
+      total: expectedDigits.length,
+      timedOut: false,
+      expectedCode: expectedDigits.join('-'),
+      enteredCode: attempt?.code ?? ''
+    });
   }, [currentMission.targets, finaliseRoundOne]);
 
   /**
@@ -553,8 +611,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     if (isDemoMode) {
       setPatternResult({ correct, total, accuracy, points });
-      setIsDemoMode(false);
-      setPhase('welcome');
+      // Keep demo mode on so the temporary score card knows not to save anything.
+      setPhase('demo_report');
       return;
     }
 
@@ -593,6 +651,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setValidationFeedback(null);
     setHintsUsedCount(0);
     setRoundOneReport(null);
+    setLatestAttempt(null);
     setLaunchCode(null);
     setShowCodeModal(false);
     setZodiacTableVisible(false);
@@ -607,6 +666,13 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [settings, initPlanets]);
 
   const startRoundTwo = useCallback(() => {
+    setIsTimerRunning(false);
+    setShowCodeModal(false);
+    setCurrentMissionIndex(1);
+    setPhase('round_two_briefing');
+  }, []);
+
+  const beginRoundTwo = useCallback(() => {
     setIsTimerRunning(false);
     setShowCodeModal(false);
     setCurrentMissionIndex(1);
@@ -633,6 +699,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setTimeRemaining(settings.missionDurationSeconds);
     setAttemptsRemaining(settings.maxAttempts);
     setValidationFeedback(null);
+    setLatestAttempt(null);
     setHintsUsedCount(0);
     setSelectedPlanetId('saturn');
     setPlanets(initPlanets(settings.earthStartingNode));
@@ -671,6 +738,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setValidationFeedback(null);
       setHintsUsedCount(0);
       setRoundOneReport(null);
+      setLatestAttempt(null);
       setLaunchCode(null);
       setShowCodeModal(false);
       setZodiacTableVisible(false);
@@ -693,6 +761,17 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setPhase('hub');
     }
   }, [settings, initPlanets]);
+
+  /** Leaves a demo (and its temporary score card) for the admin login portal. */
+  const exitDemo = useCallback(() => {
+    setIsDemoMode(false);
+    setRoundOneReport(null);
+    setPatternResult(null);
+    setLatestAttempt(null);
+    setShowCodeModal(false);
+    setIsTimerRunning(false);
+    setPhase('welcome');
+  }, []);
 
   const setMissionByIndex = useCallback((idx: number) => {
     setCurrentMissionIndex(idx);
@@ -726,6 +805,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setZodiacTableError(false);
     setPatternResult(null);
     setRoundOneReport(null);
+    setLatestAttempt(null);
     setCurrentMissionIndex(0);
     setShowAdminModal(false);
     setRoundOneMission(generateRoundOneMission(
@@ -790,12 +870,18 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     roundOnePoints,
     roundTwoPoints,
     totalPoints,
+    latestAttempt,
+    codeTerminalUnlocked,
+    codeUnlockSeconds,
     startRoundOne,
     startRoundTwo,
+    beginRoundTwo,
     goToHub,
     submitRoundCode,
+    endRoundOne,
     completePatternEvent,
     startDemoRound,
+    exitDemo,
     zodiacTableShown,
     zodiacTableVisible,
     zodiacTableError,
@@ -871,12 +957,18 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     roundOnePoints,
     roundTwoPoints,
     totalPoints,
+    latestAttempt,
+    codeTerminalUnlocked,
+    codeUnlockSeconds,
     startRoundOne,
     startRoundTwo,
+    beginRoundTwo,
     goToHub,
     submitRoundCode,
+    endRoundOne,
     completePatternEvent,
     startDemoRound,
+    exitDemo,
     zodiacTableShown,
     zodiacTableVisible,
     zodiacTableError,

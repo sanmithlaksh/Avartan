@@ -62,14 +62,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBackToWe
       {/* Back Button */}
       <button
         onClick={onBackToWelcome}
-        className="absolute top-6 left-6 z-20 flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-space-900/80 border border-cyan-500/30 text-cyan-400 hover:text-cyan-200 text-xs font-orbit uppercase tracking-wider backdrop-blur-md transition-all cursor-pointer"
+        className="absolute top-6 left-6 z-20 flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-space-900/90 border border-cyan-500/30 text-cyan-400 hover:text-cyan-200 text-xs font-orbit uppercase tracking-wider transition-all cursor-pointer"
       >
         <ArrowLeft className="w-4 h-4" />
         <span>Return to Welcome</span>
       </button>
 
       {/* Card Container */}
-      <div className="relative z-10 w-full max-w-md rounded-2xl bg-space-900/90 border border-cyan-500/40 p-6 md:p-8 backdrop-blur-2xl shadow-[0_0_60px_rgba(0,243,255,0.25)] flex flex-col gap-6">
+      <div className="relative z-10 w-full max-w-md rounded-2xl bg-space-900/95 border border-cyan-500/40 p-6 md:p-8 shadow-[0_0_40px_rgba(0,243,255,0.2)] flex flex-col gap-6">
         {/* Header with Pentagram Logo */}
         <div className="flex flex-col gap-2 text-center items-center">
           <div className="flex items-center gap-4 mb-1">

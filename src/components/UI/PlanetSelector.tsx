@@ -34,7 +34,7 @@ export const PlanetSelector: React.FC = () => {
   };
 
   return (
-    <div className="h-16 px-4 bg-space-950/85 backdrop-blur-xl border-t border-cyan-500/20 flex items-center justify-between gap-2 overflow-x-auto select-none z-20">
+    <div className="h-16 px-4 bg-space-950/95 border-t border-cyan-500/20 flex items-center justify-between gap-2 overflow-x-auto select-none z-20">
       <div className="flex items-center gap-1.5 md:gap-2 mx-auto">
         {planetList.map(pId => {
           const def = PLANET_DEFINITIONS[pId];

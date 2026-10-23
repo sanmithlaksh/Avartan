@@ -36,11 +36,46 @@ export const SolarSystem3D: React.FC = () => {
     discoveryProgress,
     setDiscoveryProgress,
     settings,
-    showZodiacTable,
-    zodiacTableShown,
     zodiacTableError,
+    showIntroModal,
+    showDiscoveryModal,
+    showSuccessModal,
+    showHintsModal,
+    showLeaderboardModal,
+    showAdminModal,
+    showCodeModal,
     setViewMode,
   } = useGame();
+
+  // Heavy scene work is skipped while the tab is hidden or a full-screen modal
+  // covers the viewport (the blurred backdrop would otherwise composite a live
+  // 3D render at 60 fps for no visible benefit).
+  const overlayOpenRef = useRef(false);
+  useEffect(() => {
+    overlayOpenRef.current =
+      showIntroModal ||
+      showDiscoveryModal ||
+      showSuccessModal ||
+      showHintsModal ||
+      showLeaderboardModal ||
+      showAdminModal ||
+      showCodeModal;
+  }, [
+    showIntroModal,
+    showDiscoveryModal,
+    showSuccessModal,
+    showHintsModal,
+    showLeaderboardModal,
+    showAdminModal,
+    showCodeModal
+  ]);
+
+  const lowPower = (navigator.hardwareConcurrency || 8) <= 6 || /Mobi|Android/i.test(navigator.userAgent);
+  const hudSyncRef = useRef(0);
+  const lastDiscoveryRef = useRef(-1);
+  const targetKeyRef = useRef('');
+  const raycasterRef = useRef(new THREE.Raycaster());
+  const screenCenterRef = useRef(new THREE.Vector2(0, 0));
 
   // Three.js instances
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -86,9 +121,6 @@ export const SolarSystem3D: React.FC = () => {
   // Boundary Hold Discovery
   const isHoldingBoundaryRef = useRef<boolean>(false);
   const holdStartTimeRef = useRef<number>(0);
-  const isHoldingZodiacTableRef = useRef<boolean>(false);
-  const tableHoldStartRef = useRef<number>(0);
-  const [tableHoldProgress, setTableHoldProgress] = useState<number>(0);
   const [showTableHoldError, setShowTableHoldError] = useState<boolean>(false);
   const [webglError, setWebglError] = useState<string | null>(null);
 
@@ -123,23 +155,29 @@ export const SolarSystem3D: React.FC = () => {
     camera.position.set(30, 18, 45);
     updateCameraOrientation();
 
-    // Renderer — safe WebGLRenderer instantiation with fallback options to prevent context creation failure
+    // Renderer — optimized for smooth performance
     let renderer: THREE.WebGLRenderer | null = null;
     try {
       renderer = new THREE.WebGLRenderer({
         canvas: canvasRef.current,
         antialias: false,
-        powerPreference: 'default',
+        powerPreference: 'high-performance',
         failIfMajorPerformanceCaveat: false,
-        preserveDrawingBuffer: false
+        preserveDrawingBuffer: false,
+        stencil: false,
+        depth: true,
+        alpha: false
       });
     } catch (e1) {
-      console.warn('WebGL initialization failed, checking software renderer:', e1);
+      console.warn('WebGL initialization failed, checking fallback:', e1);
       try {
         renderer = new THREE.WebGLRenderer({
           canvas: canvasRef.current,
           antialias: false,
-          powerPreference: 'low-power'
+          powerPreference: 'low-power',
+          stencil: false,
+          depth: true,
+          alpha: false
         });
       } catch (e2) {
         console.error('All WebGL context attempts failed:', e2);
@@ -155,10 +193,11 @@ export const SolarSystem3D: React.FC = () => {
 
     rendererRef.current = renderer;
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, lowPower ? 0.8 : 1.0));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.4;
+    renderer.toneMappingExposure = 1.2;
     renderer.shadowMap.enabled = false;
+    renderer.autoClear = true;
 
     // Listen for WebGL context loss
     const canvas = canvasRef.current;
@@ -241,6 +280,9 @@ export const SolarSystem3D: React.FC = () => {
     const animate = () => {
       animId = requestAnimationFrame(animate);
       const delta = Math.min(clock.getDelta(), 0.1);
+
+      if (document.hidden || overlayOpenRef.current) return;
+
       const elapsed = clock.getElapsedTime();
 
       // Camera Movement Physics
@@ -276,7 +318,10 @@ export const SolarSystem3D: React.FC = () => {
       if (isHoldingBoundaryRef.current && !zodiacRevealed) {
         const holdDuration = (Date.now() - holdStartTimeRef.current) / 1000;
         const prog = Math.min(100, Math.round((holdDuration / 10.0) * 100)); // Exactly 10.0 seconds
-        setDiscoveryProgress(prog);
+        if (prog !== lastDiscoveryRef.current) {
+          lastDiscoveryRef.current = prog;
+          setDiscoveryProgress(prog);
+        }
         if (boundaryScannerMeshRef.current) {
           boundaryScannerMeshRef.current.rotation.z += delta * (holdDuration > 6 ? 8 : 3);
           const warningPhase = holdDuration > 6 ? (holdDuration - 6) / 4.0 : 0;
@@ -298,20 +343,22 @@ export const SolarSystem3D: React.FC = () => {
         }
       }
 
-      // ZODIAC TABLE HOLD: After zodiac revealed, hold 10 sec to show reference table
-      if (isHoldingZodiacTableRef.current) {
-        const holdDuration = (Date.now() - tableHoldStartRef.current) / 1000;
-        const prog = Math.min(100, Math.round((holdDuration / 10.0) * 100));
-        setTableHoldProgress(prog);
-        if (prog >= 100) {
-          isHoldingZodiacTableRef.current = false;
-          setTableHoldProgress(0);
-          showZodiacTable();
+      // HUD state is refreshed at ~5 Hz instead of every frame: a per-frame
+      // React render of the whole 3D stage was the largest source of jank.
+      if (elapsed - hudSyncRef.current >= 0.2) {
+        hudSyncRef.current = elapsed;
+        if (cameraRef.current) {
+          const pos = cameraRef.current.position;
+          setCameraCoords(prev =>
+            Math.abs(prev.x - pos.x) < 0.02 &&
+            Math.abs(prev.y - pos.y) < 0.02 &&
+            Math.abs(prev.z - pos.z) < 0.02
+              ? prev
+              : { x: pos.x, y: pos.y, z: pos.z }
+          );
         }
+        performCenterTargeting();
       }
-
-      // Perform center targeting raycast in Fly Mode
-      performCenterTargeting();
 
       renderer.render(scene, camera);
     };
@@ -356,11 +403,6 @@ export const SolarSystem3D: React.FC = () => {
       updateCameraOrientation();
 
       if (t >= 1) tween.active = false;
-      setCameraCoords({
-        x: cameraRef.current.position.x,
-        y: cameraRef.current.position.y,
-        z: cameraRef.current.position.z
-      });
       return;
     }
 
@@ -408,11 +450,6 @@ export const SolarSystem3D: React.FC = () => {
       cameraRef.current.position.z = THREE.MathUtils.clamp(cameraRef.current.position.z, -130, 130);
 
       updateCameraOrientation();
-      setCameraCoords({
-        x: cameraRef.current.position.x,
-        y: cameraRef.current.position.y,
-        z: cameraRef.current.position.z
-      });
     } else {
       // Orbit Mode
       const { radius, theta, phi } = orbitSphericalRef.current;
@@ -421,17 +458,25 @@ export const SolarSystem3D: React.FC = () => {
       const z = orbitTargetRef.current.z + radius * Math.sin(phi) * Math.cos(theta);
       cameraRef.current.position.set(x, y, z);
       cameraRef.current.lookAt(orbitTargetRef.current);
-      setCameraCoords({ x, y, z });
     }
   };
 
+
+  // Only push HUD updates when the targeted object actually changes — otherwise
+  // a moving camera would trigger a React render on every frame.
+  const setTargetIfChanged = (next: { type: 'planet' | 'node' | 'boundary'; name: string; distance: number } | null) => {
+    const key = next ? `${next.type}|${next.name}|${Math.round(next.distance)}` : '';
+    if (key === targetKeyRef.current) return;
+    targetKeyRef.current = key;
+    setTargetedObject(next);
+  };
 
   // Perform Raycasting from Screen Center in Fly Mode
   const performCenterTargeting = () => {
     if (!cameraRef.current || !sceneRef.current) return;
 
-    const raycaster = new THREE.Raycaster();
-    raycaster.setFromCamera(new THREE.Vector2(0, 0), cameraRef.current);
+    const raycaster = raycasterRef.current;
+    raycaster.setFromCamera(screenCenterRef.current, cameraRef.current);
 
     // 1. Check Node markers
     if (nodeMarkersGroupRef.current) {
@@ -440,7 +485,7 @@ export const SolarSystem3D: React.FC = () => {
       if (hit) {
         const { planetId, nodeIndex } = hit.object.userData;
         const pDef = PLANET_DEFINITIONS[planetId as PlanetId];
-        setTargetedObject({
+        setTargetIfChanged({
           type: 'node',
           name: `${pDef.name} Node ${nodeIndex} (${nodeIndex * 30}°)`,
           distance: hit.distance
@@ -455,7 +500,7 @@ export const SolarSystem3D: React.FC = () => {
     if (planetHits.length > 0) {
       const pId = (planetHits[0].object.userData as any).planetId as PlanetId;
       if (pId) {
-        setTargetedObject({
+        setTargetIfChanged({
           type: 'planet',
           name: PLANET_DEFINITIONS[pId].name,
           distance: planetHits[0].distance
@@ -467,7 +512,7 @@ export const SolarSystem3D: React.FC = () => {
     // 3. Check Outer Boundary
     const hitsBoundary = checkBoundaryRaycast(raycaster);
     if (hitsBoundary) {
-      setTargetedObject({
+      setTargetIfChanged({
         type: 'boundary',
         name: zodiacRevealed ? 'Celestial Zodiac Wheel' : 'Unidentified Outer Barrier',
         distance: 40
@@ -475,7 +520,7 @@ export const SolarSystem3D: React.FC = () => {
       return;
     }
 
-    setTargetedObject(null);
+    setTargetIfChanged(null);
   };
 
   // Antialiased round star sprite texture — prevents square pixelation on points!
@@ -590,8 +635,8 @@ export const SolarSystem3D: React.FC = () => {
     // Set a very deep navy scene background — will show between stars
     scene.background = new THREE.Color(0x00010c);
 
-    // ── MAIN STAR FIELD (14,000 stars across all spectral classes) ────────
-    const starCount = 14000;
+    // ── MAIN STAR FIELD (optimized for performance) ────────
+    const starCount = lowPower ? 3500 : 6000;
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(starCount * 3);
     const colors = new Float32Array(starCount * 3);
@@ -647,8 +692,8 @@ export const SolarSystem3D: React.FC = () => {
       depthWrite: false
     })));
 
-    // ── BRIGHT GIANT / SUPERGIANT STARS (200) — large glowing round orbs ──────
-    const brightCount = 200;
+    // ── BRIGHT GIANT / SUPERGIANT STARS — large glowing round orbs ──────
+    const brightCount = lowPower ? 40 : 80;
     const bGeo = new THREE.BufferGeometry();
     const bPos = new Float32Array(brightCount * 3);
     const bCol = new Float32Array(brightCount * 3);
@@ -678,7 +723,7 @@ export const SolarSystem3D: React.FC = () => {
     })));
 
     // ── MILKY WAY BAND — dense cloud of faint distant stars ──────────────
-    const mwCount = 5000;
+    const mwCount = lowPower ? 1800 : 2600;
     const mwGeo = new THREE.BufferGeometry();
     const mwPos = new Float32Array(mwCount * 3);
     const mwCol = new Float32Array(mwCount * 3);
@@ -711,21 +756,27 @@ export const SolarSystem3D: React.FC = () => {
   // Volumetric Cosmic Gas Dust Nebulae (multi-layer particle clouds with soft glow sprites)
   const createCosmicNebula = (scene: THREE.Scene) => {
     const nebulaTex = createNebulaGlowTexture();
-    const nebulaClouds = [
+    const nebulaClouds = lowPower ? [
+      // Reduced set for performance
+      { color: 0x9333ea, center: new THREE.Vector3(200, 40, -280), size: 180, particles: 400, opacity: 0.12 },
+      { color: 0x06b6d4, center: new THREE.Vector3(-240, -30, 220), size: 200, particles: 350, opacity: 0.10 },
+      { color: 0xec4899, center: new THREE.Vector3(-180, 60, -240), size: 150, particles: 300, opacity: 0.10 },
+      { color: 0xf59e0b, center: new THREE.Vector3(260, -50, 180), size: 170, particles: 250, opacity: 0.09 },
+    ] : [
       // Massive purple nebula — galactic core-ish glow far right
-      { color: 0x9333ea, center: new THREE.Vector3(200, 40, -280), size: 180, particles: 2000, opacity: 0.16 },
+      { color: 0x9333ea, center: new THREE.Vector3(200, 40, -280), size: 180, particles: 800, opacity: 0.16 },
       // Electric cyan nebula — left wing
-      { color: 0x06b6d4, center: new THREE.Vector3(-240, -30, 220), size: 200, particles: 1800, opacity: 0.14 },
+      { color: 0x06b6d4, center: new THREE.Vector3(-240, -30, 220), size: 200, particles: 700, opacity: 0.14 },
       // Magenta/pink star formation region
-      { color: 0xec4899, center: new THREE.Vector3(-180, 60, -240), size: 150, particles: 1500, opacity: 0.13 },
+      { color: 0xec4899, center: new THREE.Vector3(-180, 60, -240), size: 150, particles: 600, opacity: 0.13 },
       // Golden amber stellar nursery
-      { color: 0xf59e0b, center: new THREE.Vector3(260, -50, 180), size: 170, particles: 1400, opacity: 0.13 },
+      { color: 0xf59e0b, center: new THREE.Vector3(260, -50, 180), size: 170, particles: 550, opacity: 0.13 },
       // Deep blue ionized hydrogen
-      { color: 0x3b82f6, center: new THREE.Vector3(180, -80, 260), size: 140, particles: 1100, opacity: 0.11 },
+      { color: 0x3b82f6, center: new THREE.Vector3(180, -80, 260), size: 140, particles: 450, opacity: 0.11 },
       // Subtle green nebula (OIII emission lines)
-      { color: 0x10b981, center: new THREE.Vector3(-300, 20, -100), size: 120, particles: 800,  opacity: 0.09 },
+      { color: 0x10b981, center: new THREE.Vector3(-300, 20, -100), size: 120, particles: 350,  opacity: 0.09 },
       // Dense white stellar cluster
-      { color: 0xf8fafc, center: new THREE.Vector3(-150, 90, -300), size: 80,  particles: 500,  opacity: 0.18 },
+      { color: 0xf8fafc, center: new THREE.Vector3(-150, 90, -300), size: 80,  particles: 200,  opacity: 0.18 },
     ];
 
     nebulaClouds.forEach(cloud => {
@@ -766,7 +817,7 @@ export const SolarSystem3D: React.FC = () => {
 
   // Floating Cosmic Dust Motes drifting around the player
   const createSpaceDust = (scene: THREE.Scene) => {
-    const count = 1400;
+    const count = lowPower ? 200 : 400;
     const geom = new THREE.BufferGeometry();
     const pos = new Float32Array(count * 3);
 
@@ -796,34 +847,34 @@ export const SolarSystem3D: React.FC = () => {
   // Photorealistic Sun with corona, lens flare halo, and plasma jets
   const createSun = (scene: THREE.Scene) => {
     // Core solar sphere — MeshBasicMaterial so it self-illuminates (not shaded by lights)
-    const sunGeom = new THREE.SphereGeometry(3.4, 64, 64);
+    const sunGeom = new THREE.SphereGeometry(3.4, lowPower ? 32 : 48, lowPower ? 32 : 48);
     const sunTex = getProceduralPlanetTexture('sun');
     const sunMesh = new THREE.Mesh(sunGeom, new THREE.MeshBasicMaterial({ map: sunTex }));
     scene.add(sunMesh);
 
     // Innermost corona (orange-yellow glow)
     const corona1 = new THREE.Mesh(
-      new THREE.SphereGeometry(4.6, 48, 48),
+      new THREE.SphereGeometry(4.6, lowPower ? 24 : 36, lowPower ? 24 : 36),
       new THREE.MeshBasicMaterial({ color: 0xfbbf24, transparent: true, opacity: 0.22, side: THREE.BackSide, blending: THREE.AdditiveBlending })
     );
     scene.add(corona1);
 
     // Mid corona (pale yellow)
     const corona2 = new THREE.Mesh(
-      new THREE.SphereGeometry(6.2, 32, 32),
+      new THREE.SphereGeometry(6.2, lowPower ? 16 : 24, lowPower ? 16 : 24),
       new THREE.MeshBasicMaterial({ color: 0xfef3c7, transparent: true, opacity: 0.10, side: THREE.BackSide, blending: THREE.AdditiveBlending })
     );
     scene.add(corona2);
 
     // Outer corona haze (very faint white)
     const corona3 = new THREE.Mesh(
-      new THREE.SphereGeometry(9.0, 24, 24),
+      new THREE.SphereGeometry(9.0, lowPower ? 12 : 18, lowPower ? 12 : 18),
       new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.04, side: THREE.BackSide, blending: THREE.AdditiveBlending })
     );
     scene.add(corona3);
 
     // Solar flare particle ring (additive particles orbiting Sun)
-    const flareCount = 500;
+    const flareCount = lowPower ? 80 : 160;
     const flareGeo = new THREE.BufferGeometry();
     const flarePos = new Float32Array(flareCount * 3);
     for (let i = 0; i < flareCount; i++) {
@@ -868,8 +919,8 @@ export const SolarSystem3D: React.FC = () => {
 
       // ── Orbit ring ───────────────────────────────────────────
       const orbitPts: THREE.Vector3[] = [];
-      for (let i = 0; i <= 256; i++) {
-        const theta = (i / 256) * Math.PI * 2;
+      for (let i = 0; i <= 160; i++) {
+        const theta = (i / 160) * Math.PI * 2;
         orbitPts.push(new THREE.Vector3(def.orbitalRadius * Math.cos(theta), 0, -def.orbitalRadius * Math.sin(theta)));
       }
       const isEarth = id === 'earth';
@@ -899,8 +950,8 @@ export const SolarSystem3D: React.FC = () => {
         emissiveIntensity: emissive ? emissive.intensity : 0,
       });
 
-      // 64-segment sphere for high quality silhouette
-      const planetGeom = new THREE.SphereGeometry(def.size, 64, 64);
+      // Optimized sphere segments
+      const planetGeom = new THREE.SphereGeometry(def.size, lowPower ? 20 : 32, lowPower ? 20 : 32);
       const planetMesh = new THREE.Mesh(planetGeom, planetMat);
       planetMesh.userData = { planetId: id };
 
@@ -921,7 +972,7 @@ export const SolarSystem3D: React.FC = () => {
       // ── Atmospheric Fresnel Halo ─────────────────────────────
       const atmos = atmosphereMap[id];
       if (atmos) {
-        const haloGeom = new THREE.SphereGeometry(def.size * atmos.scale, 32, 32);
+        const haloGeom = new THREE.SphereGeometry(def.size * atmos.scale, 18, 18);
         const haloMat = new THREE.MeshBasicMaterial({
           color: atmos.color, transparent: true, opacity: atmos.opacity,
           side: THREE.BackSide, blending: THREE.AdditiveBlending, depthWrite: false
@@ -929,7 +980,7 @@ export const SolarSystem3D: React.FC = () => {
         planetMesh.add(new THREE.Mesh(haloGeom, haloMat));
 
         // Secondary thinner halo for depth
-        const halo2Geom = new THREE.SphereGeometry(def.size * (atmos.scale + 0.08), 24, 24);
+        const halo2Geom = new THREE.SphereGeometry(def.size * (atmos.scale + 0.08), 14, 14);
         const halo2Mat = new THREE.MeshBasicMaterial({
           color: atmos.color, transparent: true, opacity: atmos.opacity * 0.35,
           side: THREE.BackSide, blending: THREE.AdditiveBlending, depthWrite: false
@@ -957,8 +1008,8 @@ export const SolarSystem3D: React.FC = () => {
     for (let ring = 0; ring < 2; ring++) {
       const rOffset = ring * 0.4 - 0.2;
       const pts: THREE.Vector3[] = [];
-      for (let i = 0; i <= 256; i++) {
-        const theta = (i / 256) * Math.PI * 2;
+      for (let i = 0; i <= 160; i++) {
+        const theta = (i / 160) * Math.PI * 2;
         pts.push(new THREE.Vector3((R + rOffset) * Math.cos(theta), 0, -(R + rOffset) * Math.sin(theta)));
       }
       const ringMat = new THREE.LineBasicMaterial({
@@ -970,7 +1021,7 @@ export const SolarSystem3D: React.FC = () => {
     }
 
     // ── SUBTLE TRANSLUCENT ENERGY VEIL ─────────
-    const bandGeom = new THREE.CylinderGeometry(R + 0.3, R - 0.3, 1.6, 128, 1, true);
+    const bandGeom = new THREE.CylinderGeometry(R + 0.3, R - 0.3, 1.6, 96, 1, true);
     const bandMat = new THREE.MeshBasicMaterial({
       color: 0x06b6d4, transparent: true, opacity: 0.05, side: THREE.DoubleSide,
       blending: THREE.AdditiveBlending, depthWrite: false
@@ -980,7 +1031,7 @@ export const SolarSystem3D: React.FC = () => {
     boundaryWallMeshRef.current = bandMesh;
 
     // ── SUBTLE NON-PIXELATED DYNAMIC ENERGY STREAM (smooth round particles) ──
-    const pCount = 360;
+    const pCount = 220;
     const pGeom = new THREE.BufferGeometry();
     const pPos = new Float32Array(pCount * 3);
     const pColors = new Float32Array(pCount * 3);
@@ -1003,7 +1054,7 @@ export const SolarSystem3D: React.FC = () => {
     boundaryParticlesRef.current = boundaryParticles;
 
     // ── DISCOVERY SCANNER ARC (Pulses when holding for 5 seconds) ─────────
-    const scanGeom = new THREE.RingGeometry(R - 1.5, R + 1.5, 96);
+    const scanGeom = new THREE.RingGeometry(R - 1.5, R + 1.5, 64);
     const scanMat = new THREE.MeshBasicMaterial({
       color: 0x00f3ff, transparent: true, opacity: 0, side: THREE.DoubleSide,
       blending: THREE.AdditiveBlending, depthWrite: false
@@ -1348,13 +1399,10 @@ export const SolarSystem3D: React.FC = () => {
     const hitsBoundary = checkBoundaryRaycast(raycaster);
     if (hitsBoundary) {
       if (!zodiacRevealed) {
-        // Phase 1: 15-second boundary hold (first 10s silent, last 5s warnings)
+        // Hold the outer boundary to unlock the zodiac wheel. There is no
+        // one-time memorisation table in Round 1 any more.
         isHoldingBoundaryRef.current = true;
         holdStartTimeRef.current = Date.now();
-      } else {
-        // Phase 2: After zodiac revealed, hold 10 seconds to reveal planetary reference table
-        isHoldingZodiacTableRef.current = true;
-        tableHoldStartRef.current = Date.now();
       }
     }
   };
@@ -1440,10 +1488,7 @@ export const SolarSystem3D: React.FC = () => {
       isHoldingBoundaryRef.current = false;
       setDiscoveryProgress(0);
     }
-    if (isHoldingZodiacTableRef.current) {
-      isHoldingZodiacTableRef.current = false;
-      setTableHoldProgress(0);
-    }
+
   };
 
   const handleWheel = (e: React.WheelEvent<HTMLCanvasElement>) => {
@@ -1599,7 +1644,6 @@ export const SolarSystem3D: React.FC = () => {
         targetedObject={targetedObject}
         onFlyTo={handleFlyTo}
         onVirtualMove={handleVirtualMove}
-        tableHoldProgress={tableHoldProgress}
       />
     </div>
   );

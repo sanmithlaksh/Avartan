@@ -71,21 +71,21 @@ export const RoundHub: React.FC = () => {
           title: 'START ROUND 01?',
           badge: 'CELESTIAL ALIGNMENT',
           warning:
-            'A 6:00 countdown starts the moment you press OK. The clock pauses only while the one-time reference table is open.',
+            'A 35:00 countdown starts the moment you press OK. The clearance terminal stays sealed for the first 15:00.',
           notes: [
-            'Memorise the reference table — it can only be shown once.',
-            'Place each world on the sign you memorised and read its digit.',
-            'One submission: 1000 pts, minus 100 for every wrong digit.'
+            'Study the sky and place each world on the sign that matches its sightline.',
+            'The PIN terminal opens after 15 minutes — no memorisation table is provided.',
+            'Unlimited PIN attempts; only correct or incorrect is shown. The latest PIN is graded when the round ends.'
           ]
         }
       : {
           title: 'START ROUND 02?',
           badge: 'PATTERN RECOGNITION',
           warning:
-            'Five charts. Each one is revealed for 10s, then you get 15s to rebuild it on an empty grid.',
+            'Five charts. Each one draws itself, holds for 7s, then you get 30s to rebuild it on an empty grid.',
           notes: [
-            'Levels 1-3 are planet fields with a limited supply of each world.',
-            'Levels 4-5 are real constellations on a larger star chart.',
+            'Levels 1-3 are randomised planet fields with a limited supply of each world.',
+            'Levels 4-5 are real constellations drawn at random from the night-sky catalogue.',
             'Each correct token scores 100 pts, plus a 100 pt perfect bonus.'
           ]
         };
@@ -194,12 +194,12 @@ export const RoundHub: React.FC = () => {
 
               <h2 className="text-lg font-orbit font-bold text-slate-100">Celestial Alignment</h2>
               <p className="text-xs text-slate-400 leading-relaxed flex-1">
-                Memorise the one-time reference table, then align all seven worlds with their signs to recover the
-                clearance code. Six minutes on the clock.
+                Align all seven worlds with their observed signs to recover the clearance code. The PIN terminal
+                stays sealed for the first fifteen minutes. Thirty-five minutes on the clock.
               </p>
 
               <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
-                <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5 text-cyan-400" /> 6:00</span>
+                <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5 text-cyan-400" /> 35:00</span>
                 <span className="text-amber-300 font-bold">{roundOneDone ? `${roundOnePoints} pts` : '1000 pts'}</span>
               </div>
 
@@ -237,13 +237,13 @@ export const RoundHub: React.FC = () => {
 
               <h2 className="text-lg font-orbit font-bold text-slate-100">Pattern Recognition</h2>
               <p className="text-xs text-slate-400 leading-relaxed flex-1">
-                Three planet fields with finite planet supplies, then two real constellations. Each chart appears one
-                token at a time for ten seconds, then you rebuild it before the fifteen-second window closes.
+                Three random planet fields with finite supplies, then two real constellations drawn at random. Each
+                chart draws itself, holds for seven seconds, then you rebuild it inside thirty seconds.
               </p>
 
               <div className="flex items-center justify-between text-[11px] font-mono text-slate-400">
                 <span className="flex items-center gap-1.5"><Grid3x3 className="w-3.5 h-3.5 text-fuchsia-400" /> 5 grids</span>
-                <span className="text-amber-300 font-bold">{roundTwoDone ? `${roundTwoPoints} pts` : 'up to 4500 pts'}</span>
+                <span className="text-amber-300 font-bold">{roundTwoDone ? `${roundTwoPoints} pts` : 'up to 4800 pts'}</span>
               </div>
 
               <button

@@ -17,7 +17,10 @@ import {
   RotateCcw,
   Plus,
   Trash2,
-  Gamepad2
+  Gamepad2,
+  ChevronDown,
+  Rocket,
+  Grid3x3
 } from 'lucide-react';
 
 const ADMIN_PASSWORD = 'avartan';
@@ -42,6 +45,7 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
   const [newTeamName2, setNewTeamName2] = useState('');
   const [dbStatus, setDbStatus] = useState<'checking' | 'online' | 'offline'>('checking');
   const [dbMessage, setDbMessage] = useState('');
+  const [showDemoMenu, setShowDemoMenu] = useState(false);
 
   // Reset the terminal every time the modal is reopened
   useEffect(() => {
@@ -50,6 +54,7 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
     setError(null);
     setAuthenticated(false);
     setTeams([]);
+    setShowDemoMenu(false);
   }, [open]);
 
   // Load the full team roster after a successful login
@@ -186,8 +191,8 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-space-950/90 backdrop-blur-2xl animate-fade-in select-none">
-      <div className="relative w-full max-w-4xl rounded-2xl bg-space-900/95 border border-cyan-500/40 p-6 md:p-8 shadow-[0_0_60px_rgba(0,243,255,0.25)] flex flex-col gap-5 max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-space-950/95 animate-fade-in select-none">
+      <div className="relative w-full max-w-6xl rounded-2xl bg-space-900/95 border border-cyan-500/40 p-6 md:p-10 shadow-[0_0_60px_rgba(0,243,255,0.25)] flex flex-col gap-5 max-h-[94vh]">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-space-800 transition-all cursor-pointer"
@@ -258,65 +263,82 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
                 Team Scores ({teams.length} {teams.length === 1 ? 'Team' : 'Teams'})
               </span>
               <div className="flex items-center gap-2 flex-wrap">
-                <span
-                  title={dbMessage || undefined}
-                  className={`px-2 py-1 rounded text-[10px] font-mono flex items-center gap-1 border ${
-                    dbStatus === 'online'
-                      ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-400'
-                      : dbStatus === 'checking'
-                      ? 'bg-space-950 border-cyan-500/30 text-cyan-400'
-                      : 'bg-amber-950/50 border-amber-500/40 text-amber-300'
-                  }`}
-                >
-                  <Database className="w-3 h-3" />
-                  {dbStatus === 'online'
-                    ? 'Supabase Live Sync'
-                    : dbStatus === 'checking'
-                    ? 'Checking Supabase…'
-                    : 'Local Storage Mode'}
-                </span>
+                {dbStatus === 'online' && (
+                  <span
+                    title={dbMessage || undefined}
+                    className="px-2 py-1 rounded text-[10px] font-mono flex items-center gap-1 border bg-emerald-950/60 border-emerald-500/40 text-emerald-400"
+                  >
+                    <Database className="w-3 h-3" />
+                    Supabase Live Sync
+                  </span>
+                )}
                 <button
                   onClick={() => setShowAddTeam(true)}
-                  className="px-2.5 py-1.5 rounded-lg bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-900/60 text-[10px] font-orbit font-bold uppercase tracking-wider flex items-center gap-1 transition-all cursor-pointer"
+                  className="px-3 py-2 rounded-lg bg-emerald-950/60 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-900/60 text-[11px] font-orbit font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
                   title="Add team"
                 >
-                  <Plus className="w-3 h-3" />
+                  <Plus className="w-4 h-4" />
                   Add Team
                 </button>
                 <button
-                  onClick={() => startDemoRound(1)}
-                  className="px-2.5 py-1.5 rounded-lg bg-purple-950/60 border border-purple-400/60 text-purple-200 hover:bg-purple-900/70 text-[10px] font-orbit font-bold uppercase tracking-wider flex items-center gap-1 transition-all cursor-pointer"
-                  title="Demo Play Round 1"
+                  onClick={() => setShowDemoMenu(v => !v)}
+                  className="px-3 py-2 rounded-lg bg-purple-950/60 border border-purple-400/60 text-purple-200 hover:bg-purple-900/70 text-[11px] font-orbit font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
+                  title="Choose a demo round"
+                  data-testid="demo-menu-toggle"
                 >
-                  <Gamepad2 className="w-3 h-3" />
-                  Demo R1
-                </button>
-                <button
-                  onClick={() => startDemoRound(2)}
-                  className="px-2.5 py-1.5 rounded-lg bg-purple-950/60 border border-purple-400/60 text-purple-200 hover:bg-purple-900/70 text-[10px] font-orbit font-bold uppercase tracking-wider flex items-center gap-1 transition-all cursor-pointer"
-                  title="Demo Play Round 2"
-                >
-                  <Gamepad2 className="w-3 h-3" />
-                  Demo R2
+                  <Gamepad2 className="w-4 h-4" />
+                  Demo
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showDemoMenu ? 'rotate-180' : ''}`} />
                 </button>
                 <button
                   onClick={() => setRefreshToken(t => t + 1)}
-                  className="px-2.5 py-1.5 rounded-lg bg-space-950 border border-cyan-500/30 text-cyan-300 hover:border-cyan-400 text-[10px] font-orbit font-bold uppercase tracking-wider flex items-center gap-1 transition-all cursor-pointer"
+                  className="px-3 py-2 rounded-lg bg-space-950 border border-cyan-500/30 text-cyan-300 hover:border-cyan-400 text-[11px] font-orbit font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer"
                   title="Refresh scores"
                 >
-                  <RefreshCw className={`w-3 h-3 ${loading ? 'animate-spin' : ''}`} />
+                  <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
                   Refresh
                 </button>
               </div>
             </div>
 
-            {dbStatus === 'offline' && (
-              <div className="px-3 py-2 rounded-lg bg-amber-950/40 border border-amber-500/30 text-amber-200/90 text-[11px] flex items-start gap-2">
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5 text-amber-400" />
-                <span>
-                  Teams are saving to this device only. {dbMessage} — scores will not sync across devices until
-                  the database grants access.
-                </span>
+            {showDemoMenu && (
+              <div className="p-4 rounded-xl bg-purple-950/30 border border-purple-500/40 flex flex-col gap-3">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-orbit uppercase tracking-widest text-purple-200">
+                    Choose a demo round
+                  </span>
+                  <span className="text-[10px] font-mono text-slate-400">
+                    Temporary scores • nothing is saved
+                  </span>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => startDemoRound(1)}
+                    className="flex items-center gap-3 p-3 rounded-xl bg-space-950/80 border border-cyan-500/40 text-left hover:border-cyan-300 hover:bg-cyan-950/30 transition-all cursor-pointer"
+                  >
+                    <span className="p-2 rounded-lg bg-cyan-500/15 border border-cyan-400/40 text-cyan-300">
+                      <Rocket className="w-5 h-5" />
+                    </span>
+                    <span className="flex flex-col">
+                      <span className="font-orbit font-bold text-sm text-slate-100">Demo Round 1</span>
+                      <span className="text-[10px] text-slate-400">Celestial Alignment</span>
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => startDemoRound(2)}
+                    className="flex items-center gap-3 p-3 rounded-xl bg-space-950/80 border border-fuchsia-500/40 text-left hover:border-fuchsia-300 hover:bg-fuchsia-950/30 transition-all cursor-pointer"
+                  >
+                    <span className="p-2 rounded-lg bg-fuchsia-500/15 border border-fuchsia-400/40 text-fuchsia-300">
+                      <Grid3x3 className="w-5 h-5" />
+                    </span>
+                    <span className="flex flex-col">
+                      <span className="font-orbit font-bold text-sm text-slate-100">Demo Round 2</span>
+                      <span className="text-[10px] text-slate-400">Pattern Recognition</span>
+                    </span>
+                  </button>
+                </div>
               </div>
             )}
 

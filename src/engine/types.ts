@@ -121,12 +121,14 @@ export interface GameSettings {
   graphicsQuality: 'high' | 'medium' | 'low';
 }
 
-export type GamePhase = 
+export type GamePhase =
   | 'welcome'
   | 'login'
   | 'hub'
   | 'round_one'
   | 'round_report'
+  | 'demo_report'
+  | 'round_two_briefing'
   | 'round_two';
 
 // Result card shown the moment Round 1 ends (code graded or clock expired).
@@ -137,6 +139,16 @@ export interface RoundOneReport {
   timedOut: boolean;
   expectedCode: string;
   enteredCode: string;
+}
+
+/** One PIN attempt. Round 1 keeps the latest one and grades it when the round ends. */
+export interface RoundOneAttempt {
+  code: string;
+  correct: number;
+  total: number;
+  points: number;
+  isCorrect: boolean;
+  attempts: number;
 }
 
 export type ViewMode = '3d' | '2d' | 'split';

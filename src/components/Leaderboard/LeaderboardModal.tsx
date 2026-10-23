@@ -9,7 +9,8 @@ export const LeaderboardModal: React.FC = () => {
   const {
     showLeaderboardModal,
     setShowLeaderboardModal,
-    teamName
+    teamName,
+    isDemoMode
   } = useGame();
 
   const [teams, setTeams] = useState<TeamAccount[]>([]);
@@ -69,16 +70,18 @@ export const LeaderboardModal: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className={`px-2 py-1 rounded text-[10px] font-mono flex items-center gap-1 border ${
-              credentials.isConfigured
-                ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-400'
-                : 'bg-space-950 border-cyan-500/30 text-cyan-400'
-            }`}>
-              <Database className="w-3 h-3" />
-              {credentials.isConfigured ? 'Supabase Live Sync' : 'Local Storage Mode'}
-            </span>
-          </div>
+          {!isDemoMode && (
+            <div className="flex items-center gap-2">
+              <span className={`px-2 py-1 rounded text-[10px] font-mono flex items-center gap-1 border ${
+                credentials.isConfigured
+                  ? 'bg-emerald-950/60 border-emerald-500/40 text-emerald-400'
+                  : 'bg-space-950 border-cyan-500/30 text-cyan-400'
+              }`}>
+                <Database className="w-3 h-3" />
+                {credentials.isConfigured ? 'Supabase Live Sync' : 'Local Storage Mode'}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Standings Table */}

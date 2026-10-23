@@ -13,8 +13,9 @@ import { AdminPanel } from './components/Admin/AdminPanel';
 import { CodeTerminalModal } from './components/UI/CodeTerminalModal';
 import { RoundHub } from './components/Hub/RoundHub';
 import { RoundReport } from './components/Hub/RoundReport';
+import { DemoReport } from './components/Hub/DemoReport';
 import { PatternRecognitionEvent } from './components/PatternRecognition/PatternRecognitionEvent';
-import { ZodiacReferenceTable } from './components/UI/ZodiacReferenceTable';
+import { RoundTwoBriefing } from './components/PatternRecognition/RoundTwoBriefing';
 import { WelcomePage } from './components/UI/WelcomePage';
 import { LoginPage } from './components/UI/LoginPage';
 import { InteractiveCosmicCanvas } from './components/UI/InteractiveCosmicCanvas';
@@ -110,7 +111,22 @@ const GameRoot: React.FC = () => {
     );
   }
 
-  // 5. Round 2 — pattern recognition
+  // 5. Temporary demo score card, shown before returning to the admin login
+  if (phase === 'demo_report') {
+    return <DemoReport />;
+  }
+
+  // 6. Round 2 briefing — confirm objective/limits before starting
+  if (phase === 'round_two_briefing') {
+    return (
+      <>
+        <RoundTwoBriefing />
+        <LeaderboardModal />
+      </>
+    );
+  }
+
+  // 7. Round 2 — pattern recognition
   if (phase === 'round_two') {
     return (
       <>
@@ -120,7 +136,7 @@ const GameRoot: React.FC = () => {
     );
   }
 
-  // 6. Round 1 — active game interface
+  // 7. Round 1 — active game interface
   return (
     <div className="w-screen h-screen flex flex-col bg-space-950 text-slate-100 overflow-hidden font-sans">
       {/* Navigation & Status Header */}
@@ -138,7 +154,6 @@ const GameRoot: React.FC = () => {
       <LeaderboardModal />
       <AdminPanel />
       <CodeTerminalModal />
-      <ZodiacReferenceTable />
     </div>
   );
 };
