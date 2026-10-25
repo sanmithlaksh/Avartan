@@ -189,13 +189,29 @@ export const AdminPanel: React.FC = () => {
               </button>
               {showDemoChoices && (
                 <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => startDemoRound(1)}
-                    className="px-3 py-1.5 rounded-lg text-xs font-orbit font-bold bg-space-950 border border-cyan-400/50 text-cyan-200 hover:bg-cyan-950/60 transition-all"
-                  >
-                    Round 1
-                  </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const defaultTotal = settings.missionDurationSeconds || 900;
+                  const defaultLock = settings.demoCodeLockSeconds ?? 20;
+                  const totalInput = window.prompt('Demo Round 1 - Total time (seconds):', String(defaultTotal));
+                  if (totalInput === null) return;
+                  const lockInput = window.prompt('Demo Round 1 - PIN lock time (seconds, when code terminal unlocks):', String(defaultLock));
+                  if (lockInput === null) return;
+                  const total = parseInt(totalInput);
+                  const lock = parseInt(lockInput);
+                  if (!isNaN(total) && total > 0 && !isNaN(lock) && lock > 0 && lock <= total) {
+                    try {
+                      localStorage.setItem('demo_round1_total', String(total));
+                      localStorage.setItem('demo_round1_lock', String(lock));
+                    } catch {}
+                  }
+                  startDemoRound(1);
+                }}
+                className="px-3 py-1.5 rounded-lg text-xs font-orbit font-bold bg-space-950 border border-cyan-400/50 text-cyan-200 hover:bg-cyan-950/60 transition-all"
+              >
+                Round 1
+              </button>
                   <button
                     type="button"
                     onClick={() => startDemoRound(2)}
@@ -342,6 +358,47 @@ export const AdminPanel: React.FC = () => {
                 <div className="text-[9px] font-mono text-cyan-400">Node {preset.node} • {preset.deg}°</div>
               </button>
             ))}
+          </div>
+        </div>
+
+        {/* Section 3b: Demo/Testing Time Limits */}
+        <div className="p-4 rounded-xl bg-space-950/70 border border-purple-500/30 flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-orbit uppercase tracking-wider text-purple-400 flex items-center gap-1.5">
+              <Clock className="w-4 h-4" />
+              Demo/Testing Time Limits
+            </span>
+            <span className="text-[10px] font-mono text-slate-400">Applies to demo rounds</span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-orbit uppercase tracking-wider text-slate-400">Demo PIN Lock Time (seconds)</label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  min={0}
+                  max={300}
+                  value={settings.demoCodeLockSeconds ?? 20}
+                  onChange={(e) => updateSettings({ demoCodeLockSeconds: Math.max(0, parseInt(e.target.value) || 0) })}
+                  className="flex-1 px-3 py-2 rounded-lg bg-space-900 border border-purple-500/30 text-xs font-mono text-purple-200 focus:outline-none"
+                />
+                <span className="text-[10px] font-mono text-slate-500">({Math.floor((settings.demoCodeLockSeconds ?? 20)/60)}m {(settings.demoCodeLockSeconds ?? 20)%60}s)</span>
+              </div>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] font-orbit uppercase tracking-wider text-slate-400">Normal Round PIN Lock Time (seconds)</label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  min={0}
+                  max={1800}
+                  value={settings.roundOneCodeLockSeconds ?? 900}
+                  onChange={(e) => updateSettings({ roundOneCodeLockSeconds: Math.max(0, parseInt(e.target.value) || 0) })}
+                  className="flex-1 px-3 py-2 rounded-lg bg-space-900 border border-cyan-500/30 text-xs font-mono text-cyan-200 focus:outline-none"
+                />
+                <span className="text-[10px] font-mono text-slate-500">({Math.floor((settings.roundOneCodeLockSeconds ?? 900)/60)}m {(settings.roundOneCodeLockSeconds ?? 900)%60}s)</span>
+              </div>
+            </div>
           </div>
         </div>
 

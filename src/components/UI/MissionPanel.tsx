@@ -31,7 +31,8 @@ export const MissionPanel: React.FC = () => {
     codeUnlockSeconds,
     latestAttempt,
     endRoundOne,
-    isDemoMode
+    isDemoMode,
+    zodiacRevealed
   } = useGame();
 
   const unlockFormatted = `${Math.floor(codeUnlockSeconds / 60)
@@ -142,7 +143,7 @@ export const MissionPanel: React.FC = () => {
 
                   {/* Observed sign and the digit it contributes to the code */}
                   <div className="text-xs pt-1 border-t border-cyan-500/10">
-                    {hasPlaced && observed ? (
+                    {hasPlaced && observed && zodiacRevealed ? (
                       <div className="flex items-center justify-between gap-2">
                         <span className="text-slate-200 font-orbit flex items-center gap-1.5">
                           <span className="text-base leading-none" style={{ color: observed.color }}>
@@ -156,7 +157,9 @@ export const MissionPanel: React.FC = () => {
                       </div>
                     ) : (
                       <span className="text-slate-500 italic text-[11px]">
-                        Select an orbit node to read this world&apos;s sign
+                    {zodiacRevealed
+                      ? "Select an orbit node to read this world&apos;s sign"
+                      : 'Unlock signs to check code'}
                       </span>
                     )}
                   </div>
@@ -171,22 +174,38 @@ export const MissionPanel: React.FC = () => {
       <div className="mt-auto flex flex-col gap-2 pt-2 border-t border-cyan-500/20">
         {/* Code Terminal Button */}
         <button
-          onClick={() => setShowCodeModal(true)}
+          onClick={() => {
+            if (!zodiacRevealed) {
+              alert('Activate the outer celestial boundary first to decrypt the signs.');
+              return;
+            }
+            setShowCodeModal(true);
+          }}
           className={`w-full py-2.5 px-4 rounded-xl font-orbit font-bold text-xs tracking-wider uppercase flex items-center justify-center gap-2 border transition-all ${
-            codeTerminalUnlocked
+            !zodiacRevealed
+              ? 'bg-space-950/80 border-slate-700 text-slate-500 cursor-not-allowed'
+              : codeTerminalUnlocked
               ? 'bg-space-900 hover:bg-cyan-950 border-cyan-400/50 text-cyan-300 shadow-[0_0_15px_rgba(0,243,255,0.2)]'
               : 'bg-amber-950/40 border-amber-500/40 text-amber-300'
           }`}
         >
-          {codeTerminalUnlocked ? (
+          {!zodiacRevealed ? (
+            <Lock className="w-4 h-4 text-slate-500" />
+          ) : codeTerminalUnlocked ? (
             <KeyRound className="w-4 h-4 text-amber-400" />
           ) : (
             <Lock className="w-4 h-4 text-amber-300" />
           )}
-          {codeTerminalUnlocked ? 'ENTER CLEARANCE CODE' : `PIN LOCKED • ${unlockFormatted}`}
+          {!zodiacRevealed
+            ? 'DECRYPT BOUNDARY FIRST'
+            : codeTerminalUnlocked
+            ? 'ENTER CLEARANCE CODE'
+            : `PIN LOCKED • ${unlockFormatted}`}
         </button>
         <p className="text-[10px] text-slate-500 font-mono text-center leading-relaxed">
-          {codeTerminalUnlocked
+          {!zodiacRevealed
+            ? 'Unlock signs to check code.'
+            : codeTerminalUnlocked
             ? 'Unlimited attempts. Only correct or incorrect is shown.'
             : 'The PIN terminal opens after the opening window.'}
         </p>

@@ -133,7 +133,9 @@ const DEFAULT_SETTINGS: GameSettings = {
   boundaryRadius: 40,
   soundEnabled: true,
   musicEnabled: true,
-  graphicsQuality: 'high'
+  graphicsQuality: 'high',
+  demoCodeLockSeconds: 20,
+  roundOneCodeLockSeconds: 15 * 60
 };
 
 const TOTAL_ROUND_ONE_POINTS = 1000;
@@ -259,9 +261,11 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // the admin can see the whole round without waiting a quarter of an hour.
   const codeUnlockSeconds = useMemo(() => {
     const elapsed = Math.max(0, settings.missionDurationSeconds - timeRemaining);
-    const gate = isDemoMode ? DEMO_CODE_LOCK_SECONDS : ROUND_ONE_CODE_LOCK_SECONDS;
+    const gate = isDemoMode
+      ? (settings.demoCodeLockSeconds ?? DEMO_CODE_LOCK_SECONDS)
+      : (settings.roundOneCodeLockSeconds ?? ROUND_ONE_CODE_LOCK_SECONDS);
     return Math.max(0, gate - elapsed);
-  }, [settings.missionDurationSeconds, timeRemaining, isDemoMode]);
+  }, [settings.missionDurationSeconds, timeRemaining, isDemoMode, settings.demoCodeLockSeconds, settings.roundOneCodeLockSeconds]);
   const codeTerminalUnlocked = codeUnlockSeconds <= 0;
 
   const totalPoints = useMemo(() => {
@@ -713,6 +717,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [startRoundTwo]);
 
   // Admin override — jumps straight into the chosen round.
+  const updateSettings = useCallback((newSettings: Partial<GameSettings>) => {
+    setSettings(prev => ({ ...prev, ...newSettings }));
+  }, []);
+
   const updateActiveTeamLevel = useCallback((level: number) => {
     setShowAdminModal(false);
     setIsDemoMode(false);
@@ -731,7 +739,18 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       );
       setRoundOneMission(fresh);
       setCurrentMissionIndex(0);
-      setTimeRemaining(settings.missionDurationSeconds);
+      let demoTotal = settings.missionDurationSeconds;
+      let demoLock = settings.demoCodeLockSeconds ?? DEMO_CODE_LOCK_SECONDS;
+      try {
+        const t = localStorage.getItem('demo_round1_total');
+        const l = localStorage.getItem('demo_round1_lock');
+        if (t) demoTotal = parseInt(t);
+        if (l) demoLock = parseInt(l);
+        localStorage.removeItem('demo_round1_total');
+        localStorage.removeItem('demo_round1_lock');
+      } catch {}
+      updateSettings({ missionDurationSeconds: demoTotal, demoCodeLockSeconds: demoLock });
+      setTimeRemaining(demoTotal);
       setAttemptsRemaining(settings.maxAttempts);
       setPlanets(initPlanets(settings.earthStartingNode));
       setSelectedPlanetId('saturn');
@@ -760,7 +779,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setShowCodeModal(false);
       setPhase('hub');
     }
-  }, [settings, initPlanets]);
+  }, [settings, initPlanets, updateSettings]);
 
   /** Leaves a demo (and its temporary score card) for the admin login portal. */
   const exitDemo = useCallback(() => {
@@ -818,10 +837,6 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const setViewMode = useCallback((mode: ViewMode) => {
     setViewModeState(mode);
-  }, []);
-
-  const updateSettings = useCallback((newSettings: Partial<GameSettings>) => {
-    setSettings(prev => ({ ...prev, ...newSettings }));
   }, []);
 
   const toggleMute = useCallback(() => {

@@ -119,6 +119,8 @@ export interface GameSettings {
   soundEnabled: boolean;
   musicEnabled: boolean;
   graphicsQuality: 'high' | 'medium' | 'low';
+  demoCodeLockSeconds?: number; // override for demo/admin testing
+  roundOneCodeLockSeconds?: number; // normal round lock
 }
 
 export type GamePhase =

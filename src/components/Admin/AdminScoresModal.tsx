@@ -314,7 +314,19 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <button
                     type="button"
-                    onClick={() => startDemoRound(1)}
+                    onClick={() => {
+                      const totalInput = window.prompt('Demo Round 1 - Total time in seconds (e.g., 2100 for 35 min):', '300');
+                      const lockInput = window.prompt('Demo Round 1 - PIN lock time in seconds (time until code terminal opens, e.g., 60 for 1 min):', '60');
+                      const total = parseInt(totalInput || '300');
+                      const lock = parseInt(lockInput || '60');
+                      if (!isNaN(total) && !isNaN(lock)) {
+                        // We need to pass these - but startDemoRound doesn't take params
+                        // Store in localStorage temporarily
+                        localStorage.setItem('demo_round1_total', total.toString());
+                        localStorage.setItem('demo_round1_lock', lock.toString());
+                      }
+                      startDemoRound(1);
+                    }}
                     className="flex items-center gap-3 p-3 rounded-xl bg-space-950/80 border border-cyan-500/40 text-left hover:border-cyan-300 hover:bg-cyan-950/30 transition-all cursor-pointer"
                   >
                     <span className="p-2 rounded-lg bg-cyan-500/15 border border-cyan-400/40 text-cyan-300">

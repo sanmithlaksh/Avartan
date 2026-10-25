@@ -46,7 +46,7 @@ export const WelcomePage: React.FC<WelcomePageProps> = ({ onEnterLogin }) => {
           </div>
           <div className="flex flex-col">
             <span className="font-orbit font-extrabold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-indigo-300 text-lg">
-              VOID PARADIGM
+              AVARTAN
             </span>
             <span className="text-[10px] text-cyan-400 font-mono tracking-widest uppercase">
               Pentagram Week 2026 • 28th - 31st October
