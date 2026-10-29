@@ -73,7 +73,11 @@ export const Header: React.FC = () => {
         <div className="flex flex-col">
           <div className="flex items-center gap-2">
             <h1 className="text-sm md:text-base font-orbit font-extrabold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-200 to-indigo-300">
+<<<<<<< HEAD
               VOID PARADIGM
+=======
+              AVARTAN
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
             </h1>
             <span className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-mono rounded bg-cyan-950/60 text-cyan-300 border border-cyan-500/30">
               LEVEL 0{currentMissionIndex + 1}

@@ -131,6 +131,7 @@ export type GamePhase =
   | 'round_report'
   | 'demo_report'
   | 'round_two_briefing'
+<<<<<<< HEAD
   | 'round_two'
   | 'round_two_report'
   | 'round_three_briefing'
@@ -144,6 +145,9 @@ export interface RoundThreeReport {
   penalty: number;
   won: boolean;
 }
+=======
+  | 'round_two';
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
 
 // Result card shown the moment Round 1 ends (code graded or clock expired).
 export interface RoundOneReport {
@@ -165,10 +169,13 @@ export interface RoundOneAttempt {
   attempts: number;
 }
 
+<<<<<<< HEAD
 export interface PlanetRiddle {
   id: string;
   riddle: string;
   answer: string;
 }
 
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
 export type ViewMode = '3d' | '2d' | 'split';

@@ -20,11 +20,18 @@ import {
   Gamepad2,
   ChevronDown,
   Rocket,
+<<<<<<< HEAD
   Grid3x3,
   Satellite
 } from 'lucide-react';
 
 const ADMIN_PASSWORD = 'void2026';
+=======
+  Grid3x3
+} from 'lucide-react';
+
+const ADMIN_PASSWORD = 'avartan';
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
 
 interface AdminScoresModalProps {
   open: boolean;
@@ -334,7 +341,11 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
                       <Rocket className="w-5 h-5" />
                     </span>
                     <span className="flex flex-col">
+<<<<<<< HEAD
                       <span className="font-orbit font-bold text-sm text-slate-100">Demo Round 1 — Rerun</span>
+=======
+                      <span className="font-orbit font-bold text-sm text-slate-100">Demo Round 1</span>
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
                       <span className="text-[10px] text-slate-400">Celestial Alignment</span>
                     </span>
                   </button>
@@ -347,11 +358,16 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
                       <Grid3x3 className="w-5 h-5" />
                     </span>
                     <span className="flex flex-col">
+<<<<<<< HEAD
                       <span className="font-orbit font-bold text-sm text-slate-100">Demo Round 2 — Rerun</span>
+=======
+                      <span className="font-orbit font-bold text-sm text-slate-100">Demo Round 2</span>
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
                       <span className="text-[10px] text-slate-400">Pattern Recognition</span>
                     </span>
                   </button>
                 </div>
+<<<<<<< HEAD
 
                 <button
                   type="button"
@@ -366,6 +382,8 @@ export const AdminScoresModal: React.FC<AdminScoresModalProps> = ({ open, onClos
                     <span className="text-[10px] text-slate-400">Marsfall • Final Round</span>
                   </span>
                 </button>
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
               </div>
             )}
 

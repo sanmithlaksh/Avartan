@@ -14,7 +14,11 @@ export const DEFAULT_TRIAL_ACCOUNT: TeamAccount = {
   'Name 1': 'Admin',
   'Name 2': 'Co-Admin',
   'Team Name': 'Admin',
+<<<<<<< HEAD
   'Password': 'void2026',
+=======
+  'Password': 'Aryan',
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   'Current level': 1,
   'levels completion': 0,
   'level 1 points': 0,

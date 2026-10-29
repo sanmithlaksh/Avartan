@@ -171,7 +171,11 @@ export const RoundReport: React.FC = () => {
             className="flex-1 py-3 rounded-xl bg-gradient-to-r from-fuchsia-500 via-purple-500 to-cyan-500 text-slate-950 font-orbit font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:brightness-110 active:scale-[0.99] transition-all duration-200 shadow-[0_0_25px_rgba(217,70,239,0.35)] cursor-pointer"
           >
             <Rocket className="w-4 h-4" />
+<<<<<<< HEAD
             Proceed to Round 02
+=======
+            Enter Round 02
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Void Paradigm — Round 2 planet tokens.
+=======
+// Avartan — Round 2 planet tokens.
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
 //
 // Hand-drawn SVG worlds: Mercury is a cratered rock, Earth is a cloud-wrapped
 // ocean world, and Jupiter is a banded gas giant with its Great Red Spot and a

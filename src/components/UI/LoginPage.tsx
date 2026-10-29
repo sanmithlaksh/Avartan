@@ -37,7 +37,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBackToWe
     try {
       const res = await backendService.authenticateTeam(teamName, password);
       if (res.success && res.team) {
+<<<<<<< HEAD
         setSuccessMessage('Access Granted. Entering Void Paradigm...');
+=======
+        setSuccessMessage('Access Granted. Entering Avartan...');
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
         setTimeout(() => {
           onLoginSuccess(res.team!);
         }, 600);
@@ -70,12 +74,26 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBackToWe
 
       {/* Card Container */}
       <div className="relative z-10 w-full max-w-md rounded-2xl bg-space-900/95 border border-cyan-500/40 p-6 md:p-8 shadow-[0_0_40px_rgba(0,243,255,0.2)] flex flex-col gap-6">
+<<<<<<< HEAD
         {/* Header with Gradient Logo */}
         <div className="flex flex-col gap-2 text-center items-center">
           <div className="flex items-center gap-4 mb-1">
             <img
               src="/assets/wave_gradient.png"
               alt="Void Paradigm mark"
+=======
+        {/* Header with Pentagram Logo */}
+        <div className="flex flex-col gap-2 text-center items-center">
+          <div className="flex items-center gap-4 mb-1">
+            <img
+              src="/assets/pentagram_logo.png"
+              alt="Pentagram Logo"
+              className="w-12 h-12 object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]"
+            />
+            <img
+              src="/assets/wave_gradient.png"
+              alt="Avartan mark"
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
               className="w-10 h-10 object-contain drop-shadow-[0_0_15px_rgba(168,85,247,0.6)]"
             />
           </div>
@@ -84,7 +102,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBackToWe
             MISSION ACCESS TERMINAL
           </h2>
           <span className="text-xs text-slate-400 font-sans">
+<<<<<<< HEAD
             Enter your Team Name and Password to enter Void Paradigm
+=======
+            Enter your Team Name and Password to enter Avartan
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
           </span>
         </div>
 

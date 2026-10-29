@@ -14,10 +14,13 @@ import { CodeTerminalModal } from './components/UI/CodeTerminalModal';
 import { RoundHub } from './components/Hub/RoundHub';
 import { RoundReport } from './components/Hub/RoundReport';
 import { DemoReport } from './components/Hub/DemoReport';
+<<<<<<< HEAD
 import { RoundTwoReport } from './components/Hub/RoundTwoReport';
 import { RoundThreeBriefing } from './components/RoundThree/RoundThreeBriefing';
 import { RoundThreeGame } from './components/RoundThree/RoundThreeGame';
 import { RoundThreeReportCard } from './components/RoundThree/RoundThreeReport';
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
 import { PatternRecognitionEvent } from './components/PatternRecognition/PatternRecognitionEvent';
 import { RoundTwoBriefing } from './components/PatternRecognition/RoundTwoBriefing';
 import { WelcomePage } from './components/UI/WelcomePage';
@@ -120,6 +123,7 @@ const GameRoot: React.FC = () => {
     return <DemoReport />;
   }
 
+<<<<<<< HEAD
   // 5b. Round 2 report — back to the hub or forward to the final round
   if (phase === 'round_two_report') {
     return (
@@ -156,6 +160,8 @@ const GameRoot: React.FC = () => {
     );
   }
 
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   // 6. Round 2 briefing — confirm objective/limits before starting
   if (phase === 'round_two_briefing') {
     return (

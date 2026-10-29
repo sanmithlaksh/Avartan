@@ -1,9 +1,14 @@
 // 3D Solar System Engine with First-Person Astronaut Free-Flight & 3D Planetary Placement
 import React, { useEffect, useRef, useState, useCallback } from 'react';
+<<<<<<< HEAD
 import { Compass, X } from 'lucide-react';
 import * as THREE from 'three';
 
 import { RiddleModal } from '../UI/RiddleModal';
+=======
+import { Compass } from 'lucide-react';
+import * as THREE from 'three';
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
 import { useGame } from '../../context/GameContext';
 import {
   PLANET_DEFINITIONS,
@@ -23,6 +28,7 @@ import { PlanetId } from '../../engine/types';
 import { soundFx } from '../../utils/audio';
 import { AstronautHUD } from './AstronautHUD';
 
+<<<<<<< HEAD
 // Surface scan dossier shown when a planet is held in the 3D view.
 const PLANET_INTEL: Record<PlanetId, {
   classification: string;
@@ -116,6 +122,8 @@ const PLANET_INTEL: Record<PlanetId, {
   }
 };
 
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
 export const SolarSystem3D: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -140,6 +148,7 @@ export const SolarSystem3D: React.FC = () => {
     showAdminModal,
     showCodeModal,
     setViewMode,
+<<<<<<< HEAD
     showRiddle,
     currentRiddleId,
     riddleVisible,
@@ -150,6 +159,8 @@ export const SolarSystem3D: React.FC = () => {
     canRevealReferenceTable,
     riddlesSolved,
     riddlesTotal,
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   } = useGame();
 
   // Heavy scene work is skipped while the tab is hidden or a full-screen modal
@@ -196,6 +207,7 @@ export const SolarSystem3D: React.FC = () => {
   const boundaryWallMeshRef = useRef<THREE.Mesh | null>(null);
   const zodiacGroupRef = useRef<THREE.Group | null>(null);
   const spaceDustPointsRef = useRef<THREE.Points | null>(null);
+<<<<<<< HEAD
   const clueGroupRef = useRef<THREE.Group | null>(null);
 
   // Hold-to-scan: a planet held still for 650 ms opens its surface dossier.
@@ -222,6 +234,8 @@ export const SolarSystem3D: React.FC = () => {
       if (planetHoldTimerRef.current !== null) window.clearTimeout(planetHoldTimerRef.current);
     };
   }, []);
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
 
   // Navigation & Flight State
   const [navMode, setNavMode] = useState<'fly' | 'orbit'>('fly');
@@ -370,9 +384,12 @@ export const SolarSystem3D: React.FC = () => {
     // Planetary System & Orbits
     createPlanetarySystem(scene);
 
+<<<<<<< HEAD
     // Drifting hulks and debris — visual clues only, never labelled.
     createClueField(scene);
 
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
     // 12 Orbital Nodes Group
     const nodeGroup = new THREE.Group();
     scene.add(nodeGroup);
@@ -628,11 +645,17 @@ export const SolarSystem3D: React.FC = () => {
       }
     }
 
+<<<<<<< HEAD
     // 2. Check Planets (recursive: each globe carries a larger invisible hit sphere)
     const planetMeshes = Object.values(planetMeshesRef.current);
     const planetHits = raycaster
       .intersectObjects(planetMeshes, true)
       .filter(h => (h.object.userData as any).planetId);
+=======
+    // 2. Check Planets
+    const planetMeshes = Object.values(planetMeshesRef.current);
+    const planetHits = raycaster.intersectObjects(planetMeshes);
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
     if (planetHits.length > 0) {
       const pId = (planetHits[0].object.userData as any).planetId as PlanetId;
       if (pId) {
@@ -1091,6 +1114,7 @@ export const SolarSystem3D: React.FC = () => {
       const planetMesh = new THREE.Mesh(planetGeom, planetMat);
       planetMesh.userData = { planetId: id };
 
+<<<<<<< HEAD
       // Larger invisible pick volume so small worlds are still easy to hold.
       const pickMesh = new THREE.Mesh(
         new THREE.SphereGeometry(def.size * 2.4, 12, 12),
@@ -1099,6 +1123,8 @@ export const SolarSystem3D: React.FC = () => {
       pickMesh.userData = { planetId: id };
       planetMesh.add(pickMesh);
 
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
       // ── Rings ─────────────────────────────────────────────
       if (def.hasRings && def.ringInnerRadius && def.ringOuterRadius) {
         const ringGeom = new THREE.RingGeometry(def.ringInnerRadius, def.ringOuterRadius, 128, 4);
@@ -1139,6 +1165,7 @@ export const SolarSystem3D: React.FC = () => {
     });
   };
 
+<<<<<<< HEAD
   // Wreckage, survey drones and debris drifting through the system. These are
   // deliberately unlabelled: they are clues that something out here was studied
   // before, not instructions.
@@ -1310,6 +1337,8 @@ export const SolarSystem3D: React.FC = () => {
     }
   };
 
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   // Build Dynamic Celestial Boundary (Clean, uncluttered, no objects in zodiac orbit)
   const createCelestialBoundary = (scene: THREE.Scene) => {
     const boundaryGroup = new THREE.Group();
@@ -1698,9 +1727,13 @@ export const SolarSystem3D: React.FC = () => {
 
     // 2. Check if clicking a Planet (Select and begin 3D Dragging)
     const planetMeshes = Object.values(planetMeshesRef.current);
+<<<<<<< HEAD
     const planetHits = raycaster
       .intersectObjects(planetMeshes, true)
       .filter(h => (h.object.userData as any).planetId);
+=======
+    const planetHits = raycaster.intersectObjects(planetMeshes);
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
     if (planetHits.length > 0) {
       const hitPlanetId = (planetHits[0].object.userData as any).planetId as PlanetId;
       if (hitPlanetId) {
@@ -1708,6 +1741,7 @@ export const SolarSystem3D: React.FC = () => {
         if (hitPlanetId !== 'earth') {
           isDraggingPlanet3DRef.current = hitPlanetId;
         }
+<<<<<<< HEAD
         // Holding a world still for 650 ms scans it; moving cancels the scan
         // and turns the gesture into the normal orbital drag.
         cancelPlanetHold();
@@ -1720,6 +1754,8 @@ export const SolarSystem3D: React.FC = () => {
           showRiddle(hitPlanetId);
           soundFx.playPlanetSelect();
         }, 650);
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
         return;
       }
     }
@@ -1743,12 +1779,15 @@ export const SolarSystem3D: React.FC = () => {
     const deltaY = e.clientY - lastPointerPosRef.current.y;
     lastPointerPosRef.current = { x: e.clientX, y: e.clientY };
 
+<<<<<<< HEAD
     // A moving pointer means the player is dragging, not scanning.
     const hold = planetHoldRef.current;
     if (hold && Math.hypot(e.clientX - hold.x, e.clientY - hold.y) > 8) {
       cancelPlanetHold();
     }
 
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
     // If dragging a planet in 3D: snap along orbit!
     if (isDraggingPlanet3DRef.current && canvasRef.current && cameraRef.current) {
       const pId = isDraggingPlanet3DRef.current;
@@ -1819,7 +1858,10 @@ export const SolarSystem3D: React.FC = () => {
   const handlePointerUp = () => {
     isPointerDownRef.current = false;
     isDraggingPlanet3DRef.current = null;
+<<<<<<< HEAD
     cancelPlanetHold();
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
     if (isHoldingBoundaryRef.current) {
       isHoldingBoundaryRef.current = false;
       setDiscoveryProgress(0);
@@ -1970,6 +2012,7 @@ export const SolarSystem3D: React.FC = () => {
         className="w-full h-full cursor-crosshair block"
       />
 
+<<<<<<< HEAD
       {/* Riddle modal — opened by holding a planet for 0.7s; never labelled anywhere */}
       {riddleVisible && currentRiddleId && (
         <RiddleModal
@@ -2027,6 +2070,8 @@ export const SolarSystem3D: React.FC = () => {
         </div>
       )}
 
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
       {/* Futuristic Astronaut Visor HUD & Controls */}
       <AstronautHUD
         navMode={navMode}

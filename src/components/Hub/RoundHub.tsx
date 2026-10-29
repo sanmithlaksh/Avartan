@@ -21,7 +21,11 @@ import {
   ChevronRight
 } from 'lucide-react';
 
+<<<<<<< HEAD
 type PendingRound = 1 | 2 | 3 | null;
+=======
+type PendingRound = 1 | 2 | null;
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
 
 const cardStateClass = (state: 'active' | 'locked' | 'done') =>
   state === 'active'
@@ -36,6 +40,7 @@ export const RoundHub: React.FC = () => {
     activeAccount,
     roundOneDone,
     roundTwoDone,
+<<<<<<< HEAD
     roundThreeDone,
     roundOnePoints,
     roundTwoPoints,
@@ -44,6 +49,13 @@ export const RoundHub: React.FC = () => {
     startRoundOne,
     startRoundTwo,
     startRoundThreeBriefing,
+=======
+    roundOnePoints,
+    roundTwoPoints,
+    totalPoints,
+    startRoundOne,
+    startRoundTwo,
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
     logoutTeam,
     isAdmin,
     setPhase,
@@ -53,7 +65,13 @@ export const RoundHub: React.FC = () => {
   const [pending, setPending] = useState<PendingRound>(null);
   const [starting, setStarting] = useState(false);
 
+<<<<<<< HEAD
   // Round 3 lights up once the first two rounds are cleared.
+=======
+  const roundThreeDone = false;
+  // Round 3 has no playable content yet, but it lights up once the first two
+  // rounds are cleared so the progression stays visible to the squad.
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   const roundThreeUnlocked = roundTwoDone;
 
   const beginSelected = () => {
@@ -62,7 +80,10 @@ export const RoundHub: React.FC = () => {
       setStarting(false);
       if (pending === 1) startRoundOne();
       else if (pending === 2) startRoundTwo();
+<<<<<<< HEAD
       else if (pending === 3) startRoundThreeBriefing();
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
       setPending(null);
     }, 220);
   };
@@ -80,8 +101,12 @@ export const RoundHub: React.FC = () => {
             'Unlimited PIN attempts; only correct or incorrect is shown. The latest PIN is graded when the round ends.'
           ]
         }
+<<<<<<< HEAD
       : pending === 2
       ? {
+=======
+      : {
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
           title: 'START ROUND 02?',
           badge: 'PATTERN RECOGNITION',
           warning:
@@ -91,6 +116,7 @@ export const RoundHub: React.FC = () => {
             'Levels 4-5 are real constellations drawn at random from the night-sky catalogue.',
             'Each correct token scores 100 pts, plus a 100 pt perfect bonus.'
           ]
+<<<<<<< HEAD
         }
       : {
           title: 'START ROUND 03?',
@@ -102,6 +128,8 @@ export const RoundHub: React.FC = () => {
             'Stages 1-4 score 20 pts each; Stage 5 scores 35 pts. Wrong answers lose 25% of that item.',
             'If the clock reaches zero the mission ends immediately and the score is final.'
           ]
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
         };
 
   return (
@@ -114,14 +142,28 @@ export const RoundHub: React.FC = () => {
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             <img
+<<<<<<< HEAD
               src="/assets/wave_gradient.png"
               alt="Void Paradigm mark"
+=======
+              src="/assets/pentagram_logo.png"
+              alt="Pentagram"
+              className="w-9 h-9 object-contain drop-shadow-[0_0_12px_rgba(255,255,255,0.35)]"
+            />
+            <img
+              src="/assets/wave_gradient.png"
+              alt="Avartan mark"
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
               className="w-8 h-8 object-contain drop-shadow-[0_0_12px_rgba(168,85,247,0.55)]"
             />
           </div>
           <div className="flex flex-col">
             <span className="font-orbit font-extrabold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-indigo-300">
+<<<<<<< HEAD
               VOID PARADIGM
+=======
+              AVARTAN
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
             </span>
             <span className="text-[10px] text-cyan-400 font-mono tracking-widest uppercase">
               Mission Hub • {teamName}
@@ -291,6 +333,7 @@ export const RoundHub: React.FC = () => {
                   Round 03
                 </span>
                 <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded bg-space-950/80 border border-purple-500/20 text-slate-300">
+<<<<<<< HEAD
                   {roundThreeDone ? 'Complete' : roundThreeUnlocked ? 'Unlocked' : 'Locked'}
                 </span>
               </div>
@@ -304,10 +347,26 @@ export const RoundHub: React.FC = () => {
               <div className={`flex items-center justify-between text-[11px] font-mono ${roundThreeUnlocked ? 'text-purple-300' : 'text-slate-500'}`}>
                 <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> 30:00 · 5 stages</span>
                 <span className="text-amber-300 font-bold">{roundThreeDone ? `${roundThreePoints} pts` : 'up to 115 pts'}</span>
+=======
+                  {roundThreeUnlocked ? 'Unlocked' : 'Locked'}
+                </span>
+              </div>
+
+              <h2 className="text-lg font-orbit font-bold text-slate-100">Deep-Space Debrief</h2>
+              <p className="text-xs text-slate-400 leading-relaxed flex-1">
+                The final operation stays sealed until mission control transmits it. Finish the first two rounds to be
+                ready when it arrives.
+              </p>
+
+              <div className={`flex items-center justify-between text-[11px] font-mono ${roundThreeUnlocked ? 'text-purple-300' : 'text-slate-500'}`}>
+                <span className="flex items-center gap-1.5"><Lock className="w-3.5 h-3.5" /> {roundThreeUnlocked ? 'Briefing pending' : 'Sealed'}</span>
+                <span>Coming soon</span>
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
               </div>
 
               <button
                 type="button"
+<<<<<<< HEAD
                 data-testid="round-3-card"
                 disabled={!roundTwoDone || roundThreeDone}
                 onClick={() => setPending(3)}
@@ -327,6 +386,17 @@ export const RoundHub: React.FC = () => {
                   <Lock className="w-4 h-4" />
                 )}
                 {roundThreeDone ? 'Round Complete' : roundTwoDone ? 'Start Round 03' : 'Clear Round 02 first'}
+=======
+                disabled
+                className={`w-full py-2.5 rounded-xl border font-orbit font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 cursor-not-allowed ${
+                  roundThreeUnlocked
+                    ? 'bg-purple-950/50 border-purple-400/50 text-purple-200'
+                    : 'bg-space-950/80 border-slate-700 text-slate-500'
+                }`}
+              >
+                <Lock className="w-4 h-4" />
+                {roundThreeUnlocked ? 'Awaiting transmission' : 'Locked'}
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
               </button>
             </article>
           </div>
@@ -334,6 +404,7 @@ export const RoundHub: React.FC = () => {
           <p className="text-[10px] font-mono text-slate-500 tracking-wider uppercase">
             Squad {activeAccount?.['Team Name'] || teamName} • Level {(activeAccount?.['Current level']) || 1} •
             {backendService.getCredentials().isConfigured ? ' Cloud sync active' : ' Local save'} ·{' '}
+<<<<<<< HEAD
             {roundThreeDone
               ? 'All 3 rounds complete'
               : roundTwoDone
@@ -341,6 +412,9 @@ export const RoundHub: React.FC = () => {
               : roundOneDone
               ? 'Round 1 complete'
               : 'Round 1 pending'}
+=======
+            {roundOneDone ? (roundTwoDone ? 'Rounds 1 & 2 complete' : 'Round 1 complete') : 'Round 1 pending'}
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
           </p>
         </div>
       </main>

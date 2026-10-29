@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Void Paradigm — Round 2: Pattern Recognition
+=======
+// Avartan — Round 2: Pattern Recognition
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
 //
 // Five deep-space charts, one after another. Levels 1-3 are 5×5 planet fields:
 // a fixed supply of Mercury, Earth and Jupiter must be rebuilt exactly where they

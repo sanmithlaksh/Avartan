@@ -136,7 +136,11 @@ export const AstronautHUD: React.FC<AstronautHUDProps> = ({
                 {targetedObject.name}
               </div>
               <div className="text-[9px] font-mono text-slate-400">
+<<<<<<< HEAD
                 Range: {targetedObject.distance.toFixed(1)} AU • Hold 0.7s to scan
+=======
+                Range: {targetedObject.distance.toFixed(1)} AU • Click to select / place
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
               </div>
             </div>
           )}
@@ -183,9 +187,14 @@ export const AstronautHUD: React.FC<AstronautHUDProps> = ({
           <div className="hidden sm:flex items-center gap-3 text-[10px] font-mono text-slate-400 px-2">
             <span><strong className="text-cyan-400">WASD:</strong> Horizontal Pan (2D)</span>
             <span><strong className="text-cyan-400">LEFT-DRAG:</strong> 3D Look Around</span>
+<<<<<<< HEAD
             <span><strong className="text-cyan-400">HOLD PLANET:</strong> Surface Scan</span>
             <span><strong className="text-cyan-400">SCROLL:</strong> Zoom In / Out</span>
             <span><strong className="text-cyan-400">HOLD BARRIER (10s):</strong> Decrypt Zodiac</span>
+=======
+            <span><strong className="text-cyan-400">SCROLL:</strong> Zoom In / Out</span>
+            <span><strong className="text-cyan-400">HOLD BARRIER (5s):</strong> Decrypt Zodiac</span>
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
           </div>
         )}
       </div>

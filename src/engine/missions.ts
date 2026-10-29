@@ -120,8 +120,13 @@ export const PRESET_MISSIONS: Mission[] = [
   {
     id: 'mission-avartan-master',
     type: 'SYSTEM_RECOVERY',
+<<<<<<< HEAD
     title: 'VOID PARADIGM: Celestial Restoration',
     codeName: 'OP-VOID',
+=======
+    title: 'AVARTAN: Celestial Restoration',
+    codeName: 'OP-AVARTAN',
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
     briefing: 'Ancient stellar maps have been erased. Activate the outer boundary, read each world\'s sightline against the zodiac wheel, and restore all seven planetary alignments to recover the lost navigation sequence.',
     targets: [
       { planetId: 'mercury', targetSectorId: 7 }, // Scorpio (code 8)

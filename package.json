@@ -6,8 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+<<<<<<< HEAD
     "preview": "vite preview",
     "build_local": "vite build"
+=======
+    "preview": "vite preview"
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",

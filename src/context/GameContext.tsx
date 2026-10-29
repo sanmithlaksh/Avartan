@@ -9,9 +9,13 @@ import {
   ViewMode,
   TeamAccount,
   RoundOneReport,
+<<<<<<< HEAD
   RoundOneAttempt,
   PlanetRiddle,
   RoundThreeReport
+=======
+  RoundOneAttempt
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
 } from '../engine/types';
 import {
   PLANET_DEFINITIONS,
@@ -49,7 +53,11 @@ interface GameContextType {
   activeAccount: TeamAccount | null;
   viewMode: ViewMode;
   settings: GameSettings;
+<<<<<<< HEAD
   discoveryProgress: number;
+=======
+  discoveryProgress: number; // 0 to 100
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   validationFeedback: ValidationFeedback | null;
   showIntroModal: boolean;
   showDiscoveryModal: boolean;
@@ -63,6 +71,7 @@ interface GameContextType {
   isRoundOne: boolean;
   isDemoMode: boolean;
 
+<<<<<<< HEAD
   // Riddles / one-time reference
   currentRiddleId: string | null;
   showRiddle: (planetId: PlanetId) => void;
@@ -85,6 +94,15 @@ interface GameContextType {
   roundOnePoints: number;
   roundTwoPoints: number;
   roundThreePoints: number;
+=======
+  // Round progression
+  roundOneDone: boolean;
+  roundTwoDone: boolean;
+  roundThreeUnlocked: boolean;
+  roundOneReport: RoundOneReport | null;
+  roundOnePoints: number;
+  roundTwoPoints: number;
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   totalPoints: number;
   latestAttempt: RoundOneAttempt | null;
   codeTerminalUnlocked: boolean;
@@ -92,9 +110,12 @@ interface GameContextType {
   startRoundOne: () => void;
   startRoundTwo: () => void;
   beginRoundTwo: () => void;
+<<<<<<< HEAD
   startRoundThreeBriefing: () => void;
   beginRoundThree: () => void;
   completeRoundThree: (report: RoundThreeReport) => void;
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   goToHub: () => void;
   submitRoundCode: (code: string) => RoundOneAttempt;
   endRoundOne: () => void;
@@ -144,7 +165,11 @@ interface GameContextType {
 }
 
 const DEFAULT_SETTINGS: GameSettings = {
+<<<<<<< HEAD
   earthStartingNode: 1,
+=======
+  earthStartingNode: 1, // Node 1 = 30 deg (Scorpio Solar Configuration)
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   earthDateLabel: 'Scorpio Solar Configuration',
   missionDurationSeconds: 2100,
   maxAttempts: 3,
@@ -160,6 +185,11 @@ const DEFAULT_SETTINGS: GameSettings = {
 
 const TOTAL_ROUND_ONE_POINTS = 1000;
 const PER_WRONG_PENALTY = 100;
+<<<<<<< HEAD
+=======
+// The clearance terminal stays sealed for the first 15 minutes of the round.
+// Demos use a short gate so the whole flow can be exercised quickly.
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
 const ROUND_ONE_CODE_LOCK_SECONDS = 15 * 60;
 const DEMO_CODE_LOCK_SECONDS = 20;
 
@@ -176,7 +206,13 @@ const readRefTableShown = (team: string): boolean => {
 const persistRefTableShown = (team: string) => {
   try {
     localStorage.setItem(refTableKey(team), '1');
+<<<<<<< HEAD
   } catch {}
+=======
+  } catch {
+    // Optional cache only — the table stays one-time within the session.
+  }
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
 };
 
 const splitCode = (code: string, expected?: number[]): number[] => {
@@ -202,7 +238,10 @@ const splitCode = (code: string, expected?: number[]): number[] => {
   }
   const matches = code.match(/\d+/g);
   return matches ? matches.map(Number) : [];
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -212,9 +251,19 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [activeAccount, setActiveAccountState] = useState<TeamAccount | null>(() => backendService.getActiveAccount());
   const [teamName, setTeamNameState] = useState<string>(activeAccount?.['Team Name'] || 'Admin');
 
+<<<<<<< HEAD
   const [phase, setPhase] = useState<GamePhase>('welcome');
   const [currentMissionIndex, setCurrentMissionIndex] = useState<number>(0);
 
+=======
+  // Every launch lands on the welcome page. A stored session is still kept so the
+  // login terminal can restore progress, but it never skips the homepage.
+  const [phase, setPhase] = useState<GamePhase>('welcome');
+  const [currentMissionIndex, setCurrentMissionIndex] = useState<number>(0);
+
+  // Round 1 is generated per team/session: every planet gets a random reachable
+  // sign and the resulting clearance code has never been used before.
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   const [roundOneMission, setRoundOneMission] = useState<Mission>(() =>
     loadRoundOneMission() ??
     generateRoundOneMission(DEFAULT_SETTINGS.earthStartingNode, DEFAULT_SETTINGS.zodiacAngularOffsetDeg)
@@ -244,7 +293,11 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [latestAttempt, setLatestAttempt] = useState<RoundOneAttempt | null>(null);
   const [isDemoMode, setIsDemoMode] = useState<boolean>(false);
 
+<<<<<<< HEAD
   // Modals
+=======
+  // Modals — the hub (round cards) replaced the old auto-opening briefing.
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   const [showIntroModal, setShowIntroModal] = useState<boolean>(false);
   const [showDiscoveryModal, setShowDiscoveryModal] = useState<boolean>(false);
   const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
@@ -264,6 +317,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [zodiacTableVisible, setZodiacTableVisible] = useState<boolean>(false);
   const [zodiacTableError, setZodiacTableError] = useState<boolean>(false);
 
+<<<<<<< HEAD
   // Riddles
   const [riddleVisible, setRiddleVisible] = useState<boolean>(false);
   const [riddleAnsweredCorrectly, setRiddleAnsweredCorrectly] = useState<boolean>(false);
@@ -279,6 +333,16 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const roundThreePoints = activeAccount?.['level 3 points'] || 0;
   const [roundThreeReport, setRoundThreeReport] = useState<RoundThreeReport | null>(null);
 
+=======
+  const roundOneDone = (activeAccount?.['levels completion'] || 0) >= 1;
+  const roundTwoDone = (activeAccount?.['levels completion'] || 0) >= 2;
+  const roundThreeUnlocked = roundTwoDone;
+  const roundOnePoints = activeAccount?.['level 1 points'] || 0;
+  const roundTwoPoints = activeAccount?.['level 2 points'] || 0;
+
+  // Time left until the PIN terminal opens. Demos unlock almost immediately so
+  // the admin can see the whole round without waiting a quarter of an hour.
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   const codeUnlockSeconds = useMemo(() => {
     const elapsed = Math.max(0, settings.missionDurationSeconds - timeRemaining);
     const gate = isDemoMode
@@ -297,6 +361,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
   }, [activeAccount]);
 
+<<<<<<< HEAD
+=======
+  // Synchronize account on login
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   const setActiveAccount = useCallback((account: TeamAccount | null) => {
     setActiveAccountState(account);
     backendService.setActiveAccount(account);
@@ -306,7 +374,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setZodiacTableShown(readRefTableShown(account['Team Name']));
     }
   }, []);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   const isAdmin = !!activeAccount && activeAccount['Team Name'].trim().toLowerCase() === 'admin';
 
   const setTeamName = useCallback((name: string) => {
@@ -319,13 +390,20 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsTimerRunning(false);
     setShowCodeModal(false);
     setRoundOneReport(null);
+<<<<<<< HEAD
     setRoundThreeReport(null);
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
     setLatestAttempt(null);
     setPatternResult(null);
     setIsDemoMode(false);
     setPhase('welcome');
   }, []);
 
+<<<<<<< HEAD
+=======
+  // Initialize planetary states
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   const initPlanets = useCallback((earthNode: number): Record<PlanetId, PlanetaryState> => {
     const states: Record<PlanetId, PlanetaryState> = {} as any;
     const allPlanetKeys: PlanetId[] = ['mercury', 'venus', 'earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune'];
@@ -368,6 +446,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     initPlanets(DEFAULT_SETTINGS.earthStartingNode)
   );
 
+<<<<<<< HEAD
+=======
+  // Update planets if Earth node changes via settings
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   useEffect(() => {
     setPlanets(prev => {
       const next = { ...prev };
@@ -393,6 +475,11 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   }, [settings.earthStartingNode, settings.zodiacAngularOffsetDeg]);
 
+<<<<<<< HEAD
+=======
+  // ── Round 1 finalisation ───────────────────────────────────────────────────
+  // Persists the score card for the round, unlocks Round 2 and shows the report.
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   const finaliseRoundOne = useCallback((report: RoundOneReport) => {
     setIsTimerRunning(false);
     setShowCodeModal(false);
@@ -407,6 +494,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         soundFx.playErrorTone();
       }
       setRoundOneReport(report);
+<<<<<<< HEAD
+=======
+      // Demo scores are temporary: show them before returning to the portal.
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
       setPhase('demo_report');
       return;
     }
@@ -438,16 +529,30 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setPhase('round_report');
   }, [activeAccount, teamName, currentMission.codeName, isDemoMode]);
 
+<<<<<<< HEAD
+=======
+  // Kept in a ref so the ticking effect can finalise without restarting.
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   const finaliseRoundOneRef = useRef(finaliseRoundOne);
   useEffect(() => {
     finaliseRoundOneRef.current = finaliseRoundOne;
   }, [finaliseRoundOne]);
 
+<<<<<<< HEAD
+=======
+  // The latest PIN attempt is mirrored in a ref so the ticking countdown can
+  // grade it without re-registering the interval on every submission.
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   const latestAttemptRef = useRef<RoundOneAttempt | null>(null);
   useEffect(() => {
     latestAttemptRef.current = latestAttempt;
   }, [latestAttempt]);
 
+<<<<<<< HEAD
+=======
+  // Round 1 countdown. When it hits zero the latest submitted PIN is graded;
+  // with no submission at all the round closes on zero points.
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   useEffect(() => {
     if (!isTimerRunning) return;
     const interval = window.setInterval(() => {
@@ -479,6 +584,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => window.clearInterval(interval);
   }, [isTimerRunning, currentMission.targets]);
 
+<<<<<<< HEAD
+=======
+  // Planet selection
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   const selectPlanet = useCallback((id: PlanetId | null) => {
     setSelectedPlanetId(id);
     if (id) {
@@ -486,6 +595,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
+<<<<<<< HEAD
+=======
+  // Set orbital node for a planet
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   const setPlanetNode = useCallback((planetId: PlanetId, nodeIndex: number) => {
     if (planetId === 'earth') return;
 
@@ -527,6 +640,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [zodiacRevealed]);
 
+<<<<<<< HEAD
+=======
+  // The one-time reference table pauses the round clock while it is on screen.
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   const phaseRef = useRef(phase);
   phaseRef.current = phase;
   const timeRef = useRef(timeRemaining);
@@ -554,6 +671,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setZodiacTableError(false);
   }, []);
 
+<<<<<<< HEAD
   const RIDDLES: Partial<Record<PlanetId, PlanetRiddle>> = useMemo(() => ({
     mercury: {
       id: 'mercury',
@@ -642,6 +760,12 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return riddlesSolvedVal >= riddlesTotalVal && !zodiacTableShown;
   }, [riddlesSolvedVal, riddlesTotalVal, zodiacTableShown]);
 
+=======
+  // ── Round 1 PIN attempts: unlimited tries, graded when the round ends ─────
+  // The terminal only tells the squad whether the PIN is correct or wrong. It
+  // never reveals which digits matched, and a submission does not close the
+  // round — the last attempt is what counts at the end.
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   const submitRoundCode = useCallback((code: string): RoundOneAttempt => {
     const expectedDigits = currentMission.targets.map(t => t.targetSectorId + 1);
     const enteredDigits = splitCode(code, expectedDigits);
@@ -680,6 +804,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return attempt;
   }, [currentMission.targets]);
 
+<<<<<<< HEAD
+=======
+  /** Closes Round 1 early. The latest submitted PIN is the one that is graded. */
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   const endRoundOne = useCallback(() => {
     const attempt = latestAttemptRef.current;
     const expectedDigits = currentMission.targets.map(t => t.targetSectorId + 1);
@@ -697,11 +825,22 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   }, [currentMission.targets, finaliseRoundOne]);
 
+<<<<<<< HEAD
+=======
+  /**
+   * Persists the round-2 result for this team: level-2 points, levels completed
+   * and the combined total used by the leaderboard and the admin console.
+   */
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   const completePatternEvent = useCallback((points: number, correct: number, total: number) => {
     const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
 
     if (isDemoMode) {
       setPatternResult({ correct, total, accuracy, points });
+<<<<<<< HEAD
+=======
+      // Keep demo mode on so the temporary score card knows not to save anything.
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
       setPhase('demo_report');
       return;
     }
@@ -726,6 +865,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setPhase('hub');
   }, [activeAccount, teamName, isDemoMode]);
 
+<<<<<<< HEAD
+=======
+  // ── Round progression ─────────────────────────────────────────────────────
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   const startRoundOne = useCallback(() => {
     const fresh = generateRoundOneMission(
       settings.earthStartingNode,
@@ -768,6 +911,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setPhase('round_two');
   }, []);
 
+<<<<<<< HEAD
   const startRoundThreeBriefing = useCallback(() => {
     setIsTimerRunning(false);
     setShowCodeModal(false);
@@ -809,10 +953,17 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setPhase('round_three_report');
   }, [activeAccount, teamName, isDemoMode]);
 
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   const goToHub = useCallback(() => {
     setIsTimerRunning(false);
     setShowCodeModal(false);
     setShowSuccessModal(false);
+<<<<<<< HEAD
+=======
+    // Leaving a demo round drops the admin back on the login portal, not on the
+    // team mission cards.
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
     if (isDemoMode) {
       setIsDemoMode(false);
       setPhase('welcome');
@@ -840,6 +991,10 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     startRoundTwo();
   }, [startRoundTwo]);
 
+<<<<<<< HEAD
+=======
+  // Admin override — jumps straight into the chosen round.
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
   const updateSettings = useCallback((newSettings: Partial<GameSettings>) => {
     setSettings(prev => ({ ...prev, ...newSettings }));
   }, []);
@@ -849,9 +1004,14 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsDemoMode(false);
     if (level === 1) startRoundOne();
     else if (level === 2) startRoundTwo();
+<<<<<<< HEAD
     else if (level === 3) startRoundThreeBriefing();
     else setPhase('hub');
   }, [startRoundOne, startRoundTwo, startRoundThreeBriefing]);
+=======
+    else setPhase('hub');
+  }, [startRoundOne, startRoundTwo]);
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
 
   const startDemoRound = useCallback((level: number) => {
     setShowAdminModal(false);
@@ -898,11 +1058,14 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setShowCodeModal(false);
       setCurrentMissionIndex(1);
       setPhase('round_two');
+<<<<<<< HEAD
     } else if (level === 3) {
       setIsTimerRunning(false);
       setShowCodeModal(false);
       setCurrentMissionIndex(2);
       setPhase('round_three_briefing');
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
     } else {
       setIsTimerRunning(false);
       setShowCodeModal(false);
@@ -910,11 +1073,18 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, [settings, initPlanets, updateSettings]);
 
+<<<<<<< HEAD
   const exitDemo = useCallback(() => {
     setShowAdminModal(false);
     setIsDemoMode(false);
     setRoundOneReport(null);
     setRoundThreeReport(null);
+=======
+  /** Leaves a demo (and its temporary score card) for the admin login portal. */
+  const exitDemo = useCallback(() => {
+    setIsDemoMode(false);
+    setRoundOneReport(null);
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
     setPatternResult(null);
     setLatestAttempt(null);
     setShowCodeModal(false);
@@ -1010,6 +1180,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     isDemoMode,
     roundOneDone,
     roundTwoDone,
+<<<<<<< HEAD
     roundThreeDone,
     roundThreeUnlocked,
     roundOneReport,
@@ -1017,6 +1188,12 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     roundOnePoints,
     roundTwoPoints,
     roundThreePoints,
+=======
+    roundThreeUnlocked,
+    roundOneReport,
+    roundOnePoints,
+    roundTwoPoints,
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
     totalPoints,
     latestAttempt,
     codeTerminalUnlocked,
@@ -1024,9 +1201,12 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     startRoundOne,
     startRoundTwo,
     beginRoundTwo,
+<<<<<<< HEAD
     startRoundThreeBriefing,
     beginRoundThree,
     completeRoundThree,
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
     goToHub,
     submitRoundCode,
     endRoundOne,
@@ -1040,6 +1220,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     hideZodiacTable,
     dismissZodiacTableError,
 
+<<<<<<< HEAD
     currentRiddleId,
     showRiddle,
     riddleVisible,
@@ -1051,6 +1232,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     submitRiddleAnswer: solveRiddle,
     canRevealReferenceTable,
 
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
     setPhase,
     setActiveAccount,
     setTeamName,
@@ -1114,6 +1297,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     isDemoMode,
     roundOneDone,
     roundTwoDone,
+<<<<<<< HEAD
     roundThreeDone,
     roundThreeUnlocked,
     roundOneReport,
@@ -1121,6 +1305,12 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     roundOnePoints,
     roundTwoPoints,
     roundThreePoints,
+=======
+    roundThreeUnlocked,
+    roundOneReport,
+    roundOnePoints,
+    roundTwoPoints,
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
     totalPoints,
     latestAttempt,
     codeTerminalUnlocked,
@@ -1128,9 +1318,12 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     startRoundOne,
     startRoundTwo,
     beginRoundTwo,
+<<<<<<< HEAD
     startRoundThreeBriefing,
     beginRoundThree,
     completeRoundThree,
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
     goToHub,
     submitRoundCode,
     endRoundOne,
@@ -1143,6 +1336,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     showZodiacTable,
     hideZodiacTable,
     dismissZodiacTableError,
+<<<<<<< HEAD
     currentRiddleId,
     showRiddle,
     riddleVisible,
@@ -1153,6 +1347,8 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     dismissRiddle,
     solveRiddle,
     canRevealReferenceTable,
+=======
+>>>>>>> 6fd5c2f989062b892081ab3e2c88b05f634bf2bb
     setPhase,
     setActiveAccount,
     setTeamName,
