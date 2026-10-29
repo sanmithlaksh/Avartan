@@ -1,0 +1,1420 @@
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m1583[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.0.9:[1m5173[22m/[39m
+[2m6:55:07 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/Hub/RoundHub.tsx, /src/index.css[22m
+[2m6:55:07 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/PatternRecognition/PatternRecognitionEvent.tsx, /src/index.css[22m
+[2m6:55:07 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/PatternRecognition/PlanetGlyph.tsx, /src/index.css[22m
+[2m6:55:07 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/UI/Header.tsx, /src/index.css[22m
+[2m6:55:07 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/UI/LoginPage.tsx, /src/index.css[22m
+[2m6:55:07 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/UI/WelcomePage.tsx, /src/index.css[22m
+[2m6:55:07 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/index.css, /src/context/GameContext.tsx, /src/components/Admin/AdminPanel.tsx[22m
+[2m6:55:07 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mindex.html[22m
+[2m6:55:30 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/UI/WelcomePage.tsx, /src/index.css[22m
+[2m6:55:30 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/UI/Header.tsx, /src/index.css[22m
+[2m6:55:30 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/UI/LoginPage.tsx, /src/index.css[22m
+[2m6:55:30 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/Hub/RoundHub.tsx, /src/index.css[22m
+[2m6:55:30 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/index.css, /src/context/GameContext.tsx, /src/components/Admin/AdminPanel.tsx[22m
+[2m6:55:31 pm[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/context/GameContext.tsx[22m Could not Fast Refresh ("useGame" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m6:55:31 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css, /src/components/UI/HintsModal.tsx, /src/components/UI/DiscoveryModal.tsx, /src/components/UI/PlanetSelector.tsx, /src/components/UI/Header.tsx, /src/components/UI/MissionPanel.tsx, /src/components/2D/OrbitalMap2D.tsx, /src/components/UI/CodeTerminalModal.tsx, /src/components/PatternRecognition/RoundTwoBriefing.tsx, /src/components/Hub/RoundReport.tsx, /src/components/Leaderboard/LeaderboardModal.tsx, /src/components/Hub/DemoReport.tsx, /src/components/Hub/RoundHub.tsx, /src/components/3D/SolarSystem3D.tsx, /src/components/Admin/AdminPanel.tsx, /src/components/PatternRecognition/PatternRecognitionEvent.tsx, /src/components/Admin/AdminScoresModal.tsx, /src/components/3D/AstronautHUD.tsx[22m
+[2m6:56:28 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m6:56:33 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m6:56:46 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m6:57:10 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/engine/types.ts[22m
+[2m6:57:43 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m6:57:43 pm[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/context/GameContext.tsx[22m Could not Fast Refresh ("useGame" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m6:57:43 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css, /src/components/UI/HintsModal.tsx, /src/components/UI/DiscoveryModal.tsx, /src/components/UI/PlanetSelector.tsx, /src/components/UI/Header.tsx, /src/components/UI/MissionPanel.tsx, /src/components/2D/OrbitalMap2D.tsx, /src/components/UI/CodeTerminalModal.tsx, /src/components/PatternRecognition/RoundTwoBriefing.tsx, /src/components/Hub/RoundReport.tsx, /src/components/Leaderboard/LeaderboardModal.tsx, /src/components/Hub/DemoReport.tsx, /src/components/Hub/RoundHub.tsx, /src/components/3D/SolarSystem3D.tsx, /src/components/Admin/AdminPanel.tsx, /src/components/PatternRecognition/PatternRecognitionEvent.tsx, /src/components/Admin/AdminScoresModal.tsx, /src/components/3D/AstronautHUD.tsx[22m
+[2m6:57:53 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m6:57:53 pm[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/context/GameContext.tsx[22m Could not Fast Refresh ("useGame" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m6:57:53 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css, /src/components/UI/HintsModal.tsx, /src/components/UI/DiscoveryModal.tsx, /src/components/UI/PlanetSelector.tsx, /src/components/UI/Header.tsx, /src/components/UI/MissionPanel.tsx, /src/components/2D/OrbitalMap2D.tsx, /src/components/UI/CodeTerminalModal.tsx, /src/components/PatternRecognition/RoundTwoBriefing.tsx, /src/components/Hub/RoundReport.tsx, /src/components/Leaderboard/LeaderboardModal.tsx, /src/components/Hub/DemoReport.tsx, /src/components/Hub/RoundHub.tsx, /src/components/3D/SolarSystem3D.tsx, /src/components/Admin/AdminPanel.tsx, /src/components/PatternRecognition/PatternRecognitionEvent.tsx, /src/components/Admin/AdminScoresModal.tsx, /src/components/3D/AstronautHUD.tsx[22m
+[2m6:59:09 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css[22m
+[2m6:59:30 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/Hub/RoundHub.tsx, /src/index.css[22m
+[2m7:00:15 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mdist/round3/marsfall.html[22m
+[2m7:00:17 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mdist/index.html[22m
+[2m7:04:42 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/RoundThree/RoundThreeBriefing.tsx, /src/index.css[22m
+[2m7:04:42 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/Hub/RoundHub.tsx, /src/index.css[22m
+[2m7:05:21 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/Hub/RoundReport.tsx, /src/index.css[22m
+[2m7:05:48 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mdist/round3/marsfall.html[22m
+[2m7:05:48 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mdist/index.html[22m
+[2m7:05:48 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mdist/index.html[22m
+[2m7:05:48 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mdist/index.html[22m
+[2m7:38:36 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/UI/WelcomePage.tsx, /src/index.css[22m
+[2m7:39:05 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m7:40:19 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/3D/SolarSystem3D.tsx, /src/index.css[22m
+[2m7:40:32 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/3D/SolarSystem3D.tsx, /src/index.css[22m
+[2m7:40:55 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/3D/SolarSystem3D.tsx, /src/index.css[22m
+[2m7:41:14 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/3D/SolarSystem3D.tsx, /src/index.css[22m
+[2m7:41:25 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/3D/AstronautHUD.tsx, /src/index.css[22m
+[2m7:41:30 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mindex.html[22m
+[2m7:42:06 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mdist/round3/marsfall.html[22m
+[2m7:42:06 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mdist/index.html[22m
+[2m7:42:06 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mdist/round3/marsfall.html[22m
+[2m7:42:07 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mdist/index.html[22m
+[2m7:46:48 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m7:48:22 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m7:57:38 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/3D/SolarSystem3D.tsx, /src/index.css[22m
+[2m7:57:56 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/3D/SolarSystem3D.tsx, /src/index.css[22m
+[2m7:58:44 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mdist/round3/marsfall.html[22m
+[2m7:58:44 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mdist/index.html[22m
+[2m7:58:45 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mdist/index.html[22m
+[2m8:02:43 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/3D/SolarSystem3D.tsx, /src/index.css[22m
+[2m8:05:37 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m8:07:35 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m8:09:26 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m8:27:45 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m8:28:35 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m8:29:20 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m8:29:59 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m8:30:58 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m8:33:35 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m8:38:08 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m8:41:11 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m8:45:07 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m9:35:15 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/UI/WelcomePage.tsx, /src/index.css[22m
+[2m9:35:44 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/UI/WelcomePage.tsx, /src/index.css[22m
+[2m9:36:23 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/UI/WelcomePage.tsx, /src/index.css[22m
+[2m9:36:33 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/UI/WelcomePage.tsx, /src/index.css[22m
+[2m9:36:42 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mindex.html[22m
+[2m9:37:07 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m9:37:26 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m9:38:52 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m9:40:03 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mpublic/round3/marsfall.html[22m
+[2m10:05:26 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/engine/types.ts[22m
+[2m10:05:32 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:05:33 pm[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/context/GameContext.tsx[22m Could not Fast Refresh ("useGame" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m10:05:33 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css, /src/components/UI/HintsModal.tsx, /src/components/UI/DiscoveryModal.tsx, /src/components/UI/PlanetSelector.tsx, /src/components/UI/Header.tsx, /src/components/UI/MissionPanel.tsx, /src/components/2D/OrbitalMap2D.tsx, /src/components/UI/CodeTerminalModal.tsx, /src/components/PatternRecognition/RoundTwoBriefing.tsx, /src/components/Hub/RoundReport.tsx, /src/components/Leaderboard/LeaderboardModal.tsx, /src/components/Hub/DemoReport.tsx, /src/components/Hub/RoundHub.tsx, /src/components/3D/SolarSystem3D.tsx, /src/components/Admin/AdminPanel.tsx, /src/components/PatternRecognition/PatternRecognitionEvent.tsx, /src/components/Admin/AdminScoresModal.tsx, /src/components/3D/AstronautHUD.tsx, /src/components/Hub/RoundTwoReport.tsx, /src/components/RoundThree/RoundThreeGame.tsx, /src/components/RoundThree/RoundThreeReport.tsx, /src/components/RoundThree/RoundThreeBriefing.tsx[22m
+[2m10:05:39 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:05:43 pm[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/context/GameContext.tsx[22m Could not Fast Refresh ("useGame" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m10:05:43 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css, /src/components/UI/HintsModal.tsx, /src/components/UI/DiscoveryModal.tsx, /src/components/UI/PlanetSelector.tsx, /src/components/UI/Header.tsx, /src/components/UI/MissionPanel.tsx, /src/components/2D/OrbitalMap2D.tsx, /src/components/UI/CodeTerminalModal.tsx, /src/components/PatternRecognition/RoundTwoBriefing.tsx, /src/components/Hub/RoundReport.tsx, /src/components/Leaderboard/LeaderboardModal.tsx, /src/components/Hub/DemoReport.tsx, /src/components/Hub/RoundHub.tsx, /src/components/3D/SolarSystem3D.tsx, /src/components/Admin/AdminPanel.tsx, /src/components/PatternRecognition/PatternRecognitionEvent.tsx, /src/components/Admin/AdminScoresModal.tsx, /src/components/3D/AstronautHUD.tsx, /src/components/Hub/RoundTwoReport.tsx, /src/components/RoundThree/RoundThreeGame.tsx, /src/components/RoundThree/RoundThreeReport.tsx, /src/components/RoundThree/RoundThreeBriefing.tsx[22m
+[2m10:06:05 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:06:05 pm[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/context/GameContext.tsx[22m Could not Fast Refresh ("useGame" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m10:06:05 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css, /src/components/UI/HintsModal.tsx, /src/components/UI/DiscoveryModal.tsx, /src/components/UI/PlanetSelector.tsx, /src/components/UI/Header.tsx, /src/components/UI/MissionPanel.tsx, /src/components/2D/OrbitalMap2D.tsx, /src/components/UI/CodeTerminalModal.tsx, /src/components/PatternRecognition/RoundTwoBriefing.tsx, /src/components/Hub/RoundReport.tsx, /src/components/Leaderboard/LeaderboardModal.tsx, /src/components/Hub/DemoReport.tsx, /src/components/Hub/RoundHub.tsx, /src/components/3D/SolarSystem3D.tsx, /src/components/Admin/AdminPanel.tsx, /src/components/PatternRecognition/PatternRecognitionEvent.tsx, /src/components/Admin/AdminScoresModal.tsx, /src/components/3D/AstronautHUD.tsx, /src/components/Hub/RoundTwoReport.tsx, /src/components/RoundThree/RoundThreeGame.tsx, /src/components/RoundThree/RoundThreeReport.tsx, /src/components/RoundThree/RoundThreeBriefing.tsx[22m
+[2m10:06:17 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:06:18 pm[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/context/GameContext.tsx[22m Could not Fast Refresh ("useGame" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m10:06:18 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css, /src/components/UI/HintsModal.tsx, /src/components/UI/DiscoveryModal.tsx, /src/components/UI/PlanetSelector.tsx, /src/components/UI/Header.tsx, /src/components/UI/MissionPanel.tsx, /src/components/2D/OrbitalMap2D.tsx, /src/components/UI/CodeTerminalModal.tsx, /src/components/PatternRecognition/RoundTwoBriefing.tsx, /src/components/Hub/RoundReport.tsx, /src/components/Leaderboard/LeaderboardModal.tsx, /src/components/Hub/DemoReport.tsx, /src/components/Hub/RoundHub.tsx, /src/components/3D/SolarSystem3D.tsx, /src/components/Admin/AdminPanel.tsx, /src/components/PatternRecognition/PatternRecognitionEvent.tsx, /src/components/Admin/AdminScoresModal.tsx, /src/components/3D/AstronautHUD.tsx, /src/components/Hub/RoundTwoReport.tsx, /src/components/RoundThree/RoundThreeGame.tsx, /src/components/RoundThree/RoundThreeReport.tsx, /src/components/RoundThree/RoundThreeBriefing.tsx[22m
+[2m10:06:43 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:06:44 pm[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/context/GameContext.tsx[22m Could not Fast Refresh ("useGame" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m10:06:44 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css, /src/components/UI/HintsModal.tsx, /src/components/UI/DiscoveryModal.tsx, /src/components/UI/PlanetSelector.tsx, /src/components/UI/Header.tsx, /src/components/UI/MissionPanel.tsx, /src/components/2D/OrbitalMap2D.tsx, /src/components/UI/CodeTerminalModal.tsx, /src/components/PatternRecognition/RoundTwoBriefing.tsx, /src/components/Hub/RoundReport.tsx, /src/components/Leaderboard/LeaderboardModal.tsx, /src/components/Hub/DemoReport.tsx, /src/components/Hub/RoundHub.tsx, /src/components/3D/SolarSystem3D.tsx, /src/components/Admin/AdminPanel.tsx, /src/components/PatternRecognition/PatternRecognitionEvent.tsx, /src/components/Admin/AdminScoresModal.tsx, /src/components/3D/AstronautHUD.tsx, /src/components/Hub/RoundTwoReport.tsx, /src/components/RoundThree/RoundThreeGame.tsx, /src/components/RoundThree/RoundThreeReport.tsx, /src/components/RoundThree/RoundThreeBriefing.tsx[22m
+[2m10:07:17 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:07:18 pm[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/context/GameContext.tsx[22m Could not Fast Refresh ("useGame" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m10:07:18 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css, /src/components/UI/HintsModal.tsx, /src/components/UI/DiscoveryModal.tsx, /src/components/UI/PlanetSelector.tsx, /src/components/UI/Header.tsx, /src/components/UI/MissionPanel.tsx, /src/components/2D/OrbitalMap2D.tsx, /src/components/UI/CodeTerminalModal.tsx, /src/components/PatternRecognition/RoundTwoBriefing.tsx, /src/components/Hub/RoundReport.tsx, /src/components/Leaderboard/LeaderboardModal.tsx, /src/components/Hub/DemoReport.tsx, /src/components/Hub/RoundHub.tsx, /src/components/3D/SolarSystem3D.tsx, /src/components/Admin/AdminPanel.tsx, /src/components/PatternRecognition/PatternRecognitionEvent.tsx, /src/components/Admin/AdminScoresModal.tsx, /src/components/3D/AstronautHUD.tsx, /src/components/Hub/RoundTwoReport.tsx, /src/components/RoundThree/RoundThreeGame.tsx, /src/components/RoundThree/RoundThreeReport.tsx, /src/components/RoundThree/RoundThreeBriefing.tsx[22m
+[2m10:07:31 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:07:31 pm[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/context/GameContext.tsx[22m Could not Fast Refresh ("useGame" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m10:07:31 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css, /src/components/UI/HintsModal.tsx, /src/components/UI/DiscoveryModal.tsx, /src/components/UI/PlanetSelector.tsx, /src/components/UI/Header.tsx, /src/components/UI/MissionPanel.tsx, /src/components/2D/OrbitalMap2D.tsx, /src/components/UI/CodeTerminalModal.tsx, /src/components/PatternRecognition/RoundTwoBriefing.tsx, /src/components/Hub/RoundReport.tsx, /src/components/Leaderboard/LeaderboardModal.tsx, /src/components/Hub/DemoReport.tsx, /src/components/Hub/RoundHub.tsx, /src/components/3D/SolarSystem3D.tsx, /src/components/Admin/AdminPanel.tsx, /src/components/PatternRecognition/PatternRecognitionEvent.tsx, /src/components/Admin/AdminScoresModal.tsx, /src/components/3D/AstronautHUD.tsx, /src/components/Hub/RoundTwoReport.tsx, /src/components/RoundThree/RoundThreeGame.tsx, /src/components/RoundThree/RoundThreeReport.tsx, /src/components/RoundThree/RoundThreeBriefing.tsx[22m
+[2m10:07:40 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:07:40 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[31m     toggleMute[33m,[31m
+ [90m 1182 |[31m     isMuted
+[31m[1m>[22m[31m[90m 1183 |[31m   ])[33m;[31m
+ [90m      |[31m    [31m[1m^[22m[31m
+ [90m 1184 |[31m
+ [90m 1185 |[31m   [36mreturn[31m [33m<[31m[33mGameContext[31m[33m.[31m[33mProvider[31m value[33m=[31m{value}[33m>[31m{children}[33m<[31m[33m/[31m[33mGameContext[31m[33m.[31m[33mProvider[31m[33m>[31m[33m;[31m
+ [90m 1186 |[31m }[33m;[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Users/MOHNI/Desktop/extracted_1793263697577/New folder (5)/Avartan-test-branch/src/context/GameContext.tsx[39m:1183:3
+[33m  1181|      toggleMute,
+  1182|      isMuted
+  1183|    ]);
+     |     ^
+  1184|  
+  1185|    return <GameContext.Provider value={value}>{children}</GameContext.Provider>;[39m
+      at constructor (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:369:19)
+      at TypeScriptParserMixin.raise (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6622:19)
+      at TypeScriptParserMixin.unexpected (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6642:16)
+      at TypeScriptParserMixin.expect (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6922:12)
+      at TypeScriptParserMixin.parseExprList (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12175:14)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12091:26)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9216:24)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11366:23)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:4782:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11107:23)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12460:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12527:17)
+      at TypeScriptParserMixin.parseExprListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12209:18)
+      at TypeScriptParserMixin.parseCallExpressionArguments (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11283:22)
+      at TypeScriptParserMixin.parseCoverCallAndAsyncArrowHead (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11217:29)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11146:19)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9295:18)
+      at TypeScriptParserMixin.parseSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11120:19)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11111:17)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12455:16)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseVar (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13418:91)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13264:10)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9431:31)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12885:23)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9531:18)
+      at TypeScriptParserMixin.parseStatementLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12801:17)
+      at TypeScriptParserMixin.parseStatementListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12781:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13350:61)
+      at TypeScriptParserMixin.parseBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13343:10)
+      at TypeScriptParserMixin.parseBlock (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13331:10)
+[2m10:08:36 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/3D/SolarSystem3D.tsx, /src/index.css[22m
+[2m10:08:36 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:08:36 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:08:37 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[31m     toggleMute[33m,[31m
+ [90m 1182 |[31m     isMuted
+[31m[1m>[22m[31m[90m 1183 |[31m   ])[33m;[31m
+ [90m      |[31m    [31m[1m^[22m[31m
+ [90m 1184 |[31m
+ [90m 1185 |[31m   [36mreturn[31m [33m<[31m[33mGameContext[31m[33m.[31m[33mProvider[31m value[33m=[31m{value}[33m>[31m{children}[33m<[31m[33m/[31m[33mGameContext[31m[33m.[31m[33mProvider[31m[33m>[31m[33m;[31m
+ [90m 1186 |[31m }[33m;[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Users/MOHNI/Desktop/extracted_1793263697577/New folder (5)/Avartan-test-branch/src/context/GameContext.tsx[39m:1183:3
+[33m  1181|      toggleMute,
+  1182|      isMuted
+  1183|    ]);
+     |     ^
+  1184|  
+  1185|    return <GameContext.Provider value={value}>{children}</GameContext.Provider>;[39m
+      at constructor (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:369:19)
+      at TypeScriptParserMixin.raise (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6622:19)
+      at TypeScriptParserMixin.unexpected (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6642:16)
+      at TypeScriptParserMixin.expect (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6922:12)
+      at TypeScriptParserMixin.parseExprList (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12175:14)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12091:26)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9216:24)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11366:23)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:4782:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11107:23)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12460:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12527:17)
+      at TypeScriptParserMixin.parseExprListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12209:18)
+      at TypeScriptParserMixin.parseCallExpressionArguments (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11283:22)
+      at TypeScriptParserMixin.parseCoverCallAndAsyncArrowHead (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11217:29)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11146:19)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9295:18)
+      at TypeScriptParserMixin.parseSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11120:19)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11111:17)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12455:16)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseVar (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13418:91)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13264:10)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9431:31)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12885:23)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9531:18)
+      at TypeScriptParserMixin.parseStatementLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12801:17)
+      at TypeScriptParserMixin.parseStatementListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12781:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13350:61)
+      at TypeScriptParserMixin.parseBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13343:10)
+      at TypeScriptParserMixin.parseBlock (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13331:10)
+[2m10:08:54 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/3D/SolarSystem3D.tsx, /src/index.css[22m
+[2m10:08:55 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:08:55 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[31m     toggleMute[33m,[31m
+ [90m 1182 |[31m     isMuted
+[31m[1m>[22m[31m[90m 1183 |[31m   ])[33m;[31m
+ [90m      |[31m    [31m[1m^[22m[31m
+ [90m 1184 |[31m
+ [90m 1185 |[31m   [36mreturn[31m [33m<[31m[33mGameContext[31m[33m.[31m[33mProvider[31m value[33m=[31m{value}[33m>[31m{children}[33m<[31m[33m/[31m[33mGameContext[31m[33m.[31m[33mProvider[31m[33m>[31m[33m;[31m
+ [90m 1186 |[31m }[33m;[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Users/MOHNI/Desktop/extracted_1793263697577/New folder (5)/Avartan-test-branch/src/context/GameContext.tsx[39m:1183:3
+[33m  1181|      toggleMute,
+  1182|      isMuted
+  1183|    ]);
+     |     ^
+  1184|  
+  1185|    return <GameContext.Provider value={value}>{children}</GameContext.Provider>;[39m
+      at constructor (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:369:19)
+      at TypeScriptParserMixin.raise (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6622:19)
+      at TypeScriptParserMixin.unexpected (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6642:16)
+      at TypeScriptParserMixin.expect (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6922:12)
+      at TypeScriptParserMixin.parseExprList (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12175:14)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12091:26)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9216:24)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11366:23)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:4782:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11107:23)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12460:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12527:17)
+      at TypeScriptParserMixin.parseExprListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12209:18)
+      at TypeScriptParserMixin.parseCallExpressionArguments (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11283:22)
+      at TypeScriptParserMixin.parseCoverCallAndAsyncArrowHead (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11217:29)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11146:19)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9295:18)
+      at TypeScriptParserMixin.parseSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11120:19)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11111:17)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12455:16)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseVar (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13418:91)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13264:10)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9431:31)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12885:23)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9531:18)
+      at TypeScriptParserMixin.parseStatementLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12801:17)
+      at TypeScriptParserMixin.parseStatementListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12781:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13350:61)
+      at TypeScriptParserMixin.parseBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13343:10)
+      at TypeScriptParserMixin.parseBlock (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13331:10)
+[2m10:10:55 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/3D/SolarSystem3D.tsx, /src/index.css[22m
+[2m10:10:56 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:10:57 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[31m     toggleMute[33m,[31m
+ [90m 1182 |[31m     isMuted
+[31m[1m>[22m[31m[90m 1183 |[31m   ])[33m;[31m
+ [90m      |[31m    [31m[1m^[22m[31m
+ [90m 1184 |[31m
+ [90m 1185 |[31m   [36mreturn[31m [33m<[31m[33mGameContext[31m[33m.[31m[33mProvider[31m value[33m=[31m{value}[33m>[31m{children}[33m<[31m[33m/[31m[33mGameContext[31m[33m.[31m[33mProvider[31m[33m>[31m[33m;[31m
+ [90m 1186 |[31m }[33m;[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Users/MOHNI/Desktop/extracted_1793263697577/New folder (5)/Avartan-test-branch/src/context/GameContext.tsx[39m:1183:3
+[33m  1181|      toggleMute,
+  1182|      isMuted
+  1183|    ]);
+     |     ^
+  1184|  
+  1185|    return <GameContext.Provider value={value}>{children}</GameContext.Provider>;[39m
+      at constructor (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:369:19)
+      at TypeScriptParserMixin.raise (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6622:19)
+      at TypeScriptParserMixin.unexpected (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6642:16)
+      at TypeScriptParserMixin.expect (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6922:12)
+      at TypeScriptParserMixin.parseExprList (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12175:14)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12091:26)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9216:24)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11366:23)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:4782:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11107:23)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12460:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12527:17)
+      at TypeScriptParserMixin.parseExprListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12209:18)
+      at TypeScriptParserMixin.parseCallExpressionArguments (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11283:22)
+      at TypeScriptParserMixin.parseCoverCallAndAsyncArrowHead (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11217:29)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11146:19)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9295:18)
+      at TypeScriptParserMixin.parseSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11120:19)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11111:17)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12455:16)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseVar (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13418:91)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13264:10)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9431:31)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12885:23)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9531:18)
+      at TypeScriptParserMixin.parseStatementLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12801:17)
+      at TypeScriptParserMixin.parseStatementListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12781:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13350:61)
+      at TypeScriptParserMixin.parseBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13343:10)
+      at TypeScriptParserMixin.parseBlock (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13331:10)
+[2m10:11:05 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/3D/SolarSystem3D.tsx, /src/index.css[22m
+[2m10:11:07 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:11:07 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[31m     toggleMute[33m,[31m
+ [90m 1182 |[31m     isMuted
+[31m[1m>[22m[31m[90m 1183 |[31m   ])[33m;[31m
+ [90m      |[31m    [31m[1m^[22m[31m
+ [90m 1184 |[31m
+ [90m 1185 |[31m   [36mreturn[31m [33m<[31m[33mGameContext[31m[33m.[31m[33mProvider[31m value[33m=[31m{value}[33m>[31m{children}[33m<[31m[33m/[31m[33mGameContext[31m[33m.[31m[33mProvider[31m[33m>[31m[33m;[31m
+ [90m 1186 |[31m }[33m;[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Users/MOHNI/Desktop/extracted_1793263697577/New folder (5)/Avartan-test-branch/src/context/GameContext.tsx[39m:1183:3
+[33m  1181|      toggleMute,
+  1182|      isMuted
+  1183|    ]);
+     |     ^
+  1184|  
+  1185|    return <GameContext.Provider value={value}>{children}</GameContext.Provider>;[39m
+      at constructor (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:369:19)
+      at TypeScriptParserMixin.raise (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6622:19)
+      at TypeScriptParserMixin.unexpected (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6642:16)
+      at TypeScriptParserMixin.expect (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6922:12)
+      at TypeScriptParserMixin.parseExprList (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12175:14)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12091:26)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9216:24)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11366:23)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:4782:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11107:23)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12460:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12527:17)
+      at TypeScriptParserMixin.parseExprListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12209:18)
+      at TypeScriptParserMixin.parseCallExpressionArguments (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11283:22)
+      at TypeScriptParserMixin.parseCoverCallAndAsyncArrowHead (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11217:29)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11146:19)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9295:18)
+      at TypeScriptParserMixin.parseSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11120:19)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11111:17)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12455:16)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseVar (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13418:91)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13264:10)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9431:31)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12885:23)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9531:18)
+      at TypeScriptParserMixin.parseStatementLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12801:17)
+      at TypeScriptParserMixin.parseStatementListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12781:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13350:61)
+      at TypeScriptParserMixin.parseBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13343:10)
+      at TypeScriptParserMixin.parseBlock (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13331:10)
+[2m10:11:49 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/3D/SolarSystem3D.tsx, /src/index.css[22m
+[2m10:11:49 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:11:50 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[31m     toggleMute[33m,[31m
+ [90m 1182 |[31m     isMuted
+[31m[1m>[22m[31m[90m 1183 |[31m   ])[33m;[31m
+ [90m      |[31m    [31m[1m^[22m[31m
+ [90m 1184 |[31m
+ [90m 1185 |[31m   [36mreturn[31m [33m<[31m[33mGameContext[31m[33m.[31m[33mProvider[31m value[33m=[31m{value}[33m>[31m{children}[33m<[31m[33m/[31m[33mGameContext[31m[33m.[31m[33mProvider[31m[33m>[31m[33m;[31m
+ [90m 1186 |[31m }[33m;[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Users/MOHNI/Desktop/extracted_1793263697577/New folder (5)/Avartan-test-branch/src/context/GameContext.tsx[39m:1183:3
+[33m  1181|      toggleMute,
+  1182|      isMuted
+  1183|    ]);
+     |     ^
+  1184|  
+  1185|    return <GameContext.Provider value={value}>{children}</GameContext.Provider>;[39m
+      at constructor (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:369:19)
+      at TypeScriptParserMixin.raise (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6622:19)
+      at TypeScriptParserMixin.unexpected (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6642:16)
+      at TypeScriptParserMixin.expect (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6922:12)
+      at TypeScriptParserMixin.parseExprList (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12175:14)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12091:26)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9216:24)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11366:23)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:4782:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11107:23)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12460:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12527:17)
+      at TypeScriptParserMixin.parseExprListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12209:18)
+      at TypeScriptParserMixin.parseCallExpressionArguments (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11283:22)
+      at TypeScriptParserMixin.parseCoverCallAndAsyncArrowHead (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11217:29)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11146:19)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9295:18)
+      at TypeScriptParserMixin.parseSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11120:19)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11111:17)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12455:16)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseVar (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13418:91)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13264:10)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9431:31)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12885:23)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9531:18)
+      at TypeScriptParserMixin.parseStatementLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12801:17)
+      at TypeScriptParserMixin.parseStatementListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12781:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13350:61)
+      at TypeScriptParserMixin.parseBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13343:10)
+      at TypeScriptParserMixin.parseBlock (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13331:10)
+[2m10:12:04 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/3D/SolarSystem3D.tsx, /src/index.css[22m
+[2m10:12:04 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: Failed to resolve import "../UI/RiddleModal" from "src/components/3D/SolarSystem3D.tsx". Does the file exist?[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36mC:/Users/MOHNI/Desktop/extracted_1793263697577/New folder (5)/Avartan-test-branch/src/components/3D/SolarSystem3D.tsx[39m:6:28
+[33m  19 |  import { Compass, X } from "lucide-react";
+  20 |  import * as THREE from "three";
+  21 |  import { RiddleModal } from "../UI/RiddleModal";
+     |                               ^
+  22 |  import { useGame } from "../../context/GameContext";
+  23 |  import {[39m
+      at TransformPluginContext._formatError (file:///C:/Users/MOHNI/Desktop/extracted_1793263697577/New%20folder%20(5)/Avartan-test-branch/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49258:41)
+      at TransformPluginContext.error (file:///C:/Users/MOHNI/Desktop/extracted_1793263697577/New%20folder%20(5)/Avartan-test-branch/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49253:16)
+      at normalizeUrl (file:///C:/Users/MOHNI/Desktop/extracted_1793263697577/New%20folder%20(5)/Avartan-test-branch/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64307:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async file:///C:/Users/MOHNI/Desktop/extracted_1793263697577/New%20folder%20(5)/Avartan-test-branch/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64439:39
+      at async Promise.all (index 6)
+      at async TransformPluginContext.transform (file:///C:/Users/MOHNI/Desktop/extracted_1793263697577/New%20folder%20(5)/Avartan-test-branch/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64366:7)
+      at async PluginContainer.transform (file:///C:/Users/MOHNI/Desktop/extracted_1793263697577/New%20folder%20(5)/Avartan-test-branch/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49099:18)
+      at async loadAndTransform (file:///C:/Users/MOHNI/Desktop/extracted_1793263697577/New%20folder%20(5)/Avartan-test-branch/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51978:27)
+      at async viteTransformMiddleware (file:///C:/Users/MOHNI/Desktop/extracted_1793263697577/New%20folder%20(5)/Avartan-test-branch/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:62106:24)
+[2m10:12:04 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css[22m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[31m     toggleMute[33m,[31m
+ [90m 1182 |[31m     isMuted
+[31m[1m>[22m[31m[90m 1183 |[31m   ])[33m;[31m
+ [90m      |[31m    [31m[1m^[22m[31m
+ [90m 1184 |[31m
+ [90m 1185 |[31m   [36mreturn[31m [33m<[31m[33mGameContext[31m[33m.[31m[33mProvider[31m value[33m=[31m{value}[33m>[31m{children}[33m<[31m[33m/[31m[33mGameContext[31m[33m.[31m[33mProvider[31m[33m>[31m[33m;[31m
+ [90m 1186 |[31m }[33m;[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Users/MOHNI/Desktop/extracted_1793263697577/New folder (5)/Avartan-test-branch/src/context/GameContext.tsx[39m:1183:3
+[33m  1181|      toggleMute,
+  1182|      isMuted
+  1183|    ]);
+     |     ^
+  1184|  
+  1185|    return <GameContext.Provider value={value}>{children}</GameContext.Provider>;[39m
+      at constructor (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:369:19)
+      at TypeScriptParserMixin.raise (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6622:19)
+      at TypeScriptParserMixin.unexpected (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6642:16)
+      at TypeScriptParserMixin.expect (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6922:12)
+      at TypeScriptParserMixin.parseExprList (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12175:14)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12091:26)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9216:24)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11366:23)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:4782:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11107:23)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12460:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12527:17)
+      at TypeScriptParserMixin.parseExprListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12209:18)
+      at TypeScriptParserMixin.parseCallExpressionArguments (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11283:22)
+      at TypeScriptParserMixin.parseCoverCallAndAsyncArrowHead (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11217:29)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11146:19)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9295:18)
+      at TypeScriptParserMixin.parseSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11120:19)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11111:17)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12455:16)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseVar (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13418:91)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13264:10)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9431:31)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12885:23)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9531:18)
+      at TypeScriptParserMixin.parseStatementLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12801:17)
+      at TypeScriptParserMixin.parseStatementListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12781:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13350:61)
+      at TypeScriptParserMixin.parseBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13343:10)
+      at TypeScriptParserMixin.parseBlock (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13331:10)
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:37 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:50 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/3D/SolarSystem3D.tsx, /src/index.css[22m
+[2m10:12:50 pm[22m [31m[1m[vite][22m[39m Pre-transform error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[39m     toggleMute[33m,[39m
+ [90m 1182 |[39m     isMuted
+[31m[1m>[22m[39m[90m 1183 |[39m   ])[33m;[39m
+ [90m      |[39m    [31m[1m^[22m[39m
+ [90m 1184 |[39m
+ [90m 1185 |[39m   [36mreturn[39m [33m<[39m[33mGameContext[39m[33m.[39m[33mProvider[39m value[33m=[39m{value}[33m>[39m{children}[33m<[39m[33m/[39m[33mGameContext[39m[33m.[39m[33mProvider[39m[33m>[39m[33m;[39m
+ [90m 1186 |[39m }[33m;[39m[0m
+[2m10:12:52 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1183:3)
+
+[0m [90m 1181 |[31m     toggleMute[33m,[31m
+ [90m 1182 |[31m     isMuted
+[31m[1m>[22m[31m[90m 1183 |[31m   ])[33m;[31m
+ [90m      |[31m    [31m[1m^[22m[31m
+ [90m 1184 |[31m
+ [90m 1185 |[31m   [36mreturn[31m [33m<[31m[33mGameContext[31m[33m.[31m[33mProvider[31m value[33m=[31m{value}[33m>[31m{children}[33m<[31m[33m/[31m[33mGameContext[31m[33m.[31m[33mProvider[31m[33m>[31m[33m;[31m
+ [90m 1186 |[31m }[33m;[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Users/MOHNI/Desktop/extracted_1793263697577/New folder (5)/Avartan-test-branch/src/context/GameContext.tsx[39m:1183:3
+[33m  1181|      toggleMute,
+  1182|      isMuted
+  1183|    ]);
+     |     ^
+  1184|  
+  1185|    return <GameContext.Provider value={value}>{children}</GameContext.Provider>;[39m
+      at constructor (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:369:19)
+      at TypeScriptParserMixin.raise (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6622:19)
+      at TypeScriptParserMixin.unexpected (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6642:16)
+      at TypeScriptParserMixin.expect (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6922:12)
+      at TypeScriptParserMixin.parseExprList (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12175:14)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12091:26)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9216:24)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11366:23)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:4782:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11107:23)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12460:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12527:17)
+      at TypeScriptParserMixin.parseExprListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12209:18)
+      at TypeScriptParserMixin.parseCallExpressionArguments (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11283:22)
+      at TypeScriptParserMixin.parseCoverCallAndAsyncArrowHead (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11217:29)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11146:19)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9295:18)
+      at TypeScriptParserMixin.parseSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11120:19)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11111:17)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12455:16)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseVar (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13418:91)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13264:10)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9431:31)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12885:23)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9531:18)
+      at TypeScriptParserMixin.parseStatementLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12801:17)
+      at TypeScriptParserMixin.parseStatementListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12781:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13350:61)
+      at TypeScriptParserMixin.parseBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13343:10)
+      at TypeScriptParserMixin.parseBlock (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13331:10)
+[2m10:13:35 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:13:36 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1191:3)
+
+[0m [90m 1189 |[31m     submitRiddleAnswer[33m,[31m
+ [90m 1190 |[31m     canRevealReferenceTable
+[31m[1m>[22m[31m[90m 1191 |[31m   ])[33m;[31m
+ [90m      |[31m    [31m[1m^[22m[31m
+ [90m 1192 |[31m
+ [90m 1193 |[31m   [36mreturn[31m [33m<[31m[33mGameContext[31m[33m.[31m[33mProvider[31m value[33m=[31m{value}[33m>[31m{children}[33m<[31m[33m/[31m[33mGameContext[31m[33m.[31m[33mProvider[31m[33m>[31m[33m;[31m
+ [90m 1194 |[31m }[33m;[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Users/MOHNI/Desktop/extracted_1793263697577/New folder (5)/Avartan-test-branch/src/context/GameContext.tsx[39m:1191:3
+[33m  1189|      submitRiddleAnswer,
+  1190|      canRevealReferenceTable
+  1191|    ]);
+     |     ^
+  1192|  
+  1193|    return <GameContext.Provider value={value}>{children}</GameContext.Provider>;[39m
+      at constructor (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:369:19)
+      at TypeScriptParserMixin.raise (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6622:19)
+      at TypeScriptParserMixin.unexpected (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6642:16)
+      at TypeScriptParserMixin.expect (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6922:12)
+      at TypeScriptParserMixin.parseExprList (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12175:14)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12091:26)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9216:24)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11366:23)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:4782:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11107:23)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12460:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12527:17)
+      at TypeScriptParserMixin.parseExprListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12209:18)
+      at TypeScriptParserMixin.parseCallExpressionArguments (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11283:22)
+      at TypeScriptParserMixin.parseCoverCallAndAsyncArrowHead (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11217:29)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11146:19)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9295:18)
+      at TypeScriptParserMixin.parseSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11120:19)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11111:17)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12455:16)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseVar (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13418:91)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13264:10)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9431:31)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12885:23)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9531:18)
+      at TypeScriptParserMixin.parseStatementLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12801:17)
+      at TypeScriptParserMixin.parseStatementListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12781:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13350:61)
+      at TypeScriptParserMixin.parseBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13343:10)
+      at TypeScriptParserMixin.parseBlock (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13331:10)
+[2m10:13:44 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:13:44 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1191:3)
+
+[0m [90m 1189 |[31m     submitRiddleAnswer[33m,[31m
+ [90m 1190 |[31m     canRevealReferenceTable
+[31m[1m>[22m[31m[90m 1191 |[31m   ])[33m;[31m
+ [90m      |[31m    [31m[1m^[22m[31m
+ [90m 1192 |[31m
+ [90m 1193 |[31m   [36mreturn[31m [33m<[31m[33mGameContext[31m[33m.[31m[33mProvider[31m value[33m=[31m{value}[33m>[31m{children}[33m<[31m[33m/[31m[33mGameContext[31m[33m.[31m[33mProvider[31m[33m>[31m[33m;[31m
+ [90m 1194 |[31m }[33m;[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Users/MOHNI/Desktop/extracted_1793263697577/New folder (5)/Avartan-test-branch/src/context/GameContext.tsx[39m:1191:3
+[33m  1189|      submitRiddleAnswer,
+  1190|      canRevealReferenceTable
+  1191|    ]);
+     |     ^
+  1192|  
+  1193|    return <GameContext.Provider value={value}>{children}</GameContext.Provider>;[39m
+      at constructor (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:369:19)
+      at TypeScriptParserMixin.raise (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6622:19)
+      at TypeScriptParserMixin.unexpected (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6642:16)
+      at TypeScriptParserMixin.expect (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6922:12)
+      at TypeScriptParserMixin.parseExprList (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12175:14)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12091:26)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9216:24)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11366:23)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:4782:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11107:23)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12460:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12527:17)
+      at TypeScriptParserMixin.parseExprListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12209:18)
+      at TypeScriptParserMixin.parseCallExpressionArguments (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11283:22)
+      at TypeScriptParserMixin.parseCoverCallAndAsyncArrowHead (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11217:29)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11146:19)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9295:18)
+      at TypeScriptParserMixin.parseSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11120:19)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11111:17)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12455:16)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseVar (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13418:91)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13264:10)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9431:31)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12885:23)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9531:18)
+      at TypeScriptParserMixin.parseStatementLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12801:17)
+      at TypeScriptParserMixin.parseStatementListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12781:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13350:61)
+      at TypeScriptParserMixin.parseBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13343:10)
+      at TypeScriptParserMixin.parseBlock (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13331:10)
+[2m10:14:25 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:14:25 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1191:3)
+
+[0m [90m 1189 |[31m     submitRiddleAnswer[33m,[31m
+ [90m 1190 |[31m     canRevealReferenceTable
+[31m[1m>[22m[31m[90m 1191 |[31m   ])[33m;[31m
+ [90m      |[31m    [31m[1m^[22m[31m
+ [90m 1192 |[31m
+ [90m 1193 |[31m   [36mreturn[31m [33m<[31m[33mGameContext[31m[33m.[31m[33mProvider[31m value[33m=[31m{value}[33m>[31m{children}[33m<[31m[33m/[31m[33mGameContext[31m[33m.[31m[33mProvider[31m[33m>[31m[33m;[31m
+ [90m 1194 |[31m }[33m;[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Users/MOHNI/Desktop/extracted_1793263697577/New folder (5)/Avartan-test-branch/src/context/GameContext.tsx[39m:1191:3
+[33m  1189|      submitRiddleAnswer,
+  1190|      canRevealReferenceTable
+  1191|    ]);
+     |     ^
+  1192|  
+  1193|    return <GameContext.Provider value={value}>{children}</GameContext.Provider>;[39m
+      at constructor (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:369:19)
+      at TypeScriptParserMixin.raise (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6622:19)
+      at TypeScriptParserMixin.unexpected (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6642:16)
+      at TypeScriptParserMixin.expect (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6922:12)
+      at TypeScriptParserMixin.parseExprList (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12175:14)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12091:26)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9216:24)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11366:23)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:4782:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11107:23)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12460:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12527:17)
+      at TypeScriptParserMixin.parseExprListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12209:18)
+      at TypeScriptParserMixin.parseCallExpressionArguments (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11283:22)
+      at TypeScriptParserMixin.parseCoverCallAndAsyncArrowHead (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11217:29)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11146:19)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9295:18)
+      at TypeScriptParserMixin.parseSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11120:19)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11111:17)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12455:16)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseVar (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13418:91)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13264:10)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9431:31)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12885:23)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9531:18)
+      at TypeScriptParserMixin.parseStatementLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12801:17)
+      at TypeScriptParserMixin.parseStatementListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12781:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13350:61)
+      at TypeScriptParserMixin.parseBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13343:10)
+      at TypeScriptParserMixin.parseBlock (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13331:10)
+[2m10:14:44 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:14:44 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1190:3)
+
+[0m [90m 1188 |[31m     submitRiddleAnswer[33m,[31m
+ [90m 1189 |[31m     canRevealReferenceTable
+[31m[1m>[22m[31m[90m 1190 |[31m   ])[33m;[31m
+ [90m      |[31m    [31m[1m^[22m[31m
+ [90m 1191 |[31m
+ [90m 1192 |[31m   [36mreturn[31m [33m<[31m[33mGameContext[31m[33m.[31m[33mProvider[31m value[33m=[31m{value}[33m>[31m{children}[33m<[31m[33m/[31m[33mGameContext[31m[33m.[31m[33mProvider[31m[33m>[31m[33m;[31m
+ [90m 1193 |[31m }[33m;[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Users/MOHNI/Desktop/extracted_1793263697577/New folder (5)/Avartan-test-branch/src/context/GameContext.tsx[39m:1190:3
+[33m  1188|      submitRiddleAnswer,
+  1189|      canRevealReferenceTable
+  1190|    ]);
+     |     ^
+  1191|  
+  1192|    return <GameContext.Provider value={value}>{children}</GameContext.Provider>;[39m
+      at constructor (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:369:19)
+      at TypeScriptParserMixin.raise (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6622:19)
+      at TypeScriptParserMixin.unexpected (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6642:16)
+      at TypeScriptParserMixin.expect (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6922:12)
+      at TypeScriptParserMixin.parseExprList (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12175:14)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12091:26)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9216:24)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11366:23)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:4782:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11107:23)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12460:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12527:17)
+      at TypeScriptParserMixin.parseExprListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12209:18)
+      at TypeScriptParserMixin.parseCallExpressionArguments (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11283:22)
+      at TypeScriptParserMixin.parseCoverCallAndAsyncArrowHead (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11217:29)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11146:19)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9295:18)
+      at TypeScriptParserMixin.parseSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11120:19)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11111:17)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12455:16)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseVar (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13418:91)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13264:10)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9431:31)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12885:23)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9531:18)
+      at TypeScriptParserMixin.parseStatementLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12801:17)
+      at TypeScriptParserMixin.parseStatementListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12781:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13350:61)
+      at TypeScriptParserMixin.parseBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13343:10)
+      at TypeScriptParserMixin.parseBlock (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13331:10)
+[2m10:14:49 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:14:50 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1189:3)
+
+[0m [90m 1187 |[31m     submitRiddleAnswer[33m,[31m
+ [90m 1188 |[31m     canRevealReferenceTable
+[31m[1m>[22m[31m[90m 1189 |[31m   ])[33m;[31m
+ [90m      |[31m    [31m[1m^[22m[31m
+ [90m 1190 |[31m
+ [90m 1191 |[31m   [36mreturn[31m [33m<[31m[33mGameContext[31m[33m.[31m[33mProvider[31m value[33m=[31m{value}[33m>[31m{children}[33m<[31m[33m/[31m[33mGameContext[31m[33m.[31m[33mProvider[31m[33m>[31m[33m;[31m
+ [90m 1192 |[31m }[33m;[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Users/MOHNI/Desktop/extracted_1793263697577/New folder (5)/Avartan-test-branch/src/context/GameContext.tsx[39m:1189:3
+[33m  1187|      submitRiddleAnswer,
+  1188|      canRevealReferenceTable
+  1189|    ]);
+     |     ^
+  1190|  
+  1191|    return <GameContext.Provider value={value}>{children}</GameContext.Provider>;[39m
+      at constructor (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:369:19)
+      at TypeScriptParserMixin.raise (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6622:19)
+      at TypeScriptParserMixin.unexpected (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6642:16)
+      at TypeScriptParserMixin.expect (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6922:12)
+      at TypeScriptParserMixin.parseExprList (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12175:14)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12091:26)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9216:24)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11366:23)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:4782:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11107:23)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12460:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12527:17)
+      at TypeScriptParserMixin.parseExprListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12209:18)
+      at TypeScriptParserMixin.parseCallExpressionArguments (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11283:22)
+      at TypeScriptParserMixin.parseCoverCallAndAsyncArrowHead (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11217:29)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11146:19)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9295:18)
+      at TypeScriptParserMixin.parseSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11120:19)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11111:17)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12455:16)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseVar (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13418:91)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13264:10)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9431:31)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12885:23)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9531:18)
+      at TypeScriptParserMixin.parseStatementLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12801:17)
+      at TypeScriptParserMixin.parseStatementListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12781:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13350:61)
+      at TypeScriptParserMixin.parseBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13343:10)
+      at TypeScriptParserMixin.parseBlock (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13331:10)
+[2m10:15:35 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:15:35 pm[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\src\context\GameContext.tsx: Unexpected token, expected "," (1188:3)
+
+[0m [90m 1186 |[31m     submitRiddleAnswer[33m,[31m
+ [90m 1187 |[31m     canRevealReferenceTable
+[31m[1m>[22m[31m[90m 1188 |[31m   ])[33m;[31m
+ [90m      |[31m    [31m[1m^[22m[31m
+ [90m 1189 |[31m
+ [90m 1190 |[31m   [36mreturn[31m [33m<[31m[33mGameContext[31m[33m.[31m[33mProvider[31m value[33m=[31m{value}[33m>[31m{children}[33m<[31m[33m/[31m[33mGameContext[31m[33m.[31m[33mProvider[31m[33m>[31m[33m;[31m
+ [90m 1191 |[31m }[33m;[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Users/MOHNI/Desktop/extracted_1793263697577/New folder (5)/Avartan-test-branch/src/context/GameContext.tsx[39m:1188:3
+[33m  1186|      submitRiddleAnswer,
+  1187|      canRevealReferenceTable
+  1188|    ]);
+     |     ^
+  1189|  
+  1190|    return <GameContext.Provider value={value}>{children}</GameContext.Provider>;[39m
+      at constructor (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:369:19)
+      at TypeScriptParserMixin.raise (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6622:19)
+      at TypeScriptParserMixin.unexpected (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6642:16)
+      at TypeScriptParserMixin.expect (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:6922:12)
+      at TypeScriptParserMixin.parseExprList (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12175:14)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12091:26)
+      at TypeScriptParserMixin.parseArrayLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9216:24)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11366:23)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:4782:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11107:23)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12460:12)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseMaybeAssignAllowInOrVoidPattern (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12527:17)
+      at TypeScriptParserMixin.parseExprListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12209:18)
+      at TypeScriptParserMixin.parseCallExpressionArguments (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11283:22)
+      at TypeScriptParserMixin.parseCoverCallAndAsyncArrowHead (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11217:29)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11146:19)
+      at TypeScriptParserMixin.parseSubscript (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9295:18)
+      at TypeScriptParserMixin.parseSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11120:19)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11111:17)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11092:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:11072:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9860:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10925:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10930:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10907:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10857:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9809:20)
+      at C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12455:16)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:10826:17)
+      at TypeScriptParserMixin.parseVar (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13418:91)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13264:10)
+      at TypeScriptParserMixin.parseVarStatement (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9431:31)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12885:23)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:9531:18)
+      at TypeScriptParserMixin.parseStatementLike (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12801:17)
+      at TypeScriptParserMixin.parseStatementListItem (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:12781:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13350:61)
+      at TypeScriptParserMixin.parseBlockBody (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13343:10)
+      at TypeScriptParserMixin.parseBlock (C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\node_modules\@babel\parser\lib\index.js:13331:10)
+[2m10:16:19 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:17:02 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:17:31 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:18:00 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:18:31 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:19:09 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:19:41 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:21:54 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:41:12 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:41:37 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:42:14 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:42:49 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:43:14 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:47:05 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:47:19 pm[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/engine/types.ts[22m
+[2m10:48:33 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:49:26 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:50:12 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:51:25 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/3D/SolarSystem3D.tsx, /src/index.css[22m
+[2m10:52:06 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m10:56:48 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/index.css, /src/context/GameContext.tsx, /src/components/UI/LoginPage.tsx, /src/components/Leaderboard/LeaderboardModal.tsx, /src/components/Hub/RoundHub.tsx, /src/components/Admin/AdminPanel.tsx, /src/components/Admin/AdminScoresModal.tsx[22m
+[2m10:56:48 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/Admin/AdminScoresModal.tsx, /src/index.css[22m
+[2m10:56:56 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/RoundThree/RoundThreeBriefing.tsx, /src/index.css[22m
+[2m10:57:05 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/RoundThree/RoundThreeBriefing.tsx, /src/index.css[22m
+[2m10:57:23 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/RoundThree/RoundThreeBriefing.tsx, /src/index.css[22m
+[2m10:57:40 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/RoundThree/RoundThreeBriefing.tsx, /src/index.css[22m
+[2m10:57:50 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/RoundThree/RoundThreeBriefing.tsx, /src/index.css[22m
+[2m10:57:56 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/RoundThree/RoundThreeBriefing.tsx, /src/index.css[22m
+[2m10:58:24 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/RoundThree/RoundThreeBriefing.tsx, /src/index.css[22m
+[2m10:58:35 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/index.css, /src/context/GameContext.tsx, /src/components/UI/LoginPage.tsx, /src/components/Leaderboard/LeaderboardModal.tsx, /src/components/Hub/RoundHub.tsx, /src/components/Admin/AdminPanel.tsx, /src/components/Admin/AdminScoresModal.tsx[22m
+[2m10:58:55 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/Admin/AdminScoresModal.tsx, /src/index.css[22m
+[2m10:59:02 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/Admin/AdminScoresModal.tsx, /src/index.css[22m
+[2m10:59:06 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/index.css, /src/context/GameContext.tsx, /src/components/UI/LoginPage.tsx, /src/components/Leaderboard/LeaderboardModal.tsx, /src/components/Hub/RoundHub.tsx, /src/components/Admin/AdminPanel.tsx, /src/components/Admin/AdminScoresModal.tsx[22m
+[2m10:59:12 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/RoundThree/RoundThreeBriefing.tsx, /src/index.css[22m
+[2m10:59:20 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/RoundThree/RoundThreeBriefing.tsx, /src/index.css[22m
+[2m11:05:15 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m11:39:30 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m11:53:30 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/UI/RiddleModal.tsx, /src/index.css[22m
+[2m11:54:07 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/3D/SolarSystem3D.tsx, /src/index.css[22m
+[2m11:55:05 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/3D/SolarSystem3D.tsx, /src/index.css[22m
+[2m11:56:23 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m11:56:56 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m11:57:09 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m11:57:42 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m11:57:55 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m11:58:14 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m11:58:34 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m11:58:51 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m11:59:06 pm[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/GameContext.tsx, /src/index.css[22m
+[2m12:01:10 am[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mdist/index.html[22m
+[2m12:01:10 am[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2mdist/round3/marsfall.html[22m
+node:internal/fs/watchers:321
+    const error = new UVException({
+                  ^
+
+Error: EBUSY: resource busy or locked, watch 'C:\Users\MOHNI\Desktop\extracted_1793263697577\New folder (5)\Avartan-test-branch\dist\assets\avartan_banner.png'
+    at FSWatcher.<computed> (node:internal/fs/watchers:321:19)
+    at Object.watch (node:fs:2548:36)
+    at createFsWatchInstance (file:///C:/Users/MOHNI/Desktop/extracted_1793263697577/New%20folder%20(5)/Avartan-test-branch/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:42780:17)
+    at setFsWatchListener (file:///C:/Users/MOHNI/Desktop/extracted_1793263697577/New%20folder%20(5)/Avartan-test-branch/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:42827:15)
+    at NodeFsHandler._watchWithNodeFs (file:///C:/Users/MOHNI/Desktop/extracted_1793263697577/New%20folder%20(5)/Avartan-test-branch/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:42982:14)
+    at NodeFsHandler._handleFile (file:///C:/Users/MOHNI/Desktop/extracted_1793263697577/New%20folder%20(5)/Avartan-test-branch/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:43046:23)
+    at NodeFsHandler._addToNodeFs (file:///C:/Users/MOHNI/Desktop/extracted_1793263697577/New%20folder%20(5)/Avartan-test-branch/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:43288:21)
+Emitted 'error' event on FSWatcher instance at:
+    at FSWatcher._handleError (file:///C:/Users/MOHNI/Desktop/extracted_1793263697577/New%20folder%20(5)/Avartan-test-branch/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:44481:10)
+    at NodeFsHandler._addToNodeFs (file:///C:/Users/MOHNI/Desktop/extracted_1793263697577/New%20folder%20(5)/Avartan-test-branch/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:43296:18) {
+  errno: -4082,
+  syscall: 'watch',
+  code: 'EBUSY',
+  path: 'C:\\Users\\MOHNI\\Desktop\\extracted_1793263697577\\New folder (5)\\Avartan-test-branch\\dist\\assets\\avartan_banner.png',
+  filename: 'C:\\Users\\MOHNI\\Desktop\\extracted_1793263697577\\New folder (5)\\Avartan-test-branch\\dist\\assets\\avartan_banner.png'
+}
+
+Node.js v24.16.0
