@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Void Paradigm · Scoreboard</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@500;700&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#050914;--pan:rgba(8,20,34,.82);--ln:rgba(34,211,238,.3);--cy:#22d3ee;--pu:#a855f7;--tx:#e6f4ff;--mu:#7c93ab;--ok:#34d399;--bad:#fb7185;--gold:#fbbf24}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--tx);font:14px 'JetBrains Mono',ui-monospace,Consolas,monospace;display:flex;flex-direction:column;min-height:100vh}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+header,main,footer{position:relative;z-index:1}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:16px clamp(14px,3vw,30px);border-bottom:1px solid rgba(34,211,238,.18);background:rgba(5,9,20,.78);backdrop-filter:blur(6px)}
+header h1{margin:0;font:800 clamp(16px,2.8vw,22px) 'Orbitron',sans-serif;letter-spacing:.16em;background:linear-gradient(90deg,#fff,#a5f3fc,#d8b4fe);-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{margin:4px 0 0;color:var(--cy);font-size:10px;letter-spacing:.16em}
+main{flex:1;width:min(1200px,100%);margin:0 auto;padding:clamp(14px,3vw,28px)}
+.card{background:var(--pan);border:1px solid var(--ln);border-radius:18px;padding:clamp(14px,3vw,22px);margin-bottom:16px}
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:14px}
+input{flex:1;min-width:200px;max-width:380px;background:rgba(2,8,18,.85);border:1px solid var(--ln);border-radius:10px;color:var(--tx);font:600 13px 'JetBrains Mono',monospace;padding:11px 13px}
+input:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+.upd{color:var(--mu);font-size:11px}
+.row{display:grid;grid-template-columns:54px 1fr 66px 66px 66px 84px;gap:10px;align-items:center;padding:11px 14px;border-radius:12px;border:1px solid rgba(34,211,238,.14);margin-bottom:8px;background:var(--pan)}
+.row.h{border:0;background:none;color:var(--mu);font-size:10px;letter-spacing:.1em;padding-bottom:0}
+.rk{font:700 18px 'Space Grotesk',sans-serif}.nm{font-weight:700;overflow-wrap:anywhere}.nm small{display:block;color:var(--mu);font-weight:400;margin-top:2px;font-size:11px}
+.tot{font:700 17px 'Space Grotesk',sans-serif;color:var(--cy);text-align:right}.lv{text-align:center}
+.lm{display:none;grid-column:2/4;color:var(--mu);font-size:11px}
+.row.top{border-color:rgba(251,191,36,.5);background:linear-gradient(90deg,rgba(251,191,36,.1),var(--pan))}
+.row.idle{opacity:.55}.row.me{outline:2px solid var(--cy)}
+.msg{text-align:center;color:var(--mu);padding:26px 0;font-size:13px}
+.notice{border:1px solid rgba(168,85,247,.45);background:rgba(168,85,247,.1);border-radius:16px;padding:14px 18px;margin-bottom:16px}
+.notice .hl{font:700 10px 'JetBrains Mono',monospace;letter-spacing:.24em;color:#d8b4fe;margin-bottom:6px}
+.notice p{margin:0;color:var(--tx);font-size:13.5px;line-height:1.7;white-space:pre-wrap;font-weight:400}
+#hold{text-align:center;position:relative;overflow:hidden}
+#hold:not([hidden]){animation:hin .6s ease-out}@keyframes hin{from{opacity:0;transform:scale(.97)}}
+#hold:before,#hold:after{content:"";position:absolute;width:22px;height:22px;border:2px solid var(--cy);opacity:.7}
+#hold:before{top:12px;left:12px;border-right:0;border-bottom:0}#hold:after{bottom:12px;right:12px;border-left:0;border-top:0}
+.hl{color:var(--cy);font-size:10px;letter-spacing:.3em;margin-bottom:8px}
+.pc{font:700 13px 'JetBrains Mono',monospace;letter-spacing:.25em;color:var(--cy);text-shadow:0 0 10px rgba(34,211,238,.7);margin-bottom:12px}
+.stl{color:var(--mu);font-size:12px;letter-spacing:.12em;margin:12px 0 0;min-height:18px}
+h3.gl{animation:gl 5s infinite}@keyframes gl{0%,91%,100%{text-shadow:none;transform:none}92%{text-shadow:2px 0 #22d3ee,-2px 0 #a855f7;transform:translateX(2px)}94%{text-shadow:-2px 0 #22d3ee,2px 0 #a855f7;transform:translateX(-2px)}96%{text-shadow:none;transform:none}}
+.split{display:grid;grid-template-columns:2fr 1fr;gap:16px;align-items:start}
+.split .side{position:sticky;top:16px}
+@media(max-width:900px){.split{grid-template-columns:1fr}}
+footer{padding:14px clamp(14px,3vw,30px);color:var(--mu);font-size:11px;border-top:1px solid rgba(34,211,238,.12);background:rgba(5,9,20,.75);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+[hidden]{display:none!important}
+@media(max-width:640px){.row{grid-template-columns:44px 1fr auto}.lv,.row.h .lv{display:none}.lm{display:block}.row.h{grid-template-columns:44px 1fr auto}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<header>
+  <div>
+    <h1>VOID PARADIGM · SCOREBOARD</h1>
+    <p>GRADIENT PRESENTS · LIVE SCORES</p>
+  </div>
+  <a href="admin-dashboard.html" style="color:var(--cy);font-size:11px;text-decoration:none;border-bottom:1px dashed rgba(34,211,238,.5)">Admin →</a>
+</header>
+
+<main>
+  <section class="card" id="hold" hidden style="text-align:center;position:relative;overflow:hidden"><div class="hl">VOID PARADIGM // STANDBY</div><svg viewBox="-12 -12 224 224" role="img" aria-label="Loading: a rocket orbiting a planet" style="width:min(240px,70vw);height:auto;display:block;margin:0 auto 14px"><defs><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><radialGradient id="pg" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#a78bfa"/><stop offset=".6" stop-color="#5b3fd1"/><stop offset="1" stop-color="#1d2a7a"/></radialGradient><radialGradient id="ps" cx=".3" cy=".3" r=".9"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></radialGradient><clipPath id="pc"><circle cx="100" cy="100" r="42"/></clipPath><g id="tl"><rect x="0" y="22" width="84" height="9" fill="#c4b5fd" opacity=".35"/><rect x="0" y="52" width="84" height="12" fill="#22d3ee" opacity=".22"/><circle cx="24" cy="44" r="7" fill="#1d2a7a" opacity=".45"/><circle cx="60" cy="68" r="5" fill="#1d2a7a" opacity=".45"/><circle cx="52" cy="26" r="4" fill="#1d2a7a" opacity=".4"/></g></defs><path d="M180.0,100.0 L182.1,102.9 L184.0,105.9 L185.6,109.0 L186.6,112.2 L187.1,115.4 L187.0,118.5 L186.3,121.5 L184.9,124.4 L183.0,127.0 L180.6,129.3 L177.8,131.4 L174.8,133.3 L171.6,134.9 L168.4,136.4 L165.4,137.8 L162.5,139.1 L160.0,140.5 L157.8,142.0 L156.0,143.7 L154.5,145.7 L153.3,148.0 L152.4,150.6 L151.7,153.6 L151.1,156.7 L150.4,160.1 L149.6,163.5 L148.7,167.0 L147.4,170.3 L145.8,173.3 L143.9,176.0 L141.6,178.3 L139.0,180.0 L136.1,181.1 L133.0,181.7 L129.7,181.7 L126.4,181.1 L123.0,180.1 L119.7,178.8 L116.4,177.3 L113.4,175.8 L110.4,174.2 L107.7,172.9 L105.0,171.9 L102.5,171.2 L100.0,171.0 L97.5,171.2 L95.0,171.9 L92.3,172.9 L89.6,174.2 L86.6,175.8 L83.6,177.3 L80.3,178.8 L77.0,180.1 L73.6,181.1 L70.3,181.7 L67.0,181.7 L63.9,181.1 L61.0,180.0 L58.4,178.3 L56.1,176.0 L54.2,173.3 L52.6,170.3 L51.3,167.0 L50.4,163.5 L49.6,160.1 L48.9,156.7 L48.3,153.6 L47.6,150.6 L46.7,148.0 L45.5,145.7 L44.0,143.7 L42.2,142.0 L40.0,140.5 L37.5,139.1 L34.6,137.8 L31.6,136.4 L28.4,134.9 L25.2,133.3 L22.2,131.4 L19.4,129.3 L17.0,127.0 L15.1,124.4 L13.7,121.5 L13.0,118.5 L12.9,115.4 L13.4,112.2 L14.4,109.0 L16.0,105.9 L17.9,102.9 L20.0,100.0 L22.2,97.3 L24.4,94.7 L26.4,92.3 L28.2,89.9 L29.5,87.6 L30.5,85.2 L31.0,82.8 L31.1,80.2 L30.8,77.5 L30.3,74.6 L29.5,71.5 L28.6,68.2 L27.8,64.8 L27.2,61.3 L26.8,57.7 L26.9,54.3 L27.3,51.0 L28.4,47.9 L29.9,45.2 L31.9,42.9 L34.4,41.0 L37.4,39.5 L40.6,38.5 L44.0,37.8 L47.6,37.5 L51.1,37.5 L54.6,37.5 L57.9,37.6 L61.0,37.6 L63.9,37.5 L66.5,37.0 L68.9,36.2 L71.0,35.0 L73.1,33.3 L75.0,31.3 L76.9,28.9 L78.9,26.3 L80.9,23.6 L83.2,20.8 L85.6,18.2 L88.2,15.8 L90.9,13.8 L93.9,12.3 L96.9,11.3 L100.0,11.0 L103.1,11.3 L106.1,12.3 L109.1,13.8 L111.8,15.8 L114.4,18.2 L116.8,20.8 L119.1,23.6 L121.1,26.3 L123.1,28.9 L125.0,31.3 L126.9,33.3 L129.0,35.0 L131.1,36.2 L133.5,37.0 L136.1,37.5 L139.0,37.6 L142.1,37.6 L145.4,37.5 L148.9,37.5 L152.4,37.5 L156.0,37.8 L159.4,38.5 L162.6,39.5 L165.6,41.0 L168.1,42.9 L170.1,45.2 L171.6,47.9 L172.7,51.0 L173.1,54.3 L173.2,57.7 L172.8,61.3 L172.2,64.8 L171.4,68.2 L170.5,71.5 L169.7,74.6 L169.2,77.5 L168.9,80.2 L169.0,82.8 L169.5,85.2 L170.5,87.6 L171.8,89.9 L173.6,92.3 L175.6,94.7 L177.8,97.3 L180.0,100.0" fill="none" stroke="rgba(34,211,238,.18)" stroke-width="4" stroke-linejoin="round"/><path d="M180.0,100.0 L182.1,102.9 L184.0,105.9 L185.6,109.0 L186.6,112.2 L187.1,115.4 L187.0,118.5 L186.3,121.5 L184.9,124.4 L183.0,127.0 L180.6,129.3 L177.8,131.4 L174.8,133.3 L171.6,134.9 L168.4,136.4 L165.4,137.8 L162.5,139.1 L160.0,140.5 L157.8,142.0 L156.0,143.7 L154.5,145.7 L153.3,148.0 L152.4,150.6 L151.7,153.6 L151.1,156.7 L150.4,160.1 L149.6,163.5 L148.7,167.0 L147.4,170.3 L145.8,173.3 L143.9,176.0 L141.6,178.3 L139.0,180.0 L136.1,181.1 L133.0,181.7 L129.7,181.7 L126.4,181.1 L123.0,180.1 L119.7,178.8 L116.4,177.3 L113.4,175.8 L110.4,174.2 L107.7,172.9 L105.0,171.9 L102.5,171.2 L100.0,171.0 L97.5,171.2 L95.0,171.9 L92.3,172.9 L89.6,174.2 L86.6,175.8 L83.6,177.3 L80.3,178.8 L77.0,180.1 L73.6,181.1 L70.3,181.7 L67.0,181.7 L63.9,181.1 L61.0,180.0 L58.4,178.3 L56.1,176.0 L54.2,173.3 L52.6,170.3 L51.3,167.0 L50.4,163.5 L49.6,160.1 L48.9,156.7 L48.3,153.6 L47.6,150.6 L46.7,148.0 L45.5,145.7 L44.0,143.7 L42.2,142.0 L40.0,140.5 L37.5,139.1 L34.6,137.8 L31.6,136.4 L28.4,134.9 L25.2,133.3 L22.2,131.4 L19.4,129.3 L17.0,127.0 L15.1,124.4 L13.7,121.5 L13.0,118.5 L12.9,115.4 L13.4,112.2 L14.4,109.0 L16.0,105.9 L17.9,102.9 L20.0,100.0 L22.2,97.3 L24.4,94.7 L26.4,92.3 L28.2,89.9 L29.5,87.6 L30.5,85.2 L31.0,82.8 L31.1,80.2 L30.8,77.5 L30.3,74.6 L29.5,71.5 L28.6,68.2 L27.8,64.8 L27.2,61.3 L26.8,57.7 L26.9,54.3 L27.3,51.0 L28.4,47.9 L29.9,45.2 L31.9,42.9 L34.4,41.0 L37.4,39.5 L40.6,38.5 L44.0,37.8 L47.6,37.5 L51.1,37.5 L54.6,37.5 L57.9,37.6 L61.0,37.6 L63.9,37.5 L66.5,37.0 L68.9,36.2 L71.0,35.0 L73.1,33.3 L75.0,31.3 L76.9,28.9 L78.9,26.3 L80.9,23.6 L83.2,20.8 L85.6,18.2 L88.2,15.8 L90.9,13.8 L93.9,12.3 L96.9,11.3 L100.0,11.0 L103.1,11.3 L106.1,12.3 L109.1,13.8 L111.8,15.8 L114.4,18.2 L116.8,20.8 L119.1,23.6 L121.1,26.3 L123.1,28.9 L125.0,31.3 L126.9,33.3 L129.0,35.0 L131.1,36.2 L133.5,37.0 L136.1,37.5 L139.0,37.6 L142.1,37.6 L145.4,37.5 L148.9,37.5 L152.4,37.5 L156.0,37.8 L159.4,38.5 L162.6,39.5 L165.6,41.0 L168.1,42.9 L170.1,45.2 L171.6,47.9 L172.7,51.0 L173.1,54.3 L173.2,57.7 L172.8,61.3 L172.2,64.8 L171.4,68.2 L170.5,71.5 L169.7,74.6 L169.2,77.5 L168.9,80.2 L169.0,82.8 L169.5,85.2 L170.5,87.6 L171.8,89.9 L173.6,92.3 L175.6,94.7 L177.8,97.3 L180.0,100.0" id="wvp" pathLength="1000" filter="url(#glow)" fill="none" stroke="#22d3ee" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1000" stroke-dashoffset="1000"><animate attributeName="stroke-dashoffset" from="1000" to="0" dur="7s" repeatCount="indefinite"/></path><circle cx="100" cy="100" r="53" fill="none" stroke="#22d3ee" stroke-opacity=".5" stroke-width="1" stroke-dasharray="4 7"><animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="18s" repeatCount="indefinite"/></circle><circle cx="100" cy="100" r="60" fill="none" stroke="#a855f7" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="1 9" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="360 100 100" to="0 100 100" dur="26s" repeatCount="indefinite"/></circle><circle cx="100" cy="100" r="43.5" fill="none" stroke="#a78bfa" stroke-opacity=".7" stroke-width="2" filter="url(#glow)"/><g clip-path="url(#pc)"><rect x="58" y="58" width="84" height="84" fill="url(#pg)"/><g><use href="#tl" x="58" y="58"/><use href="#tl" x="142" y="58"/><use href="#tl" x="226" y="58"/><animateTransform attributeName="transform" type="translate" from="0 0" to="-84 0" dur="7s" repeatCount="indefinite"/></g><circle cx="100" cy="100" r="42" fill="url(#ps)"/></g><g filter="url(#glow)"><circle r="3" fill="#22d3ee" opacity="0.6" visibility="hidden"><set attributeName="visibility" to="visible" begin="0.1s"/><animateMotion dur="7s" begin="0.1s" repeatCount="indefinite"><mpath href="#wvp"/></animateMotion></circle><circle r="2.6" fill="#22d3ee" opacity="0.5" visibility="hidden"><set attributeName="visibility" to="visible" begin="0.2s"/><animateMotion dur="7s" begin="0.2s" repeatCount="indefinite"><mpath href="#wvp"/></animateMotion></circle><circle r="2.2" fill="#22d3ee" opacity="0.4" visibility="hidden"><set attributeName="visibility" to="visible" begin="0.3s"/><animateMotion dur="7s" begin="0.3s" repeatCount="indefinite"><mpath href="#wvp"/></animateMotion></circle><circle r="1.8" fill="#22d3ee" opacity="0.3" visibility="hidden"><set attributeName="visibility" to="visible" begin="0.4s"/><animateMotion dur="7s" begin="0.4s" repeatCount="indefinite"><mpath href="#wvp"/></animateMotion></circle><circle r="1.4" fill="#22d3ee" opacity="0.2" visibility="hidden"><set attributeName="visibility" to="visible" begin="0.5s"/><animateMotion dur="7s" begin="0.5s" repeatCount="indefinite"><mpath href="#wvp"/></animateMotion></circle></g><g filter="url(#glow)"><g transform="scale(1.15)"><path d="M-9,0 L-17,-3 L-14,0 L-17,3Z" fill="#fb923c"><animate attributeName="opacity" values="1;.4;1" dur=".25s" repeatCount="indefinite"/></path><path d="M12,0 C8,-5 2,-5 -9,-4 L-9,4 C2,5 8,5 12,0Z" fill="#e6f4ff"/><path d="M-3,-4 L-9,-9 L-9,-4Z M-3,4 L-9,9 L-9,4Z" fill="#a855f7"/><circle cx="2" cy="0" r="2.3" fill="#22d3ee"/></g><animateMotion dur="7s" repeatCount="indefinite" rotate="auto" path="M180.0,100.0 L182.1,102.9 L184.0,105.9 L185.6,109.0 L186.6,112.2 L187.1,115.4 L187.0,118.5 L186.3,121.5 L184.9,124.4 L183.0,127.0 L180.6,129.3 L177.8,131.4 L174.8,133.3 L171.6,134.9 L168.4,136.4 L165.4,137.8 L162.5,139.1 L160.0,140.5 L157.8,142.0 L156.0,143.7 L154.5,145.7 L153.3,148.0 L152.4,150.6 L151.7,153.6 L151.1,156.7 L150.4,160.1 L149.6,163.5 L148.7,167.0 L147.4,170.3 L145.8,173.3 L143.9,176.0 L141.6,178.3 L139.0,180.0 L136.1,181.1 L133.0,181.7 L129.7,181.7 L126.4,181.1 L123.0,180.1 L119.7,178.8 L116.4,177.3 L113.4,175.8 L110.4,174.2 L107.7,172.9 L105.0,171.9 L102.5,171.2 L100.0,171.0 L97.5,171.2 L95.0,171.9 L92.3,172.9 L89.6,174.2 L86.6,175.8 L83.6,177.3 L80.3,178.8 L77.0,180.1 L73.6,181.1 L70.3,181.7 L67.0,181.7 L63.9,181.1 L61.0,180.0 L58.4,178.3 L56.1,176.0 L54.2,173.3 L52.6,170.3 L51.3,167.0 L50.4,163.5 L49.6,160.1 L48.9,156.7 L48.3,153.6 L47.6,150.6 L46.7,148.0 L45.5,145.7 L44.0,143.7 L42.2,142.0 L40.0,140.5 L37.5,139.1 L34.6,137.8 L31.6,136.4 L28.4,134.9 L25.2,133.3 L22.2,131.4 L19.4,129.3 L17.0,127.0 L15.1,124.4 L13.7,121.5 L13.0,118.5 L12.9,115.4 L13.4,112.2 L14.4,109.0 L16.0,105.9 L17.9,102.9 L20.0,100.0 L22.2,97.3 L24.4,94.7 L26.4,92.3 L28.2,89.9 L29.5,87.6 L30.5,85.2 L31.0,82.8 L31.1,80.2 L30.8,77.5 L30.3,74.6 L29.5,71.5 L28.6,68.2 L27.8,64.8 L27.2,61.3 L26.8,57.7 L26.9,54.3 L27.3,51.0 L28.4,47.9 L29.9,45.2 L31.9,42.9 L34.4,41.0 L37.4,39.5 L40.6,38.5 L44.0,37.8 L47.6,37.5 L51.1,37.5 L54.6,37.5 L57.9,37.6 L61.0,37.6 L63.9,37.5 L66.5,37.0 L68.9,36.2 L71.0,35.0 L73.1,33.3 L75.0,31.3 L76.9,28.9 L78.9,26.3 L80.9,23.6 L83.2,20.8 L85.6,18.2 L88.2,15.8 L90.9,13.8 L93.9,12.3 L96.9,11.3 L100.0,11.0 L103.1,11.3 L106.1,12.3 L109.1,13.8 L111.8,15.8 L114.4,18.2 L116.8,20.8 L119.1,23.6 L121.1,26.3 L123.1,28.9 L125.0,31.3 L126.9,33.3 L129.0,35.0 L131.1,36.2 L133.5,37.0 L136.1,37.5 L139.0,37.6 L142.1,37.6 L145.4,37.5 L148.9,37.5 L152.4,37.5 L156.0,37.8 L159.4,38.5 L162.6,39.5 L165.6,41.0 L168.1,42.9 L170.1,45.2 L171.6,47.9 L172.7,51.0 L173.1,54.3 L173.2,57.7 L172.8,61.3 L172.2,64.8 L171.4,68.2 L170.5,71.5 L169.7,74.6 L169.2,77.5 L168.9,80.2 L169.0,82.8 L169.5,85.2 L170.5,87.6 L171.8,89.9 L173.6,92.3 L175.6,94.7 L177.8,97.3 L180.0,100.0"/></g></svg><h3 class="gl" style="margin:0 0 8px;font:700 20px 'Space Grotesk',sans-serif">Please wait</h3><p class="lead" id="hm" style="margin:0;color:var(--tx);font-size:14px"></p><p class="stl" id="stl"></p></section>
+
+  <div id="noticeWrap" hidden></div>
+
+  <div id="mainContent">
+    <div class="bar" id="searchBar">
+      <input type="search" id="q" placeholder="Find your team name or ID" aria-label="Search teams">
+      <span class="upd" id="upd">Loading…</span>
+    </div>
+
+    <div id="splitWrap">
+      <div id="list"><p class="msg">Loading scores…</p></div>
+      <aside id="annSide" class="card side" hidden>
+        <div class="hl">ANNOUNCEMENTS</div>
+        <div id="annText" style="white-space:pre-wrap;line-height:1.7;font-size:13.5px"></div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span>Rank by total score · teams that have not finished a level show a dash</span>
+  <span>Auto-refresh every 20s</span>
+</footer>
+
+<script>
+const $ = s => document.querySelector(s);
+const SB = { url: 'https://jbydaklyvepixtzrcgfp.supabase.co/rest/v1', key: 'sb_publishable_z-SnsaEpRt47cE7rOumIwA_DwY3tgJE' };
+const esc = s => String(s === null || s === undefined ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+async function rpc(fn, body) {
+  const res = await fetch(`${SB.url}/rpc/${fn}`, {
+    method: 'POST',
+    headers: { apikey: SB.key, Authorization: `Bearer ${SB.key}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body || {})
+  });
+  if (!res.ok) throw new Error('Server replied ' + res.status);
+  return res.json();
+}
+
+let T = [];
+
+async function load() {
+  try {
+    const rows = await rpc('public_scores', {});
+    T = Array.isArray(rows) ? rows : [];
+    const active = T.filter(t => t.d1 || t.d2 || t.d3).sort((x, y) => y.cum - x.cum || x.id - y.id);
+    let prev = null, rank = 0;
+    active.forEach((t, i) => {
+      if (!prev || t.cum !== prev.cum) rank = i + 1;
+      t.rank = rank;
+      prev = t;
+    });
+    T = active.concat(T.filter(t => !(t.d1 || t.d2 || t.d3)).sort((x, y) => x.id - y.id));
+    $('#upd').textContent = 'Updated ' + new Date().toLocaleTimeString();
+    draw();
+  } catch (e) {
+    $('#upd').textContent = 'Refresh failed: ' + e.message;
+    if (!T.length) $('#list').innerHTML = '<p class="msg">Could not load scores.</p>';
+  }
+}
+
+function draw() {
+  const q = $('#q').value.trim().toLowerCase();
+  const v = (d, p) => (d ? p : '—');
+  const list = T.filter(t => !q || t.name.toLowerCase().includes(q) || String(t.id) === q);
+  if (!list.length) {
+    $('#list').innerHTML = '<p class="msg">No team found.</p>';
+    return;
+  }
+  $('#list').innerHTML =
+    '<div class="row h"><span>RANK</span><span>TEAM</span><span class="lv">LEVEL 1</span><span class="lv">LEVEL 2</span><span class="lv">LEVEL 3</span><span style="text-align:right">TOTAL</span></div>' +
+    list.map(t => `<div class="row${t.rank && t.rank <= 3 ? ' top' : ''}${t.rank ? '' : ' idle'}${q && list.length === 1 ? ' me' : ''}">
+      <span class="rk">${t.rank ? (t.rank === 1 ? '🥇' : t.rank === 2 ? '🥈' : t.rank === 3 ? '🥉' : t.rank) : '–'}</span>
+      <span class="nm">${esc(t.name)}<small>Team ID ${t.id}</small></span>
+      <span class="lv">${v(t.d1, t.p1)}</span>
+      <span class="lv">${v(t.d2, t.p2)}</span>
+      <span class="lv">${v(t.d3, t.p3)}</span>
+      <span class="tot">${t.cum}</span>
+      <span class="lm">L1 ${v(t.d1, t.p1)} · L2 ${v(t.d2, t.p2)} · L3 ${v(t.d3, t.p3)}</span>
+    </div>`).join('');
+}
+
+async function checkState() {
+  try {
+    const [status, cfg] = await Promise.all([
+      rpc('get_status', {}),
+      rpc('get_config', {}).catch(() => null)
+    ]);
+    const hold = (status && status.score) || {};
+    const vp = cfg && cfg.vp ? cfg.vp : {};
+    const scoreCfg = vp.scoreboard || {};
+    const loadingOn = scoreCfg.loading ? scoreCfg.loading.on !== false : true;
+    const splitOn = scoreCfg.split ? !!scoreCfg.split.on : false;
+    const on = loadingOn && !!hold.on;
+    $('#hold').hidden = !on;
+    const mainContent = document.getElementById('mainContent');
+    if (mainContent) mainContent.hidden = on;
+    if (on) {
+      const hm = document.getElementById('hm');
+      if (hm) hm.textContent = hold.message || 'We are updating the scores. Please wait.';
+    }
+
+    // Notice board published from the admin dashboard.
+    const notice = vp.notice || (cfg && cfg.vp && cfg.vp.notice);
+    const showNotice = !!(notice && notice.on && String(notice.text || '').trim());
+    $('#noticeWrap').hidden = !(showNotice && !splitOn);
+    if (showNotice && !splitOn) {
+      $('#noticeWrap').innerHTML = `<div class="notice"><div class="hl">NOTICE BOARD</div><p>${esc(notice.text)}</p></div>`;
+    }
+
+    const splitWrap = $('#splitWrap');
+    const annSide = $('#annSide');
+    const annText = $('#annText');
+    if (splitOn && showNotice) {
+      splitWrap.classList.add('split');
+      annSide.hidden = false;
+      if (annText) annText.textContent = notice.text || '';
+    } else {
+      splitWrap.classList.remove('split');
+      annSide.hidden = true;
+    }
+  } catch (e) {
+    /* keep the last known state */
+  }
+}
+
+$('#q').oninput = draw;
+load(); checkState();
+setInterval(load, 3000);
+setInterval(checkState, 2000);
+
+/* scrolling rocket status line while held */
+setInterval(() => {
+  const h = $('#hold');
+  if (!h || h.hidden) return;
+  const lines = ['Calibrating thrusters', 'Aligning orbit', 'Stabilising signal', 'Syncing mission data'];
+  const el = $('#stl');
+  if (el) el.textContent = lines[Math.floor(Date.now() / 2400) % lines.length] + '…';
+}, 600);
+
+(() => {
+  const c = $('#bg'), x = c.getContext('2d');
+  let W, H, stars = [];
+  const init = () => {
+    W = c.width = innerWidth; H = c.height = innerHeight;
+    stars = Array.from({ length: Math.floor((W * H) / 7000) }, () => ({
+      x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.2 + .3, p: Math.random() * 6
+    }));
+  };
+  const frame = t => {
+    x.clearRect(0, 0, W, H);
+    const g = x.createRadialGradient(W / 2, H * .4, 0, W / 2, H * .4, Math.max(W, H) * .7);
+    g.addColorStop(0, '#08142a'); g.addColorStop(1, '#050914');
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    stars.forEach(s => {
+      x.globalAlpha = .3 + .35 * Math.sin(t / 1000 + s.p);
+      x.fillStyle = '#cfe9ff';
+      x.beginPath(); x.arc(s.x, s.y, s.r, 0, 7); x.fill();
+    });
+    x.globalAlpha = 1;
+    if (!matchMedia('(prefers-reduced-motion:reduce)').matches) requestAnimationFrame(frame);
+  };
+  addEventListener('resize', init); init(); requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

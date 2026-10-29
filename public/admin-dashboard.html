@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Void Paradigm · Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@500;700&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#050914;--pan:rgba(8,20,34,.82);--ln:rgba(34,211,238,.3);--cy:#22d3ee;--pu:#a855f7;--tx:#e6f4ff;--mu:#7c93ab;--ok:#34d399;--bad:#fb7185;--gold:#fbbf24;--am:#fbbf24}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--tx);font:14px 'JetBrains Mono',ui-monospace,Consolas,monospace;display:flex;flex-direction:column;min-height:100vh}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+header,main,footer{position:relative;z-index:1}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px clamp(14px,3vw,28px);border-bottom:1px solid rgba(34,211,238,.18);background:rgba(5,9,20,.8);backdrop-filter:blur(6px)}
+header h1{margin:0;font:800 clamp(15px,2.4vw,20px) 'Orbitron',sans-serif;letter-spacing:.16em;background:linear-gradient(90deg,#fff,#a5f3fc,#d8b4fe);-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{margin:3px 0 0;color:var(--cy);font-size:10px;letter-spacing:.16em}
+main{flex:1;width:min(1180px,100%);margin:0 auto;padding:clamp(14px,3vw,28px)}
+.btn{font:700 11px 'JetBrains Mono',monospace;letter-spacing:.1em;color:var(--cy);background:rgba(34,211,238,.08);border:1px solid var(--ln);border-radius:10px;padding:9px 15px;cursor:pointer}
+.btn:hover{background:rgba(34,211,238,.18)}
+.btn.pri{color:#031018;background:linear-gradient(90deg,#06b6d4,#2563eb);border:0}
+.btn.warn{color:var(--am);border-color:rgba(251,191,36,.45);background:rgba(251,191,36,.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.card{background:var(--pan);border:1px solid var(--ln);border-radius:18px;padding:clamp(14px,2.4vw,22px);margin-bottom:16px}
+.card h2{margin:0 0 4px;font:700 16px 'Space Grotesk',sans-serif;letter-spacing:.04em}
+.card .sub{color:var(--mu);font-size:12px;margin:0 0 14px;line-height:1.6}
+input,textarea,select{background:rgba(2,8,18,.85);border:1px solid var(--ln);border-radius:9px;color:var(--tx);font:600 13px 'JetBrains Mono',monospace;padding:9px 10px;width:100%}
+textarea{min-height:90px;resize:vertical;line-height:1.6;font-weight:400}
+label.f{display:block;color:var(--mu);font-size:11px;letter-spacing:.08em;margin-bottom:5px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-bottom:12px}
+.grid{display:grid;gap:12px}
+.grid.c3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.grid.c2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.status{display:inline-flex;align-items:center;gap:6px;font:700 10px 'JetBrains Mono',monospace;letter-spacing:.12em;border-radius:99px;padding:5px 11px;border:1px solid}
+.status.on{color:var(--ok);border-color:var(--ok);background:rgba(52,211,153,.1)}
+.status.off{color:var(--bad);border-color:var(--bad);background:rgba(251,113,133,.1)}
+.status.locked{color:var(--gold);border-color:var(--gold);background:rgba(251,191,36,.1)}
+.status b{width:6px;height:6px;border-radius:50%;background:currentColor}
+.sw{position:relative;width:50px;height:27px;flex:none;display:block}
+.sw input{opacity:0;position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;cursor:pointer;z-index:2}
+.sw span{position:absolute;inset:0;border-radius:99px;background:#17283b;border:1px solid var(--ln);transition:.2s}
+.sw span:before{content:"";position:absolute;width:19px;height:19px;left:3px;top:3px;border-radius:50%;background:var(--mu);transition:.2s}
+.sw input:checked+span{background:rgba(52,211,153,.25);border-color:var(--ok)}
+.sw input:checked+span:before{transform:translateX(23px);background:var(--ok)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tab{flex:1;min-width:130px;font:700 12px 'Space Grotesk',sans-serif;letter-spacing:.08em;color:var(--mu);background:var(--pan);border:1px solid rgba(34,211,238,.18);border-radius:12px;padding:12px;cursor:pointer}
+.tab[aria-selected=true]{color:#031018;background:linear-gradient(90deg,#06b6d4,#2563eb);border-color:transparent}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:16px}
+.stat{background:var(--pan);border:1px solid rgba(34,211,238,.18);border-radius:13px;padding:12px}
+.stat b{display:block;font:700 25px 'Space Grotesk',sans-serif}
+.stat small{color:var(--mu);font-size:11px}
+.stat.g b{color:var(--ok)}.stat.y b{color:var(--gold)}.stat.r b{color:var(--bad)}
+.lvl{display:flex;flex-direction:column;gap:10px;border:1px solid rgba(34,211,238,.2);border-radius:16px;padding:16px;background:rgba(2,8,18,.5)}
+.lvl h3{margin:0;font:700 15px 'Space Grotesk',sans-serif;display:flex;align-items:center;gap:8px}
+.lvl .meta{color:var(--mu);font-size:11.5px;line-height:1.7}
+.lvl .meta b{color:var(--tx)}
+.msg{min-height:18px;margin:8px 0 0;font-weight:600;font-size:12px}
+.msg.bad{color:var(--bad)}.msg.good{color:var(--ok)}
+.rules{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.rules label{display:flex;gap:6px;align-items:center;color:var(--mu);font-size:11px}
+.rules input{width:74px}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{font:700 10px 'JetBrains Mono',monospace;letter-spacing:.1em;color:var(--mu);text-align:left;padding:8px 10px;border-bottom:1px solid rgba(34,211,238,.15);white-space:nowrap}
+.tbl td{padding:9px 10px;border-bottom:1px solid rgba(34,211,238,.07)}
+.tbl tr.top td{background:rgba(251,191,36,.06)}
+.tbl .rk{font:700 16px 'Space Grotesk',sans-serif}
+.tag{font:700 9px 'JetBrains Mono',monospace;letter-spacing:.08em;padding:3px 8px;border-radius:99px;border:1px solid}
+.tag.ok{color:var(--ok);border-color:var(--ok);background:rgba(52,211,153,.1)}
+.tag.no{color:var(--mu);border-color:#334155}
+.tag.win{color:#1a1203;background:var(--gold);border-color:var(--gold)}
+.note{color:var(--mu);font-size:12px;line-height:1.7;margin:10px 0 0}
+#login{max-width:430px;margin:12vh auto 0;text-align:center}
+#login h2{font:700 22px 'Space Grotesk',sans-serif;margin:0 0 6px}
+.linkline{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;margin-top:4px}
+.linkline a{color:var(--cy);text-decoration:none;border-bottom:1px dashed rgba(34,211,238,.5)}
+.podium{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:14px}
+.pc{border:1px solid var(--gold);border-radius:14px;padding:14px;text-align:center;background:linear-gradient(180deg,rgba(251,191,36,.14),rgba(251,191,36,.02))}
+.pc .m{font-size:26px}.pc h3{margin:4px 0 2px;font:700 16px 'Space Grotesk',sans-serif}.pc span{color:var(--gold);font-weight:700;font-size:12px}
+footer{position:relative;z-index:1;padding:14px clamp(14px,3vw,28px);color:var(--mu);font-size:11px;border-top:1px solid rgba(34,211,238,.12);background:rgba(5,9,20,.75);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.hide{display:none!important}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<header>
+  <div>
+    <h1>VOID PARADIGM</h1>
+    <p>ADMIN DASHBOARD · GRADIENT PRESENTS</p>
+  </div>
+  <div id="top" class="hide" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+    <span id="stamp" style="color:var(--mu);font-size:11px"></span>
+    <button class="btn" id="openPanel" type="button">OPEN ADMIN PANEL</button>
+    <button class="btn" id="refresh" type="button">REFRESH</button>
+    <button class="btn warn" id="logout" type="button">LOG OUT</button>
+  </div>
+</header>
+
+<main>
+  <section class="card" id="login">
+    <h2>Admin access</h2>
+    <p class="sub">Core members only. Enter the admin password to open the dashboard, level controls and live scores.</p>
+    <input type="password" id="pw" placeholder="Password" autocomplete="off">
+    <div class="msg bad" id="loginMsg"></div>
+    <button class="btn pri" id="enter" type="button" style="width:100%;margin-top:10px">OPEN DASHBOARD</button>
+    <div class="linkline" style="justify-content:center;margin-top:14px">
+      <a href="scoreboard.html">Public scoreboard →</a>
+    </div>
+  </section>
+
+  <div id="shell" class="hide">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-view="overview" aria-selected="true">OVERVIEW</button>
+      <button class="tab" role="tab" data-view="panel" aria-selected="false">ADMIN PANEL</button>
+      <button class="tab" role="tab" data-view="board" aria-selected="false">LEADERBOARD</button>
+    </div>
+    <div id="view"></div>
+  </div>
+</main>
+
+<footer>
+  <span>VOID PARADIGM · GRADIENT PRESENTS</span>
+  <span>Dashboard &amp; admin panel for all three levels</span>
+</footer>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════════════
+   Void Paradigm · Admin dashboard + admin panel
+   Password: void2026 (validated server-side by dash_data)
+   Shares Supabase state with the playable game and the public scoreboard.
+   ══════════════════════════════════════════════════════════════════════════ */
+const $ = s => document.querySelector(s);
+const SB = { url: 'https://jbydaklyvepixtzrcgfp.supabase.co/rest/v1', key: 'sb_publishable_z-SnsaEpRt47cE7rOumIwA_DwY3tgJE' };
+const PW_STORE = 'vp_admin_pw';
+const esc = s => String(s === null || s === undefined ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+let PW = sessionStorage.getItem(PW_STORE) || '';
+let D = null;          // dash_data: {set, teams}
+let DONE = {};         // id -> {d1,d2,d3} completion flags from public_scores
+let CFG = null;        // Level 3 config (every key except vp)
+let BOARD = null;      // shared board (vp)
+let STATUS = null;     // get_status holds
+let view = 'overview';
+let tab = 1;
+
+const DEFAULT_BOARD = {
+  levels: {
+    l1: { on: true, msg: 'Level 1 is live.' },
+    l2: { on: true, msg: 'Level 2 is live.' },
+    l3: { on: true, msg: 'Level 3 is live.' }
+  },
+  r3: { on: false, msg: 'Stand by — the next round will unlock shortly.' },
+  notice: { on: false, text: '' },
+  scoreboard: { loading: { on: true }, split: { on: false } },
+  display: { loading: { on: true }, announcements: { on: false } },
+  l1: { durationSeconds: 2100, maxAttempts: 3, earthNode: 1, chartSeconds: 30 },
+  l2: {
+    pointsPerBox: 100,
+    perfectBonus: 100,
+    stages: [
+      { pointsPerBox: 100, perfectBonus: 100 },
+      { pointsPerBox: 100, perfectBonus: 100 },
+      { pointsPerBox: 100, perfectBonus: 100 },
+      { pointsPerBox: 100, perfectBonus: 100 },
+      { pointsPerBox: 100, perfectBonus: 100 }
+    ]
+  }
+};
+
+async function rpc(fn, body) {
+  const res = await fetch(`${SB.url}/rpc/${fn}`, {
+    method: 'POST',
+    headers: { apikey: SB.key, Authorization: `Bearer ${SB.key}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body || {})
+  });
+  if (!res.ok) throw new Error(`Server replied ${res.status}`);
+  return res.json();
+}
+
+function normBoard(raw) {
+  const b = raw && typeof raw === 'object' ? raw : {};
+  const lv = k => ({
+    on: b.levels && b.levels[k] ? !!b.levels[k].on : DEFAULT_BOARD.levels[k].on,
+    msg: b.levels && b.levels[k] && typeof b.levels[k].msg === 'string' ? b.levels[k].msg : DEFAULT_BOARD.levels[k].msg
+  });
+  const defL2 = { pointsPerBox: 100, perfectBonus: 100, stages: [
+    { pointsPerBox: 100, perfectBonus: 100 },
+    { pointsPerBox: 100, perfectBonus: 100 },
+    { pointsPerBox: 100, perfectBonus: 100 },
+    { pointsPerBox: 100, perfectBonus: 100 },
+    { pointsPerBox: 100, perfectBonus: 100 }
+  ]};
+  const l2 = b.l2 && typeof b.l2 === 'object' ? b.l2 : {};
+  const stages = Array.isArray(l2.stages)
+    ? l2.stages.slice(0,5).map((s,i)=>({
+        pointsPerBox: Number.isFinite(Number(s&&s.pointsPerBox))?Number(s.pointsPerBox):(defL2.stages[i].pointsPerBox),
+        perfectBonus: Number.isFinite(Number(s&&s.perfectBonus))?Number(s.perfectBonus):(defL2.stages[i].perfectBonus),
+        totalPoints: Number.isFinite(Number(s&&s.totalPoints))?Number(s.totalPoints):undefined
+      }))
+    : defL2.stages;
+  return {
+    levels: { l1: lv('l1'), l2: lv('l2'), l3: lv('l3') },
+    r3: {
+      on: !!(b.r3 && b.r3.on),
+      msg: b.r3 && typeof b.r3.msg === 'string' ? b.r3.msg : DEFAULT_BOARD.r3.msg
+    },
+    notice: {
+      on: !!(b.notice && b.notice.on),
+      text: b.notice && typeof b.notice.text === 'string' ? b.notice.text : ''
+    },
+    scoreboard: {
+      loading: {
+        on: b.scoreboard && b.scoreboard.loading ? !!b.scoreboard.loading.on : DEFAULT_BOARD.scoreboard.loading.on
+      },
+      split: {
+        on: b.scoreboard && b.scoreboard.split ? !!b.scoreboard.split.on : DEFAULT_BOARD.scoreboard.split.on
+      }
+    },
+    display: {
+      loading: {
+        on: b.display && b.display.loading ? !!b.display.loading.on : (DEFAULT_BOARD.display ? DEFAULT_BOARD.display.loading.on : true)
+      },
+      announcements: {
+        on: b.display && b.display.announcements ? !!b.display.announcements.on : (DEFAULT_BOARD.display ? DEFAULT_BOARD.display.announcements.on : false)
+      }
+    },
+    l1: {
+      durationSeconds: Math.max(60, Number(b.l1 && b.l1.durationSeconds) || DEFAULT_BOARD.l1.durationSeconds),
+      maxAttempts: Math.max(1, Number(b.l1 && b.l1.maxAttempts) || DEFAULT_BOARD.l1.maxAttempts),
+      earthNode: Number.isFinite(Number(b.l1 && b.l1.earthNode)) ? Number(b.l1.earthNode) : 1,
+      chartSeconds: Math.max(10, Number(b.l1 && b.l1.chartSeconds) || DEFAULT_BOARD.l1.chartSeconds)
+    },
+    l2: {
+      pointsPerBox: Math.max(0, Number(l2.pointsPerBox)||defL2.pointsPerBox),
+      perfectBonus: Math.max(0, Number(l2.perfectBonus)||defL2.perfectBonus),
+      stages
+    }
+  };
+}
+
+async function loadAll(first) {
+  try {
+    const [dash, cfg, status, scores] = await Promise.all([
+      rpc('dash_data', { p_pw: PW }),
+      rpc('get_config', {}),
+      rpc('get_status', {}).catch(() => null),
+      rpc('public_scores', {}).catch(() => [])
+    ]);
+    if (!dash) {
+      if (first) $('#loginMsg').textContent = 'Wrong password.';
+      else flash('stamp', 'Password rejected by the server.', 'bad');
+      return false;
+    }
+    D = dash;
+    D.set = D.set || { l1_top: 15, l2_top: 10, winners: 3 };
+    D.teams = Array.isArray(D.teams) ? D.teams : [];
+    // dash_data carries scores and times but no completion flags; public_scores does.
+    DONE = {};
+    (Array.isArray(scores) ? scores : []).forEach(s => {
+      DONE[s.id] = { d1: !!s.d1, d2: !!s.d2, d3: !!s.d3 };
+    });
+    D.teams = D.teams.map(t => {
+      const f = DONE[t.id] || { d1: (t.s1 || 0) > 0, d2: (t.s2 || 0) > 0, d3: (t.s3 || 0) > 0 };
+      return { ...t, d1: f.d1, d2: f.d2, d3: f.d3 };
+    });
+    CFG = Object.assign({}, cfg || {});
+    BOARD = normBoard(CFG.vp);
+    delete CFG.vp;
+    STATUS = status;
+    $('#login').classList.add('hide');
+    $('#shell').classList.remove('hide');
+    $('#top').classList.remove('hide');
+    $('#stamp').textContent = 'Updated ' + new Date().toLocaleTimeString();
+    render();
+    return true;
+  } catch (e) {
+    if (first) $('#loginMsg').textContent = 'Could not load: ' + e.message;
+    else flash('stamp', 'Refresh failed: ' + e.message, 'bad');
+    return false;
+  }
+}
+
+function flash(id, text, cls) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = text;
+  el.className = 'msg ' + (cls || '');
+}
+
+/* ── saves ──────────────────────────────────────────────────────────────── */
+// render() rebuilds the panel, which would wipe a confirmation message, so the
+// message is queued and re-applied once the new DOM exists.
+let FLASH = null;
+function applyFlash() {
+  if (!FLASH) return;
+  const el = document.getElementById(FLASH.id);
+  if (el) {
+    el.textContent = FLASH.text;
+    el.className = 'msg ' + FLASH.cls;
+    FLASH = null;
+  }
+}
+
+async function saveBoard(next, msgId) {
+  try {
+    const fresh = await rpc('get_config', {});
+    const payload = Object.assign({}, fresh || {}, { vp: Object.assign({}, next, { updated: new Date().toISOString() }) });
+    const ok = await rpc('admin_save_config', { p_pw: PW, p_data: payload });
+    if (ok !== true) throw new Error('the server rejected the admin password');
+    BOARD = normBoard(Object.assign({}, next, { updated: new Date().toISOString() }));
+    CFG = Object.assign({}, payload); delete CFG.vp;
+    if (msgId) FLASH = { id: msgId, text: 'Saved — players pick this up within 10 seconds.', cls: 'good' };
+    render();
+    applyFlash();
+    return true;
+  } catch (e) {
+    if (msgId) flash(msgId, 'Could not save: ' + e.message, 'bad');
+    return false;
+  }
+}
+
+async function saveL3(msgId) {
+  try {
+    const fresh = await rpc('get_config', {});
+    const payload = Object.assign({}, CFG, { vp: (fresh && fresh.vp) || BOARD });
+    const ok = await rpc('admin_save_config', { p_pw: PW, p_data: payload });
+    if (ok !== true) throw new Error('the server rejected the admin password');
+    CFG = Object.assign({}, payload); delete CFG.vp;
+    if (msgId) flash(msgId, 'Level 3 configuration saved. New teams get this version.', 'good');
+    return true;
+  } catch (e) {
+    if (msgId) flash(msgId, 'Could not save: ' + e.message, 'bad');
+    return false;
+  }
+}
+
+/* ── helpers ────────────────────────────────────────────────────────────── */
+const fmt = s => (s > 0 ? String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0') : '—');
+const medal = r => (r === 1 ? '🥇' : r === 2 ? '🥈' : r === 3 ? '🥉' : '🏅');
+const statusChip = (on, locked, lockedLabel) =>
+  locked
+    ? `<span class="status locked"><b></b>${lockedLabel || 'LOCKED'}</span>`
+    : on
+      ? '<span class="status on"><b></b>ENABLED</span>'
+      : '<span class="status off"><b></b>DISABLED</span>';
+
+function stats() {
+  const t = D.teams;
+  const l1 = t.filter(x => x.d1).length;
+  const l2 = t.filter(x => x.d2).length;
+  const l3 = t.filter(x => x.d3).length;
+  return { total: t.length, l1, l2, l3 };
+}
+
+/* ══ OVERVIEW ═══════════════════════════════════════════════════════════ */
+function renderOverview() {
+  const s = stats();
+  const r3 = BOARD.r3.on;
+  $('#view').innerHTML = `
+    <div class="card">
+      <h2>Game status</h2>
+      <p class="sub">Every switch below is stored in Supabase, so the game, the waiting screen and the scoreboard all read the same state.</p>
+      <div class="stats">
+        <div class="stat"><b>${s.total}</b><small>Teams registered</small></div>
+        <div class="stat g"><b>${s.l1}</b><small>Finished Level 1</small></div>
+        <div class="stat g"><b>${s.l2}</b><small>Finished Level 2</small></div>
+        <div class="stat y"><b>${s.l3}</b><small>Finished Level 3</small></div>
+        <div class="stat ${r3 ? 'g' : 'r'}"><b>${r3 ? 'OPEN' : 'SHUT'}</b><small>Round 3 gate</small></div>
+      </div>
+      <div class="linkline">
+        <button class="btn pri" id="goPanel" type="button">OPEN ADMIN PANEL</button>
+        <button class="btn" id="goBoard" type="button">View leaderboard</button>
+        <a class="btn" href="scoreboard.html" target="_blank" rel="noopener" style="text-decoration:none">Open public scoreboard ↗</a>
+      </div>
+    </div>
+
+    <div class="grid c3">
+      <div class="lvl">
+        <h3>Level 1 · Celestial Alignment ${statusChip(BOARD.levels.l1.on)}</h3>
+        <div class="meta">
+          Solar-system alignment with a graded PIN terminal.<br>
+          Timer <b>${Math.round(BOARD.l1.durationSeconds / 60)} min</b> · attempts <b>${BOARD.l1.maxAttempts}</b> · chart <b>${BOARD.l1.chartSeconds}s</b><br>
+          Finished: <b>${s.l1}</b> of ${s.total}
+        </div>
+        <button class="btn" data-quick="l1" type="button">${BOARD.levels.l1.on ? 'Close' : 'Open'} Level 1</button>
+      </div>
+      <div class="lvl">
+        <h3>Level 2 · Pattern Recognition ${statusChip(BOARD.levels.l2.on)}</h3>
+        <div class="meta">
+          Five charts rebuilt from memory.<br>
+          Auto-unlocks after Level 1 · no timer<br>
+          Finished: <b>${s.l2}</b> of ${s.total}
+        </div>
+        <button class="btn" data-quick="l2" type="button">${BOARD.levels.l2.on ? 'Close' : 'Open'} Level 2</button>
+      </div>
+      <div class="lvl">
+        <h3>Level 3 · Marsfall ${statusChip(r3, !r3, 'WAITING FOR ADMIN')}</h3>
+        <div class="meta">
+          Five-stage Mars mission, ends with a manual landing.<br>
+          Mission clock <b>${CFG && CFG.total ? CFG.total : 30} min</b> · penalty <b>${CFG && CFG.pen ? CFG.pen : 30}s</b><br>
+          Finished: <b>${s.l3}</b> of ${s.total}
+        </div>
+        <button class="btn ${r3 ? 'warn' : 'pri'}" data-quick="r3" type="button">${r3 ? 'Lock Round 3' : 'Unlock Round 3'}</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Level 1 &amp; 2 server scoring</h2>
+      <p class="sub">Levels 1 and 2 save through the same Supabase project as Level 3. Those two score writes need the small SQL add-on shipped in <b>supabase/void_paradigm_setup.sql</b>.</p>
+      <div class="row" style="margin-bottom:0">
+        <span id="scorerState" class="status locked"><b></b>CHECKING</span>
+        <span id="scorerHint" style="flex:1;min-width:240px;color:var(--mu);font-size:12px;line-height:1.6">Probing save_l1…</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Scoreboard controls</h2>
+      <p class="sub">Toggle the scoreboard loading screen and announcement layout from here.</p>
+      <div class="row">
+        <label class="sw" aria-label="Scoreboard loading screen"><input type="checkbox" id="ovScoreLoad" ${(BOARD.scoreboard && BOARD.scoreboard.loading && BOARD.scoreboard.loading.on) ? 'checked' : ''}><span></span></label>
+        <div style="flex:1;min-width:220px">
+          <b>Enable loading screen</b><br>
+          <span style="color:var(--mu);font-size:11px">When turned off, the leaderboard shows directly.</span>
+        </div>
+      </div>
+      <div class="row">
+        <label class="sw" aria-label="Show announcements split"><input type="checkbox" id="ovScoreSplit" ${(BOARD.scoreboard && BOARD.scoreboard.split && BOARD.scoreboard.split.on) ? 'checked' : ''}><span></span></label>
+        <div style="flex:1;min-width:220px">
+          <b>Show announcements (split view)</b><br>
+          <span style="color:var(--mu);font-size:11px">When enabled, left = Leaderboard, right = Announcements. When off, only leaderboard shows.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Display Board (Big Screen)</h2>
+      <p class="sub">Controls for <b>display-board.html</b> used for huge display screens.</p>
+      <div class="row">
+        <label class="sw" aria-label="Display loading screen"><input type="checkbox" id="ovDispLoad" ${(BOARD.display && BOARD.display.loading && BOARD.display.loading.on) ? 'checked' : ''}><span></span></label>
+        <div style="flex:1;min-width:220px">
+          <b>Enable loading screen</b><br>
+          <span style="color:var(--mu);font-size:11px">If enabled and hold active, shows loading screen. If disabled, shows leaderboard directly.</span>
+        </div>
+      </div>
+      <div class="row">
+        <label class="sw" aria-label="Display announcements"><input type="checkbox" id="ovDispAnn" ${(BOARD.display && BOARD.display.announcements && BOARD.display.announcements.on) ? 'checked' : ''}><span></span></label>
+        <div style="flex:1;min-width:220px">
+          <b>Show announcements</b><br>
+          <span style="color:var(--mu);font-size:11px">When enabled, leaderboard and announcements shown side by side.</span>
+        </div>
+        <a class="btn" href="display-board.html" target="_blank" rel="noopener" style="text-decoration:none">Open Display Board ↗</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Notice board</h2>
+      <p class="sub">When it is on, this text appears on the Round 3 waiting screen and on the public scoreboard.</p>
+      <div class="row">
+        <label class="sw" aria-label="Notice board"><input type="checkbox" id="ovNotice" ${BOARD.notice.on ? 'checked' : ''}><span></span></label>
+        <div style="flex:1;min-width:220px">
+          <label class="f">NOTICE</label>
+          <div style="padding:9px 10px;border:1px dashed rgba(34,211,238,.25);border-radius:9px;color:${BOARD.notice.text ? 'var(--tx)' : 'var(--mu)'};white-space:pre-wrap;font-weight:400;line-height:1.6">${BOARD.notice.text ? esc(BOARD.notice.text) : 'No notice published.'}</div>
+        </div>
+        <button class="btn" id="editNotice" type="button">Edit in admin panel</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Overall progression</h2>
+      <p class="sub">Level 1 → Level 2 → score card → waiting screen → <b>Round 3 opens only from here</b>.</p>
+      <ol style="margin:0;padding-left:20px;color:var(--mu);font-size:12.5px;line-height:2">
+        <li>Level 1 ${BOARD.levels.l1.on ? '<span class="tag ok">OPEN</span>' : '<span class="tag no">CLOSED</span>'} — players align the planets and submit a PIN.</li>
+        <li>Level 2 ${BOARD.levels.l2.on ? '<span class="tag ok">OPEN</span>' : '<span class="tag no">CLOSED</span>'} — five pattern charts.</li>
+        <li>Score card — each team sees only its own Level 1 and 2 points.</li>
+        <li>Waiting screen — polls for the Round 3 switch every 5 seconds.</li>
+        <li>Level 3 ${r3 ? '<span class="tag win">UNLOCKED</span>' : '<span class="tag no">HELD</span>'} — opens automatically once you unlock it.</li>
+      </ol>
+    </div>`;
+
+  checkScorers();
+
+  $('#goPanel').onclick = () => switchView('panel');
+  $('#goBoard').onclick = () => switchView('board');
+  document.querySelectorAll('[data-quick]').forEach(b => {
+    b.onclick = async () => {
+      const k = b.dataset.quick;
+      if (k === 'r3') await saveBoard(Object.assign({}, BOARD, { r3: { on: !BOARD.r3.on, msg: BOARD.r3.msg } }));
+      else await saveBoard(Object.assign({}, BOARD, { levels: Object.assign({}, BOARD.levels, { [k]: { on: !BOARD.levels[k].on, msg: BOARD.levels[k].msg } }) }));
+    };
+  });
+  $('#editNotice').onclick = () => switchView('panel');
+  $('#ovNotice').onchange = async e => {
+    await saveBoard(Object.assign({}, BOARD, { notice: { on: e.target.checked, text: BOARD.notice.text } }));
+  };
+  if ($('#ovScoreLoad')) {
+    $('#ovScoreLoad').onchange = async e => {
+      const next = JSON.parse(JSON.stringify(BOARD));
+      if (!next.scoreboard) next.scoreboard = {};
+      if (!next.scoreboard.loading) next.scoreboard.loading = {};
+      next.scoreboard.loading.on = e.target.checked;
+      await saveBoard(next);
+    };
+  }
+  if ($('#ovScoreSplit')) {
+    $('#ovScoreSplit').onchange = async e => {
+      const next = JSON.parse(JSON.stringify(BOARD));
+      if (!next.scoreboard) next.scoreboard = {};
+      if (!next.scoreboard.split) next.scoreboard.split = {};
+      next.scoreboard.split.on = e.target.checked;
+      await saveBoard(next);
+    };
+  }
+  if ($('#ovDispLoad')) {
+    $('#ovDispLoad').onchange = async e => {
+      const next = JSON.parse(JSON.stringify(BOARD));
+      if (!next.display) next.display = {};
+      if (!next.display.loading) next.display.loading = {};
+      next.display.loading.on = e.target.checked;
+      await saveBoard(next);
+    };
+  }
+  if ($('#ovDispAnn')) {
+    $('#ovDispAnn').onchange = async e => {
+      const next = JSON.parse(JSON.stringify(BOARD));
+      if (!next.display) next.display = {};
+      if (!next.display.announcements) next.display.announcements = {};
+      next.display.announcements.on = e.target.checked;
+      await saveBoard(next);
+    };
+  }
+}
+
+/* Level 1/2 score writes live in save_l1 / save_l2. Probe with an id that cannot
+   exist so nothing is written: a 404 means the setup SQL has not been applied. */
+async function checkScorers() {
+  const badge = document.getElementById('scorerState');
+  const hint = document.getElementById('scorerHint');
+  if (!badge || !hint) return;
+  try {
+    const res = await fetch(`${SB.url}/rpc/save_l1`, {
+      method: 'POST',
+      headers: { apikey: SB.key, Authorization: `Bearer ${SB.key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ p_id: 0, p_pass: '', p_sec: 0, p_pts: 0 })
+    });
+    if (res.status === 404) {
+      badge.className = 'status off';
+      badge.innerHTML = '<b></b>NOT INSTALLED';
+      hint.innerHTML = 'Level 1/2 scores are being held in each player’s browser. Run <b>supabase/void_paradigm_setup.sql</b> in the Supabase SQL editor, then teams’ queued scores sync on their next login.';
+    } else if (res.ok) {
+      badge.className = 'status on';
+      badge.innerHTML = '<b></b>LIVE';
+      hint.textContent = 'save_l1 / save_l2 are installed. Level 1 and 2 scores go straight into the shared database.';
+    } else {
+      badge.className = 'status locked';
+      badge.innerHTML = '<b></b>HTTP ' + res.status + '</b>';
+      hint.textContent = 'The server answered with an error — check the teams table permissions in Supabase.';
+    }
+  } catch (e) {
+    badge.className = 'status off';
+    badge.innerHTML = '<b></b>UNREACHABLE';
+    hint.textContent = 'Could not reach Supabase: ' + e.message;
+  }
+}
+
+/* ══ ADMIN PANEL ════════════════════════════════════════════════════════ */
+const EARTH_NODES = [
+  '0° · Vernal Equinox', '30°', '60° · Summer Solstice', '90°', '120°',
+  '150°', '180° · Autumn Equinox', '210°', '240°', '270° · Winter Solstice', '300°', '330°'
+];
+
+function renderPanel() {
+  const B = BOARD;
+  const C = CFG || {};
+  const st = Array.isArray(C.st) ? C.st : [{ max: 20, neg: 25 }, { max: 20, neg: 25 }, { max: 20, neg: 25 }, { max: 20, neg: 25 }, { max: 35, neg: 25 }];
+  const zn = C.zn || {};
+  const s5 = C.s5 || {};
+  const sys = (C.pw && Array.isArray(C.pw.sys)) ? C.pw.sys : [];
+
+  const stageRow = (i) => `
+    <div style="display:flex;gap:10px;align-items:flex-end;margin-bottom:8px">
+      <div style="width:88px"><label class="f">STAGE ${i + 1} MARKS</label><input type="number" data-cfg="st.${i}.max" value="${esc(st[i] ? st[i].max : 0)}"></div>
+      <div style="width:88px"><label class="f">WRONG %</label><input type="number" data-cfg="st.${i}.neg" value="${esc(st[i] ? st[i].neg : 0)}"></div>
+      <div style="flex:1;color:var(--mu);font-size:11px;padding-bottom:9px">Deducted from that item's marks per wrong answer</div>
+    </div>`;
+
+  $('#view').innerHTML = `
+    <div class="card">
+      <h2>Admin panel · level switches</h2>
+      <p class="sub">Changes apply to new logins within about 10 seconds. A disabled level is blocked inside the game, not just hidden.</p>
+
+      <div class="grid c2">
+        <div class="lvl">
+          <h3>Level 1 ${statusChip(B.levels.l1.on)}</h3>
+          <div class="row">
+            <label class="sw" aria-label="Level 1 enabled"><input type="checkbox" data-toggle="l1" ${B.levels.l1.on ? 'checked' : ''}><span></span></label>
+            <div style="flex:1;min-width:180px"><label class="f">MESSAGE SHOWN WHEN CLOSED</label><input type="text" data-msg="l1" value="${esc(B.levels.l1.msg)}"></div>
+          </div>
+          <div class="row">
+            <div><label class="f">TIMER (SECONDS)</label><input type="number" id="l1dur" value="${B.l1.durationSeconds}"></div>
+            <div><label class="f">MAX ATTEMPTS</label><input type="number" id="l1att" value="${B.l1.maxAttempts}"></div>
+          </div>
+          <div class="row">
+            <div style="flex:1"><label class="f">REFERENCE CHART (SECONDS)</label><input type="number" id="l1chart" min="10" value="${B.l1.chartSeconds}"></div>
+            <div style="flex:1;color:var(--mu);font-size:11px;padding-bottom:9px">How long the planet ↔ zodiac chart stays on screen once the riddles are sealed.</div>
+          </div>
+          <label class="f">EARTH STARTING NODE</label>
+          <select id="l1node">${EARTH_NODES.map((n, i) => `<option value="${i}" ${i === B.l1.earthNode ? 'selected' : ''}>${n}</option>`).join('')}</select>
+        </div>
+
+        <div class="lvl">
+          <h3>Level 2 ${statusChip(B.levels.l2.on)}</h3>
+          <div class="row">
+            <label class="sw" aria-label="Level 2 enabled"><input type="checkbox" data-toggle="l2" ${B.levels.l2.on ? 'checked' : ''}><span></span></label>
+            <div style="flex:1;min-width:180px"><label class="f">MESSAGE SHOWN WHEN CLOSED</label><input type="text" data-msg="l2" value="${esc(B.levels.l2.msg)}"></div>
+          </div>
+          <div class="row">
+            <div><label class="f">POINTS PER CORRECT TOKEN (GLOBAL)</label><input type="number" id="l2ppb" value="${B.l2 && B.l2.pointsPerBox != null ? B.l2.pointsPerBox : 100}"></div>
+            <div><label class="f">PERFECT BONUS (GLOBAL)</label><input type="number" id="l2pb" value="${B.l2 && B.l2.perfectBonus != null ? B.l2.perfectBonus : 100}"></div>
+          </div>
+          <label class="f">PER-STAGE POINTS ALLOCATION (STAGES 1-5)</label>
+          ${(Array.isArray(B.l2 && B.l2.stages) ? B.l2.stages : [1,2,3,4,5].map(()=>({pointsPerBox:100,perfectBonus:100}))).slice(0,5).map((s,i)=>`
+            <div class="row">
+              <div style="width:90px"><label class="f">STAGE ${i+1}</label><div style="padding:9px 10px;border:1px solid rgba(34,211,238,.18);border-radius:9px;color:var(--mu);font-size:11px">PATTERN ${i+1}</div></div>
+              <div><label class="f">PTS/CORRECT</label><input type="number" class="l2s-ppb" data-idx="${i}" value="${s.pointsPerBox != null ? s.pointsPerBox : (B.l2&&B.l2.pointsPerBox!=null?B.l2.pointsPerBox:100)}"></div>
+              <div><label class="f">PERFECT BONUS</label><input type="number" class="l2s-pb" data-idx="${i}" value="${s.perfectBonus != null ? s.perfectBonus : (B.l2&&B.l2.perfectBonus!=null?B.l2.perfectBonus:100)}"></div>
+            </div>
+          `).join('')}
+          <p class="note">Level 2 opens automatically for any team that has finished Level 1. Per-stage values override globals if set.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Round 3 gate</h2>
+      <p class="sub">Teams that finish Levels 1 and 2 land on a waiting screen. They stay there, and cannot reach the Level 3 page, until this switch is on.</p>
+      <div class="row">
+        <label class="sw" aria-label="Round 3 unlocked"><input type="checkbox" data-toggle="r3" ${B.r3.on ? 'checked' : ''}><span></span></label>
+        <b style="min-width:150px">${B.r3.on ? 'UNLOCKED' : 'HELD'}</b>
+        <div style="flex:1;min-width:240px"><label class="f">WAITING SCREEN MESSAGE</label><input type="text" id="r3msg" value="${esc(B.r3.msg)}"></div>
+      </div>
+      <div class="grid c2" style="margin-top:10px">
+        <div>
+          <h3 style="margin:0 0 6px;font:700 14px 'Space Grotesk',sans-serif">Level 3 ${statusChip(B.levels.l3.on)}</h3>
+          <div class="row">
+            <label class="sw" aria-label="Level 3 enabled"><input type="checkbox" data-toggle="l3" ${B.levels.l3.on ? 'checked' : ''}><span></span></label>
+            <div style="flex:1;min-width:160px"><label class="f">MESSAGE SHOWN WHEN CLOSED</label><input type="text" data-msg="l3" value="${esc(B.levels.l3.msg)}"></div>
+          </div>
+        </div>
+        <div>
+          <label class="f">NOTICE BOARD</label>
+          <div class="row" style="margin-bottom:8px">
+            <label class="sw" aria-label="Notice board"><input type="checkbox" id="noticeOn" ${B.notice.on ? 'checked' : ''}><span></span></label>
+            <span style="color:var(--mu);font-size:11px">Show on the waiting screen and scoreboard</span>
+          </div>
+          <textarea id="noticeText" placeholder="Type the message players should read…">${esc(B.notice.text)}</textarea>
+          <div class="row" style="margin-top:8px"><button class="btn" id="saveNotice" type="button">SAVE NOTICE</button><span class="msg" id="noticeMsg"></span></div>
+        </div>
+      </div>
+      <div class="row" style="margin-top:6px">
+        <button class="btn pri" id="saveLevels" type="button">SAVE LEVEL SETTINGS</button>
+        <span class="msg" id="levelMsg"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Level 3 · Marsfall configuration</h2>
+      <p class="sub">Mission clock, penalties and per-stage marks. Existing teams keep the version they started with; new logins get this one.</p>
+      <div class="row">
+        <div><label class="f">MISSION TIME (MIN)</label><input type="number" data-cfg="total" value="${esc(C.total || 30)}"></div>
+        <div><label class="f">PENALTY PER WRONG (SEC)</label><input type="number" data-cfg="pen" value="${esc(C.pen || 30)}"></div>
+        <div><label class="f">STAGE 1 TIME LIMIT (SEC)</label><input type="number" data-cfg="s1t" value="${esc(C.s1t || 180)}"></div>
+        <div><label class="f">PLANET SEED</label><input type="number" data-cfg="s1seed" value="${esc(C.s1seed || 2026)}"></div>
+      </div>
+      <label class="f">STAGE MARKS</label>
+      ${[0, 1, 2, 3, 4].map(stageRow).join('')}
+      <div class="row">
+        <div><label class="f">TOUCHDOWN VERTICAL MAX</label><input type="number" data-cfg="s5.vv" value="${esc(s5.vv || 3)}"></div>
+        <div><label class="f">HORIZONTAL MAX</label><input type="number" data-cfg="s5.hv" value="${esc(s5.hv || 2)}"></div>
+        <div><label class="f">TILT MAX (°)</label><input type="number" data-cfg="s5.tilt" value="${esc(s5.tilt || 5)}"></div>
+        <div><label class="f">LANDING ZONE (M)</label><input type="number" data-cfg="s5.zone" value="${esc(s5.zone || 8)}"></div>
+      </div>
+      <div class="row">
+        <div><label class="f">SAFE SLOPE (&lt;°)</label><input type="number" data-cfg="zn.slope" value="${esc(zn.slope || 10)}"></div>
+        <div><label class="f">SAFE WIND (≤ KM/H)</label><input type="number" data-cfg="zn.wind" value="${esc(zn.wind || 40)}"></div>
+        <div><label class="f">SAFE DUST (≤ %)</label><input type="number" data-cfg="zn.dust" value="${esc(zn.dust || 50)}"></div>
+      </div>
+      <p class="note">Stage 2 systems: ${sys.map(s => `${esc(s.n)} ≥ ${esc(s.min)}`).join(' · ') || 'defaults'} · Descent questions: ${(C.q4 && C.q4.length) || 0} · Descent steps: ${(C.sq && C.sq.length) || 0}</p>
+      <div class="row" style="margin-top:10px">
+        <button class="btn pri" id="saveL3cfg" type="button">SAVE LEVEL 3 CONFIG</button>
+        <button class="btn" id="l3Refresh" type="button">DISCARD CHANGES</button>
+        <span class="msg" id="l3Msg"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Loading screens</h2>
+      <p class="sub">Portal-wide holds. The Round 3 waiting screen is controlled by the gate above.</p>
+      <div class="row">
+        <label class="sw" aria-label="Game start loading screen"><input type="checkbox" id="holdGame" ${STATUS && STATUS.game && STATUS.game.on ? 'checked' : ''}><span></span></label>
+        <b style="min-width:120px">Game start</b>
+        <div style="flex:1;min-width:220px"><label class="f">MESSAGE</label><input type="text" id="holdGameMsg" value="${esc(STATUS && STATUS.game ? STATUS.game.message : '')}"></div>
+        <button class="btn" id="applyGame" type="button">APPLY</button>
+        <span class="msg" id="gameMsg"></span>
+      </div>
+      <div class="row">
+        <label class="sw" aria-label="Scoreboard loading screen"><input type="checkbox" id="holdScore" ${STATUS && STATUS.score && STATUS.score.on ? 'checked' : ''}><span></span></label>
+        <b style="min-width:120px">Scoreboard</b>
+        <div style="flex:1;min-width:220px"><label class="f">MESSAGE</label><input type="text" id="holdScoreMsg" value="${esc(STATUS && STATUS.score ? STATUS.score.message : '')}"></div>
+        <button class="btn" id="applyScore" type="button">APPLY</button>
+        <span class="msg" id="scoreMsg"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Qualification rules</h2>
+      <p class="sub">Used by the leaderboard to mark who advances. Levels 1 and 2 are compared on level score, ties broken by time.</p>
+      <div class="rules">
+        <label>Level 1 → top <input type="number" id="c1" min="1" value="${esc(D.set.l1_top)}"> advance</label>
+        <label>Level 2 → top <input type="number" id="c2" min="1" value="${esc(D.set.l2_top)}"> advance</label>
+        <label>Winners <input type="number" id="cw" min="1" value="${esc(D.set.winners)}"></label>
+        <button class="btn" id="saveRules" type="button">SAVE RULES</button>
+        <span class="msg" id="rulesMsg"></span>
+      </div>
+    </div>`;
+
+  const toggle = async (key, value) => {
+    if (key === 'r3') await saveBoard(Object.assign({}, BOARD, { r3: { on: value, msg: BOARD.r3.msg } }), 'levelMsg');
+    else await saveBoard(Object.assign({}, BOARD, { levels: Object.assign({}, BOARD.levels, { [key]: { on: value, msg: BOARD.levels[key].msg } }) }), 'levelMsg');
+  };
+  document.querySelectorAll('[data-toggle]').forEach(el => {
+    el.onchange = e => toggle(el.dataset.toggle, e.target.checked);
+  });
+
+  $('#saveLevels').onclick = async () => {
+    const next = JSON.parse(JSON.stringify(BOARD));
+    document.querySelectorAll('[data-msg]').forEach(el => { next.levels[el.dataset.msg].msg = el.value; });
+    next.r3.msg = $('#r3msg').value;
+    next.l1.durationSeconds = Math.max(60, +$('#l1dur').value || 2100);
+    next.l1.maxAttempts = Math.max(1, +$('#l1att').value || 3);
+    next.l1.earthNode = +$('#l1node').value || 0;
+    next.l1.chartSeconds = Math.max(10, +$('#l1chart').value || 30);
+    if (!next.l2) next.l2 = { pointsPerBox: 100, perfectBonus: 100, stages: [] };
+    next.l2.pointsPerBox = Math.max(0, +$('#l2ppb').value || 100);
+    next.l2.perfectBonus = Math.max(0, +$('#l2pb').value || 100);
+    if (!Array.isArray(next.l2.stages)) next.l2.stages = [];
+    document.querySelectorAll('.l2s-ppb').forEach(el => {
+      const idx = +el.dataset.idx;
+      if (!next.l2.stages[idx]) next.l2.stages[idx] = {};
+      next.l2.stages[idx].pointsPerBox = Math.max(0, +el.value || next.l2.pointsPerBox);
+    });
+    document.querySelectorAll('.l2s-pb').forEach(el => {
+      const idx = +el.dataset.idx;
+      if (!next.l2.stages[idx]) next.l2.stages[idx] = {};
+      next.l2.stages[idx].perfectBonus = Math.max(0, +el.value || next.l2.perfectBonus);
+    });
+    await saveBoard(next, 'levelMsg');
+  };
+
+  $('#saveNotice').onclick = async () => {
+    const next = JSON.parse(JSON.stringify(BOARD));
+    next.notice = { on: $('#noticeOn').checked, text: $('#noticeText').value };
+    await saveBoard(next, 'noticeMsg');
+  };
+
+  const setPath = (obj, path, val) => {
+    const keys = path.split('.');
+    const last = keys.pop();
+    const target = keys.reduce((o, k) => (o[k] = o[k] || {}), obj);
+    target[last] = val;
+  };
+  $('#saveL3cfg').onclick = async () => {
+    const next = JSON.parse(JSON.stringify(CFG || {}));
+    document.querySelectorAll('[data-cfg]').forEach(el => {
+      setPath(next, el.dataset.cfg, +el.value);
+    });
+    CFG = next;
+    await saveL3('l3Msg');
+  };
+  $('#l3Refresh').onclick = () => loadAll(false);
+
+  $('#applyGame').onclick = () => applyHold('game', $('#holdGame').checked, $('#holdGameMsg').value, 'gameMsg');
+  $('#applyScore').onclick = () => applyHold('score', $('#holdScore').checked, $('#holdScoreMsg').value, 'scoreMsg');
+
+  $('#saveRules').onclick = async () => {
+    const a = [+$('#c1').value, +$('#c2').value, +$('#cw').value];
+    if (a.some(x => !(x >= 1))) return flash('rulesMsg', 'Enter a number of 1 or more.', 'bad');
+    try {
+      const ok = await rpc('dash_set', { p_pw: PW, p_l1: a[0], p_l2: a[1], p_win: a[2] });
+      if (ok !== true) throw new Error('not accepted');
+      flash('rulesMsg', 'Saved.', 'good');
+      loadAll(false);
+    } catch (e) {
+      flash('rulesMsg', 'Could not save: ' + e.message, 'bad');
+    }
+  };
+}
+
+async function applyHold(target, on, msg, msgId) {
+  flash(msgId, 'Saving…', '');
+  try {
+    const ok = await rpc('set_hold', { p_pw: PW, p_target: target, p_on: !!on, p_msg: msg });
+    if (ok !== true) throw new Error('not accepted');
+    flash(msgId, on ? 'Loading screen is ON.' : 'Loading screen is OFF.', 'good');
+  } catch (e) {
+    flash(msgId, 'Could not apply: ' + e.message, 'bad');
+  }
+}
+
+/* ══ LEADERBOARD ════════════════════════════════════════════════════════ */
+function renderBoardview() {
+  const T = D.teams.map(t => ({ ...t }));
+  const cfgMap = {
+    1: { key: 'p1', done: 'd1', time: 's1', limit: D.set.l1_top, label: 'Level 1', yes: 'Qualified for Level 2', no: 'Eliminated' },
+    2: { key: 'p2', done: 'd2', time: 's2', limit: D.set.l2_top, label: 'Level 2', yes: 'Qualified for Level 3', no: 'Eliminated' },
+    3: { key: 'cum', done: 'd3', time: 's3', limit: D.set.winners, label: 'Total', yes: 'Winner', no: 'Finalist' }
+  }[tab];
+
+  const scored = T.filter(t => t[cfgMap.done])
+    .sort((a, b) => b[cfgMap.key] - a[cfgMap.key] || (a[cfgMap.time] || 0) - (b[cfgMap.time] || 0));
+  let prev = null, rank = 0;
+  scored.forEach((t, i) => {
+    if (!prev || t[cfgMap.key] !== prev[cfgMap.key] || (t[cfgMap.time] || 0) !== (prev[cfgMap.time] || 0)) rank = i + 1;
+    t.rank = rank;
+    prev = t;
+  });
+  const pending = T.filter(t => !t[cfgMap.done]);
+  const qualified = scored.filter(t => t.rank <= cfgMap.limit).length;
+
+  let html = `
+    <div class="card">
+      <h2>Leaderboard</h2>
+      <p class="sub">Live from Supabase. Ranked by ${cfgMap.label.toLowerCase()} score; equal scores are ordered by time.</p>
+      <div class="tabs" style="margin-bottom:14px">
+        <button class="tab" data-tab="1" aria-selected="${tab === 1}">LEVEL 1</button>
+        <button class="tab" data-tab="2" aria-selected="${tab === 2}">LEVEL 2</button>
+        <button class="tab" data-tab="3" aria-selected="${tab === 3}">LEVEL 3 · FINAL</button>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>${T.length}</b><small>Teams</small></div>
+        <div class="stat"><b>${scored.length}</b><small>Finished ${cfgMap.label === 'Total' ? 'Level 3' : cfgMap.label}</small></div>
+        <div class="stat ${tab === 3 ? 'y' : 'g'}"><b>${qualified}</b><small>${cfgMap.yes.replace(/^(Qualified for|)/, '') || 'Winners'}</small></div>
+        ${tab < 3 ? `<div class="stat r"><b>${scored.length - qualified}</b><small>Eliminated</small></div>` : ''}
+        <div class="stat"><b>${pending.length}</b><small>Not finished</small></div>
+      </div>`;
+
+  if (tab === 3) {
+    const winners = scored.filter(t => t.rank <= cfgMap.limit).slice(0, 6);
+    if (winners.length) {
+      html += `<div class="podium">${winners.map(t => `
+        <div class="pc"><div class="m">${medal(t.rank)}</div><h3>${esc(t.name)}</h3>
+        <span>${t.cum} points</span>
+        <small style="display:block;color:var(--mu);margin-top:4px;font-size:11px">Rank ${t.rank} · ID ${t.id}</small></div>`).join('')}</div>`;
+    }
+  }
+
+  html += `<table class="tbl"><thead><tr>
+      <th>RANK</th><th>TEAM</th><th>${tab === 3 ? 'TOTAL' : 'POINTS'}</th><th>L1</th><th>L2</th><th>L3</th><th>TIME</th><th>STATUS</th>
+    </tr></thead><tbody>`;
+
+  const row = (t, cls, label) => `<tr class="${cls}">
+      <td class="rk">${t.rank || '–'}</td>
+      <td><b>${esc(t.name)}</b><br><small style="color:var(--mu);font-size:11px">ID ${t.id}</small></td>
+      <td><b>${t[cfgMap.key]}</b></td>
+      <td>${t.d1 ? t.p1 : '–'}</td>
+      <td>${t.d2 ? t.p2 : '–'}</td>
+      <td>${t.d3 ? t.p3 : '–'}</td>
+      <td>${fmt(cfgMap.time === 's3' ? (t.s1 || 0) + (t.s2 || 0) + (t.s3 || 0) : t[cfgMap.time])}</td>
+      <td><span class="tag ${cls === 'top' ? 'win' : cls === 'qual' ? 'ok' : 'no'}">${label}</span></td>
+    </tr>`;
+
+  html += scored.map(t => (t.rank <= cfgMap.limit ? row(t, tab === 3 ? 'top' : 'qual', cfgMap.yes) : row(t, 'no', cfgMap.no))).join('');
+  html += pending.map(t => row(t, 'no', 'Not finished')).join('');
+  html += '</tbody></table>';
+  if (!T.length) html += '<p class="note">No teams found.</p>';
+  html += '<p class="note">Level 1 and 2 columns show points only for teams that finished that level. Time is the level clock, in minutes and seconds.</p></div>';
+
+  /* progress monitor */
+  html += `<div class="card"><h2>Player progress monitor</h2>
+    <p class="sub">Who has cleared what, straight from the teams table.</p>
+    <table class="tbl"><thead><tr><th>ID</th><th>TEAM</th><th>L1</th><th>L2</th><th>L3</th><th>TOTAL</th><th>STAGE</th></tr></thead><tbody>`;
+  html += T.sort((a, b) => a.id - b.id).map(t => `<tr>
+      <td>${t.id}</td><td>${esc(t.name)}</td>
+      <td>${t.d1 ? `<span class="tag ok">${t.p1}</span>` : '<span class="tag no">—</span>'}</td>
+      <td>${t.d2 ? `<span class="tag ok">${t.p2}</span>` : '<span class="tag no">—</span>'}</td>
+      <td>${t.d3 ? `<span class="tag ok">${t.p3}</span>` : '<span class="tag no">—</span>'}</td>
+      <td><b>${t.cum}</b></td>
+      <td>${t.d3 ? 'L3 done' : t.d2 ? 'On L3' : t.d1 ? 'On L2' : 'On L1'}</td>
+    </tr>`).join('');
+  html += '</tbody></table></div>';
+
+  $('#view').innerHTML = html;
+  document.querySelectorAll('[data-tab]').forEach(b => {
+    b.onclick = () => { tab = +b.dataset.tab; render(); };
+  });
+}
+
+/* ══ router ═════════════════════════════════════════════════════════════ */
+function render() {
+  document.querySelectorAll('.tab[data-view]').forEach(b => b.setAttribute('aria-selected', b.dataset.view === view));
+  if (!D) return;
+  if (view === 'overview') renderOverview();
+  else if (view === 'panel') renderPanel();
+  else renderBoardview();
+  applyFlash();
+}
+
+function switchView(next) {
+  view = next;
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.querySelectorAll('.tab[data-view]').forEach(b => {
+  b.onclick = () => switchView(b.dataset.view);
+});
+$('#openPanel').onclick = () => switchView('panel');
+$('#refresh').onclick = () => loadAll(false);
+$('#logout').onclick = () => {
+  sessionStorage.removeItem(PW_STORE);
+  PW = '';
+  D = null;
+  $('#shell').classList.add('hide');
+  $('#top').classList.add('hide');
+  $('#login').classList.remove('hide');
+  $('#pw').value = '';
+};
+
+$('#enter').onclick = async () => {
+  PW = $('#pw').value.trim();
+  if (!PW) return;
+  $('#loginMsg').textContent = '';
+  const ok = await loadAll(true);
+  if (ok) sessionStorage.setItem(PW_STORE, PW);
+  else $('#loginMsg').textContent = 'Wrong password.';
+};
+$('#pw').onkeydown = e => { if (e.key === 'Enter') $('#enter').click(); };
+
+/* auto-refresh every 20s while signed in (keeps a form from being wiped) */
+let autoTimer = null;
+function startAuto() {
+  clearInterval(autoTimer);
+  autoTimer = setInterval(() => {
+    if (!PW || view === 'panel') return; // don't clobber a half-edited form
+    loadAll(false);
+  }, 20000);
+}
+
+/* ══ starfield ══════════════════════════════════════════════════════════ */
+(() => {
+  const c = $('#bg'), x = c.getContext('2d');
+  let W, H, stars = [];
+  const init = () => {
+    W = c.width = innerWidth; H = c.height = innerHeight;
+    stars = Array.from({ length: Math.floor((W * H) / 7000) }, () => ({
+      x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.2 + .3, p: Math.random() * 6
+    }));
+  };
+  const frame = t => {
+    x.clearRect(0, 0, W, H);
+    const g = x.createRadialGradient(W / 2, H * .35, 0, W / 2, H * .35, Math.max(W, H) * .7);
+    g.addColorStop(0, '#08142a'); g.addColorStop(1, '#050914');
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    stars.forEach(s => {
+      x.globalAlpha = .3 + .35 * Math.sin(t / 1000 + s.p);
+      x.fillStyle = '#cfe9ff';
+      x.beginPath(); x.arc(s.x, s.y, s.r, 0, 7); x.fill();
+    });
+    x.globalAlpha = 1;
+    if (!matchMedia('(prefers-reduced-motion:reduce)').matches) requestAnimationFrame(frame);
+  };
+  addEventListener('resize', init); init(); requestAnimationFrame(frame);
+})();
+
+/* boot */
+if (PW) {
+  loadAll(true).then(ok => { if (!ok) { PW = ''; sessionStorage.removeItem(PW_STORE); } });
+}
+startAuto();
+</script>
+</body>
+</html>

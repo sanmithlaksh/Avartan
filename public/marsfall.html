@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Void Paradigm · Round 3 · Marsfall</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#050914;--pan:rgba(8,20,34,.78);--ln:rgba(34,211,238,.35);--cy:#22d3ee;--bl:#2563eb;--pu:#a855f7;--tx:#e6f4ff;--mu:#7c93ab;--ok:#34d399;--bad:#fb7185;--am:#fbbf24;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--tx);font-family:'JetBrains Mono',ui-monospace,Consolas,monospace;font-size:15px;display:flex;flex-direction:column;overflow-x:hidden}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+header,footer,main{position:relative;z-index:1}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px clamp(14px,3vw,32px);border-bottom:1px solid rgba(34,211,238,.18);background:rgba(5,9,20,.7);backdrop-filter:blur(6px)}
+.brand{display:flex;align-items:center;gap:14px;min-width:0}
+.brand h1{margin:0;font:700 clamp(16px,2.4vw,20px) 'Space Grotesk',sans-serif;letter-spacing:.2em}
+.brand p{margin:4px 0 0;color:var(--cy);font-size:clamp(9px,1.4vw,11px);letter-spacing:.15em}
+.logo{width:54px;height:54px;flex:none;background:#fff;display:block}
+.btn{font:700 13px 'JetBrains Mono',monospace;letter-spacing:.12em;color:var(--cy);background:rgba(34,211,238,.08);border:1px solid var(--ln);border-radius:12px;padding:12px 18px;cursor:pointer}
+.btn:hover{background:rgba(34,211,238,.18)}
+.btn:focus-visible,input:focus-visible,.opt:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+.go{color:#031018;background:linear-gradient(90deg,#06b6d4,#2563eb);border:0;border-radius:18px;padding:20px 40px;font-size:15px;box-shadow:0 0 34px rgba(6,182,212,.35)}
+.go:hover{filter:brightness(1.1);background:linear-gradient(90deg,#06b6d4,#2563eb)}
+main{flex:1;display:grid;place-items:center;padding:clamp(14px,3vw,36px)}
+.card{width:min(1040px,100%);background:var(--pan);border:1px solid var(--ln);border-radius:32px;box-shadow:0 0 60px rgba(6,182,212,.08),inset 0 0 80px rgba(168,85,247,.05);padding:clamp(18px,4vw,48px);backdrop-filter:blur(4px)}
+.hero{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(12px,3vw,40px);text-align:center}
+.tile{width:clamp(64px,11vw,150px);aspect-ratio:1;border-radius:18px;padding:clamp(6px,1vw,14px);background:#26292f;box-shadow:0 0 34px rgba(255,255,255,.25)}
+.tile.p{background:#2a1740;box-shadow:0 0 34px rgba(168,85,247,.5)}
+.tile svg{width:100%;height:100%;display:block}
+.chip{display:inline-block;border:1px solid var(--ln);border-radius:99px;padding:9px 20px;color:var(--cy);font-weight:700;font-size:12px;letter-spacing:.14em;background:rgba(34,211,238,.06)}
+.pres{margin:26px 0 6px;color:var(--cy);letter-spacing:.4em;font-size:clamp(10px,1.8vw,16px);font-weight:600}
+h2.t{margin:0;font:700 clamp(38px,8vw,88px)/1 'Space Grotesk',sans-serif;background:linear-gradient(180deg,#fff,#a5f3fc);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{margin:14px 0;font-size:clamp(14px,2.2vw,20px);color:var(--tx)}
+.date{display:inline-block;border:1px solid var(--ln);border-radius:99px;padding:8px 18px;font-size:clamp(11px,1.8vw,15px);color:var(--am)}
+.cta{text-align:center;margin-top:34px}
+.field{display:block;margin:0 auto 22px;width:min(380px,100%)}
+input[type=text],input[type=number]{width:100%;background:rgba(2,8,18,.8);border:1px solid var(--ln);border-radius:10px;color:var(--tx);font:600 15px 'JetBrains Mono',monospace;padding:12px 14px}
+.hud{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid rgba(34,211,238,.18)}
+.pips{display:flex;gap:6px}.pips i{width:34px;height:6px;border-radius:4px;background:#17283b}.pips i.on{background:var(--cy)}.pips i.d{background:var(--ok)}
+.clock{font:700 28px 'Space Grotesk',sans-serif;color:var(--cy);font-variant-numeric:tabular-nums}.clock.low{color:var(--bad)}
+h3{margin:0 0 6px;font:700 clamp(20px,3.4vw,28px) 'Space Grotesk',sans-serif}
+.lead{color:var(--mu);margin:0 0 20px;line-height:1.6;max-width:70ch}
+.q{display:grid;grid-template-columns:1fr minmax(110px,160px);gap:12px;align-items:center;margin-bottom:12px;padding:14px;border:1px solid rgba(34,211,238,.18);border-radius:14px}
+.q.ok{border-color:var(--ok)}.q b{color:var(--cy);letter-spacing:.06em;line-height:1.6}
+.msg{min-height:24px;margin:14px 0;font-weight:600}.msg.bad{color:var(--bad)}.msg.good{color:var(--ok)}
+.row{display:grid;grid-template-columns:110px 1fr 56px;gap:12px;align-items:center;margin-bottom:12px}
+input[type=range]{width:100%;accent-color:var(--cy)}
+.tot{font-weight:700;margin:6px 0 10px}.tot.over{color:var(--bad)}
+.tw{overflow-x:auto;margin-bottom:16px}
+table{border-collapse:collapse;width:100%;min-width:480px}th,td{padding:10px 12px;border-bottom:1px solid rgba(34,211,238,.15);text-align:left}th{color:var(--mu);font-weight:600}
+tr.x{opacity:.35;text-decoration:line-through}
+.zb{cursor:pointer;color:var(--cy);font-weight:700;background:none;border:1px solid var(--ln);border-radius:8px;padding:6px 12px;font-family:inherit}
+ul.cl{color:var(--tx);line-height:1.9;padding-left:20px;margin:0 0 16px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.opt{display:block;width:100%;text-align:left;margin-bottom:8px;padding:12px 14px;border-radius:10px;border:1px solid var(--ln);background:rgba(2,8,18,.7);color:var(--tx);font:600 13px/1.4 'JetBrains Mono',monospace;cursor:pointer}
+.opt:hover{border-color:var(--cy)}
+.seq{min-height:120px;border:1px dashed var(--ln);border-radius:12px;padding:10px}
+.cd{color:var(--am);font-weight:700}
+.res{text-align:center}.res h2{font:700 clamp(30px,6vw,56px) 'Space Grotesk',sans-serif;margin:0 0 12px}
+.stats{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:20px 0}.stats div{border:1px solid var(--ln);border-radius:12px;padding:12px 20px}.stats small{display:block;color:var(--mu)}
+footer{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:14px clamp(14px,3vw,32px);color:var(--mu);font-size:12px;letter-spacing:.06em;border-top:1px solid rgba(34,211,238,.12);background:rgba(5,9,20,.7)}
+.flash{animation:fl .5s}@keyframes fl{0%,100%{background:transparent}30%{background:rgba(251,113,133,.18)}}
+#adm{position:fixed;inset:0;z-index:5;background:rgba(2,6,14,.8);display:none;place-items:center;padding:16px}#adm.on{display:grid}
+@media(max-width:720px){.hero{grid-template-columns:1fr}.hero .tile{margin:0 auto}.hero .ml{order:-1}.two{grid-template-columns:1fr}.row{grid-template-columns:90px 1fr 46px}.q{grid-template-columns:1fr}.go{padding:18px 24px}header .btn span{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+.spin{width:46px;height:46px;margin:10px auto 20px;border:4px solid rgba(34,211,238,.2);border-top-color:var(--cy);border-radius:50%;animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+#hold{position:relative;overflow:hidden}
+#hold:not([hidden]){animation:hin .6s ease-out}@keyframes hin{from{opacity:0;transform:scale(.97)}}
+#hold:before,#hold:after{content:"";position:absolute;width:22px;height:22px;border:2px solid var(--cy);opacity:.7}
+#hold:before{top:12px;left:12px;border-right:0;border-bottom:0}#hold:after{bottom:12px;right:12px;border-left:0;border-top:0}
+.hl{color:var(--cy);font-size:11px;letter-spacing:.3em;margin-bottom:6px}
+.pc{font:700 13px 'JetBrains Mono',monospace;letter-spacing:.25em;color:var(--cy);text-shadow:0 0 10px rgba(34,211,238,.7);margin-bottom:12px}
+.stl{color:var(--mu);font-size:12px;letter-spacing:.12em;margin:12px 0 0;min-height:18px}
+h3.gl{animation:gl 5s infinite}@keyframes gl{0%,91%,100%{text-shadow:none;transform:none}92%{text-shadow:2px 0 #22d3ee,-2px 0 #a855f7;transform:translateX(2px)}94%{text-shadow:-2px 0 #22d3ee,2px 0 #a855f7;transform:translateX(-2px)}96%{text-shadow:none;transform:none}}
+
+#mxw .ms{display:flex;align-items:center;gap:14px;flex-wrap:wrap;color:var(--mu);font-size:12px;letter-spacing:.1em}#mxw .ms b{color:var(--cy);font:700 20px 'Space Grotesk',sans-serif}.pgb{flex:1;min-width:120px;height:6px;border-radius:4px;background:#17283b;overflow:hidden}.pgb i{display:block;height:100%;width:0;background:linear-gradient(90deg,#06b6d4,#fbbf24);transition:width .4s}
+.mx{display:grid;grid-template-columns:218px minmax(0,1fr) 236px;gap:12px;margin:12px 0}#mxw.in .mx{grid-template-columns:1fr}#mxw.in .mp,#mxw.in .ms,#mxw.in .mb{display:none}
+.mp{border:1px solid rgba(34,211,238,.2);border-radius:16px;padding:12px;background:rgba(2,8,18,.55);font-size:12px;line-height:1.55;min-width:0;max-height:clamp(380px,60vh,600px);overflow:auto}.mp p{margin:0 0 10px;color:var(--mu)}.dim{color:var(--mu)}
+.lh{color:var(--cy);font-size:11px;letter-spacing:.22em;margin:0 0 6px}
+#cv{position:relative;height:clamp(380px,60vh,600px);border-radius:16px;overflow:hidden;border:1px solid var(--ln);background:radial-gradient(circle at 50% 45%,#0a1b33,#03070f 75%);touch-action:none;cursor:grab}#cv canvas{display:block;width:100%;height:100%}
+.ov{position:absolute;inset:0;pointer-events:none;overflow:hidden}.vc{position:absolute;left:12px;bottom:10px;font-size:11px;color:var(--cy);letter-spacing:.12em;pointer-events:none;text-shadow:0 0 8px #000}
+.mxt{position:absolute;left:0;top:0;white-space:nowrap;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;border:1px solid var(--ln);background:rgba(3,10,20,.85);color:var(--cy)}.mxt.go{color:#031018;background:var(--ok);border-color:var(--ok)}.mxt.gd{color:#031018;background:var(--am);border-color:var(--am)}
+.mo{position:absolute;inset:0;display:flex;align-items:center;padding:clamp(16px,5%,56px);background:linear-gradient(90deg,rgba(3,8,16,.88) 0%,rgba(3,8,16,.55) 45%,transparent 75%)}.mo[hidden]{display:none}.mo>div{max-width:min(470px,100%)}
+.mo h4{margin:6px 0 14px;font:700 clamp(22px,3.6vw,38px)/1.1 'Space Grotesk',sans-serif;background:linear-gradient(180deg,#fff,#a5f3fc);-webkit-background-clip:text;background-clip:text;color:transparent}.mo p{color:var(--tx);line-height:1.65;margin:0 0 20px;font-size:13px}
+.mo.bn{align-items:flex-end;justify-content:center;text-align:center;background:linear-gradient(0deg,rgba(2,6,14,.92),transparent 65%)}.mo.bn h4.ok{background:none;color:var(--ok);-webkit-text-fill-color:var(--ok)}.mo.bn h4.bad{background:none;color:var(--bad);-webkit-text-fill-color:var(--bad)}.mo.bn p{margin-bottom:14px}
+.mb{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}.mb .btn:disabled,.mp .btn:disabled{opacity:.45;cursor:not-allowed}
+.rb{display:flex;gap:10px;align-items:flex-start;margin-bottom:12px}.rb svg{flex:none;animation:fy 3s ease-in-out infinite}@keyframes fy{50%{transform:translateY(-3px)}}.eye{transform-origin:40px 34px;animation:bk 4s infinite}@keyframes bk{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+.bub{flex:1;border:1px solid var(--ln);border-radius:10px;padding:8px 10px;color:var(--tx);background:rgba(34,211,238,.06)}.bub.pop{animation:pp .4s}@keyframes pp{from{opacity:0;transform:translateY(4px)}}
+.hn{padding:6px 0;border-bottom:1px solid rgba(34,211,238,.12)}.hn b{color:var(--am)}
+.cid{font:700 17px 'Space Grotesk',sans-serif;color:var(--am);margin-bottom:8px}.kv{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(34,211,238,.1)}.kv span{color:var(--mu)}.kv b{text-align:right}.ok{color:var(--ok)}.bad{color:var(--bad)}
+.lv{display:inline-flex;gap:3px}.lv u{width:16px;height:6px;border-radius:3px;background:#17283b}.lv u.on{background:var(--cy)}.lv u.on:nth-child(3){background:var(--bad)}
+.chips{display:flex;flex-direction:column;gap:6px}.chip2{font:600 11px 'JetBrains Mono',monospace;text-align:left;color:var(--cy);background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.45);border-radius:8px;padding:6px 8px;cursor:pointer}.chip2.g{color:var(--am);border-color:var(--am);background:rgba(251,191,36,.1)}
+.rp{max-width:460px;margin:22px auto;text-align:left;border:1px solid var(--ln);border-radius:16px;padding:16px 20px}.rp .kv{font-size:14px}
+@media(max-width:900px){.mx{grid-template-columns:1fr}#cv{order:-1}.mp{max-height:none}.mo{background:rgba(3,8,16,.7)}}
+.rx{display:flex;align-items:center;gap:22px;margin:4px 0 20px;padding:16px 22px;border:1px solid var(--ln);border-radius:20px;background:radial-gradient(circle at 15% 50%,rgba(34,211,238,.1),transparent 60%),rgba(2,8,18,.55);flex-wrap:wrap}.rg{width:132px;height:132px;flex:none;filter:drop-shadow(0 0 12px rgba(34,211,238,.45))}#rarc{transition:stroke-dashoffset .35s ease}.rcore{animation:rc 2.6s ease-in-out infinite}@keyframes rc{50%{fill:rgba(168,85,247,.16)}}
+.rx.over{border-color:var(--bad);box-shadow:0 0 30px rgba(251,113,133,.25)}.rx.over .rg{filter:drop-shadow(0 0 12px rgba(251,113,133,.7))}.rx.over #rarc{stroke:var(--bad)}.rrem{color:var(--mu);font-size:13px}.rx.over .rrem{color:var(--bad);font-weight:700}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;margin-bottom:6px}
+.sy{padding:14px 16px;border:1px solid rgba(34,211,238,.22);border-radius:18px;background:linear-gradient(160deg,rgba(10,27,46,.85),rgba(4,10,20,.85));transition:border-color .25s,box-shadow .25s,transform .25s}.sy.pw{border-color:rgba(34,211,238,.6);box-shadow:0 0 22px rgba(34,211,238,.12)}.sy:hover{transform:translateY(-2px)}
+.sg.over .sy.pw{border-color:rgba(251,113,133,.6)}.sy.good{border-color:var(--ok)!important;box-shadow:0 0 22px rgba(52,211,153,.25)!important}.sy.bad{border-color:var(--bad)!important;box-shadow:0 0 22px rgba(251,113,133,.25)!important}
+.sh{display:flex;align-items:center;gap:10px}.si{font-size:22px;width:38px;height:38px;display:grid;place-items:center;border-radius:12px;background:rgba(34,211,238,.1);border:1px solid var(--ln)}.sh b{flex:1;font:700 16px 'Space Grotesk',sans-serif;letter-spacing:.04em}.sh em{font:700 24px 'Space Grotesk',sans-serif;font-style:normal;color:var(--cy);min-width:46px;text-align:right;text-shadow:0 0 12px rgba(34,211,238,.6)}
+.sq{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 12px}.sq span{font-size:11px;color:var(--am);border:1px solid rgba(251,191,36,.35);background:rgba(251,191,36,.07);border-radius:99px;padding:3px 10px}
+.sb{display:flex;align-items:center;gap:10px}.sm{width:36px;height:36px;flex:none;border-radius:50%;border:1px solid var(--ln);background:rgba(34,211,238,.08);color:var(--cy);font:700 20px/1 'JetBrains Mono',monospace;cursor:pointer;transition:background .15s,transform .1s}.sm:hover{background:rgba(34,211,238,.22)}.sm:active{transform:scale(.9)}
+.bar{flex:1;display:flex;gap:3px;height:34px;padding:4px;border-radius:10px;background:#07111f;border:1px solid rgba(34,211,238,.2);cursor:pointer;touch-action:none;user-select:none}.bar:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
+.bar i{flex:1;border-radius:3px;background:#12263a;transition:background .15s,box-shadow .15s,transform .15s}.bar i.on{background:hsl(calc(190 + var(--k)*100),90%,58%);box-shadow:0 0 9px hsla(calc(190 + var(--k)*100),90%,58%,.75);transform:scaleY(1.04)}
+.sg.over .bar i.on{background:var(--bad);box-shadow:0 0 9px rgba(251,113,133,.7)}.sg.lk .bar,.sg.lk .sm{cursor:default;opacity:.7;pointer-events:none}
+@media(max-width:720px){.sg{grid-template-columns:1fr}.rg{width:104px;height:104px}}
+.mx.x3{grid-template-columns:262px minmax(0,1fr) 290px}
+.pr{margin-bottom:16px}.ph{display:flex;align-items:center;gap:8px;margin-bottom:8px}.ph span{flex:1;color:var(--tx);font-weight:700;letter-spacing:.04em}.ph b{color:var(--cy);font:700 14px 'Space Grotesk',sans-serif;text-shadow:0 0 10px rgba(34,211,238,.5)}
+.dot{width:12px;height:12px;border-radius:50%;background:#456;box-shadow:0 0 0 3px rgba(255,255,255,.05)}.dot.ok{background:var(--ok);box-shadow:0 0 10px var(--ok)}.dot.wn{background:var(--am);box-shadow:0 0 10px var(--am)}.dot.bd{background:var(--bad);box-shadow:0 0 10px var(--bad)}
+.rs{-webkit-appearance:none;appearance:none;width:100%;height:9px;border-radius:6px;background:linear-gradient(90deg,rgba(34,211,238,.9) var(--p,0%),#12263a var(--p,0%));outline:none;cursor:pointer;opacity:.95}.rs:focus-visible{outline:2px solid var(--cy);outline-offset:4px}
+.rs::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--cy);box-shadow:0 0 14px var(--cy);cursor:grab}.rs::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#fff;border:4px solid var(--cy);box-shadow:0 0 14px var(--cy);cursor:grab}.rs:disabled{opacity:.45;cursor:default}
+.pl{display:flex;justify-content:space-between;color:var(--mu);font-size:10px;margin-top:5px}.pl .lt{color:var(--am)}
+.wn{color:var(--am);padding:4px 0;font-size:12px}.wn.ok{color:var(--ok)}
+.hu{position:absolute;inset:0;pointer-events:none;font-size:12px;letter-spacing:.1em}.hp{position:absolute;top:12px;left:12px;padding:6px 12px;border:1px solid var(--ln);border-radius:99px;background:rgba(3,10,20,.7);color:var(--cy);font-weight:700}
+.ht{position:absolute;top:12px;right:12px;display:flex;gap:16px;padding:6px 12px;border:1px solid var(--ln);border-radius:12px;background:rgba(3,10,20,.7);color:var(--mu)}.ht b{color:var(--tx);font:700 16px 'Space Grotesk',sans-serif;font-variant-numeric:tabular-nums}
+.hw{position:absolute;left:12px;bottom:26px;display:flex;flex-direction:column;gap:4px}.hw div{padding:4px 10px;border-radius:8px;background:rgba(3,10,20,.75);border-left:3px solid var(--cy);animation:pp .3s}.hw .wn{border-color:var(--am)}.hw .bd{border-color:var(--bad);color:var(--bad)}.hw .ok{border-color:var(--ok);color:var(--ok)}
+.hb{position:absolute;left:0;right:0;bottom:0;height:5px;background:rgba(255,255,255,.08)}.hb i{display:block;height:100%;width:0;background:linear-gradient(90deg,#06b6d4,#a855f7)}
+.dz{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle,rgba(150,90,50,.35),rgba(110,60,35,.9));transition:opacity .4s}
+.sf{position:absolute;left:50%;top:42%;transform:translateX(-50%);padding:12px 22px;border:2px solid var(--bad);border-radius:12px;background:rgba(40,5,10,.8);color:var(--bad);font-weight:700;letter-spacing:.2em;animation:bl .6s infinite;pointer-events:none}.sf[hidden]{display:none}@keyframes bl{50%{opacity:.35}}
+.stb{padding:10px 12px;border-radius:12px;font-weight:700;letter-spacing:.08em;margin-bottom:8px;border:1px solid}.stb.ok{color:var(--ok);border-color:var(--ok);background:rgba(52,211,153,.08)}.stb.wn{color:var(--am);border-color:var(--am);background:rgba(251,191,36,.08)}.stb.bd{color:var(--bad);border-color:var(--bad);background:rgba(251,113,133,.08)}
+.al{margin:0 0 8px;padding-left:18px;color:var(--tx)}.al li{margin-bottom:4px}.ct{width:100%;min-width:0;font-size:11px}.ct th,.ct td{padding:5px 4px}
+.s5{position:relative;height:clamp(620px,84vh,900px);border-radius:22px;overflow:hidden;border:1px solid rgba(160,220,255,.2);background:#05080f;font-family:'Rajdhani','Inter',sans-serif;color:#e6f4ff}#cv5{position:absolute;inset:0}#cv5 canvas{display:block;width:100%;height:100%}
+.gp{position:absolute;z-index:3;background:linear-gradient(145deg,rgba(20,44,76,.55),rgba(6,14,28,.5));-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(160,220,255,.22);border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.12);transition:opacity .3s,transform .3s}
+.gh{font:600 11px 'Orbitron',sans-serif;letter-spacing:.2em;color:#7dd3fc;padding:10px 14px;cursor:pointer;user-select:none;border-bottom:1px solid rgba(160,220,255,.12)}.gh:hover{color:#fff}.gp.col .gbd,.gp.col #rdy,.gp.col #rdc,.gp.col #adv{display:none}.gbd{padding:8px 14px 12px}
+.gk{font:600 10px 'Orbitron',sans-serif;letter-spacing:.2em;color:#7dd3fc}.gt{font:700 18px 'Orbitron',sans-serif;letter-spacing:.08em;margin:2px 0}.gk b{color:#fff}
+.tl{left:14px;top:14px;padding:10px 16px}.tr{position:absolute;right:14px;top:14px;z-index:4;display:flex;gap:8px}
+.gb{font:600 11px 'Orbitron',sans-serif;letter-spacing:.14em;color:#bfefff;background:rgba(10,28,50,.7);border:1px solid rgba(160,220,255,.3);border-radius:10px;padding:8px 12px;cursor:pointer;transition:box-shadow .2s,background .2s,transform .1s}.gb:hover{background:rgba(34,211,238,.18);box-shadow:0 0 14px rgba(34,211,238,.35)}.gb:active{transform:scale(.96)}
+.pl{left:14px;top:84px;width:244px;max-height:calc(100% - 262px);overflow:auto}.pr2{right:14px;top:64px;width:308px;max-height:calc(100% - 262px);overflow:auto}.pm{left:14px;bottom:14px;width:150px;height:150px;padding:5px;overflow:hidden}.pm canvas{border-radius:12px}
+.bc{left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:14px;flex-wrap:wrap;justify-content:center;padding:9px 16px;max-width:min(560px,calc(100% - 520px));font:600 12px 'Rajdhani',sans-serif;letter-spacing:.06em;color:#9fb6cc}.bc kbd,.keys kbd{font:600 11px 'Orbitron',sans-serif;color:#e6f4ff;background:rgba(160,220,255,.12);border:1px solid rgba(160,220,255,.35);border-radius:6px;padding:2px 6px;margin-right:5px}
+.br{right:14px;bottom:14px;width:308px;padding-bottom:10px}.rdy{margin:10px 14px 4px;padding:8px 10px;border-radius:10px;text-align:center;font:700 13px 'Orbitron',sans-serif;letter-spacing:.1em;border:1px solid;transition:all .3s}.rdy.r{color:#fb7185;border-color:#fb7185;background:rgba(251,113,133,.1)}.rdy.y{color:#fbbf24;border-color:#fbbf24;background:rgba(251,191,36,.1)}.rdy.g{color:#34d399;border-color:#34d399;background:rgba(52,211,153,.12);box-shadow:0 0 18px rgba(52,211,153,.3)}
+.rdc{display:flex;flex-wrap:wrap;gap:5px;margin:0 14px 6px}.rdc span{font:600 10px 'Orbitron',sans-serif;letter-spacing:.1em;color:#fb7185;border:1px solid rgba(251,113,133,.5);border-radius:99px;padding:2px 8px}.rdc .ok{color:#34d399;border-color:rgba(52,211,153,.5)}
+#adv{margin:0 14px}.ad{font:600 12px 'Rajdhani',sans-serif;letter-spacing:.06em;padding:4px 8px;margin-top:4px;border-left:3px solid;border-radius:4px;background:rgba(3,10,20,.45);animation:pp .3s}.ad.r{color:#fb7185;border-color:#fb7185}.ad.y{color:#fbbf24;border-color:#fbbf24}.ad.g{color:#34d399;border-color:#34d399}.ad.i{color:#7dd3fc;border-color:#7dd3fc}
+.tr2{display:flex;align-items:baseline;gap:6px;padding:3px 0;border-bottom:1px solid rgba(160,220,255,.08);font-size:13px}.tr2 span{flex:1;color:#8aa6bf;font-size:11px;letter-spacing:.1em}.tr2 b{font:600 15px 'Orbitron',sans-serif;font-variant-numeric:tabular-nums;color:#e6f4ff}.tr2 em{width:30px;color:#6b8aa6;font-style:normal;font-size:11px}
+.ai{display:grid;grid-template-columns:1fr 18px 18px;gap:8px;align-items:end;margin-bottom:8px}.ai svg{width:100%;max-width:108px;margin:auto;filter:drop-shadow(0 0 8px rgba(34,211,238,.3))}.fb{position:relative;height:88px;width:18px;border:1px solid rgba(160,220,255,.35);border-radius:6px;overflow:hidden;background:rgba(3,10,20,.5)}.fb i{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(0deg,#06b6d4,#a5f3fc);transition:height .15s}.fb i.lo{background:linear-gradient(0deg,#ef4444,#fbbf24)}.fb.tb i{background:linear-gradient(0deg,#a855f7,#22d3ee)}.fb span{position:absolute;top:-18px;left:-6px;font:600 9px 'Orbitron',sans-serif;color:#9fb6cc}
+.cr{padding:7px 0;border-bottom:1px solid rgba(160,220,255,.1)}.ch{display:flex;justify-content:space-between;align-items:center;gap:6px}.ch b{font:600 11px 'Orbitron',sans-serif;letter-spacing:.08em}.chip3{font:600 9px 'Orbitron',sans-serif;letter-spacing:.1em;padding:2px 8px;border-radius:99px;border:1px solid;transition:all .3s}.cr.g .chip3{color:#34d399;border-color:#34d399;background:rgba(52,211,153,.1)}.cr.y .chip3{color:#fbbf24;border-color:#fbbf24;background:rgba(251,191,36,.1)}.cr.r .chip3{color:#fb7185;border-color:#fb7185;background:rgba(251,113,133,.12)}
+.cc{display:flex;justify-content:space-between;gap:6px;font-size:11px;color:#8aa6bf;margin:4px 0 2px}.cc b{color:#e6f4ff;font-size:12px}.cf{font-size:12px;color:#b6cbe0}.cr.r .cf{color:#fda4af}.cr.y .cf{color:#fde68a}
+.xh{position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px 0 0 -13px;border:1px solid rgba(160,220,255,.35);border-radius:50%;z-index:2;pointer-events:none}.xh:before,.xh:after{content:"";position:absolute;background:rgba(160,220,255,.5)}.xh:before{left:50%;top:-6px;width:1px;height:38px}.xh:after{top:50%;left:-6px;height:1px;width:38px}
+.mk{position:absolute;left:0;top:0;z-index:2;pointer-events:none;font:600 11px 'Orbitron',sans-serif;letter-spacing:.1em;color:#22d3ee;padding:4px 10px;border:1px solid rgba(34,211,238,.6);border-radius:8px;background:rgba(3,10,20,.55);white-space:nowrap}
+.ovl{position:absolute;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;background:rgba(3,7,14,.6);padding:16px;overflow:auto}.ovl[hidden]{display:none}.ovl .card{position:relative;max-width:620px;width:100%;padding:22px 26px}.ovl h4{margin:6px 0 12px;font:700 24px 'Orbitron',sans-serif;letter-spacing:.06em}.ovl h4.ok{color:#34d399}.ovl h4.bd{color:#fb7185}.ovl p{font-size:15px;line-height:1.5;color:#c4d6e8}.ovl p.dim{color:#8aa6bf;font-size:13px}
+.req{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.req span{font:600 11px 'Orbitron',sans-serif;letter-spacing:.06em;color:#bfefff;border:1px solid rgba(160,220,255,.3);border-radius:99px;padding:4px 10px}.req b{color:#fbbf24}.keys{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:6px 14px;margin:12px 0;font-size:13px;color:#b6cbe0}
+.rg{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px}.rg div{display:flex;justify-content:space-between;gap:8px;font-size:14px;border-bottom:1px solid rgba(160,220,255,.1);padding:3px 0}.rg span{color:#8aa6bf}.rg b.ok{color:#34d399}.rg b.bd{color:#fb7185}
+.sb{display:flex;align-items:center;gap:8px;font-size:13px;margin:3px 0}.sb span{width:130px;color:#9fb6cc}.sb i{flex:1;height:7px;border-radius:5px;background:rgba(160,220,255,.12);overflow:hidden}.sb u{display:block;height:100%;background:linear-gradient(90deg,#06b6d4,#a855f7)}.sb b{width:48px;text-align:right;font:600 12px 'Orbitron',sans-serif}.tot5{margin-top:8px;font:600 13px 'Orbitron',sans-serif;color:#7dd3fc;letter-spacing:.14em}.tot5 b{font-size:26px;color:#fff}
+.rb2{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.st{right:14px;top:60px;width:300px;max-height:70%;overflow:auto;z-index:7}.psd{background:rgba(3,7,14,.4)}
+@media(max-width:1100px){.pl{width:200px}.pr2,.br{width:260px}.bc{display:none}}
+.vb{left:50%;top:62px;transform:translateX(-50%);display:flex;gap:5px;padding:6px 8px}.vb .gb{padding:6px 9px;font-size:10px}.s5{user-select:none;-webkit-user-select:none;cursor:grab}.s5 .gp,.s5 button{cursor:default}.s5 button{cursor:pointer}
+@media(max-width:1100px){.vb{top:auto;bottom:70px}}
+.tst{position:absolute;left:50%;top:104px;transform:translateX(-50%);z-index:5;display:flex;flex-direction:column;gap:6px;align-items:center;pointer-events:none}.tst .ad{padding:8px 16px;border-radius:10px;font:600 12px 'Orbitron',sans-serif;letter-spacing:.08em;background:rgba(3,10,20,.75);margin:0}
+.cn{position:absolute;inset:0;z-index:5;pointer-events:none;font-family:'Rajdhani','Inter',sans-serif}.cn[hidden]{display:none}.cn .bar{position:absolute;left:0;right:0;height:8%;background:#000;z-index:1}.cn .bar.t{top:0}.cn .bar.b{bottom:0}
+.cfm{position:absolute;inset:0;width:100%;height:100%;z-index:1}.cdash{position:absolute;left:50%;bottom:3.5%;transform:translateX(-50%);display:flex;gap:16px;z-index:2}.cdash div{padding:8px 18px;border:1px solid rgba(120,210,255,.4);border-radius:10px;background:rgba(4,12,24,.78);color:#7dd3fc;font:600 10px 'Orbitron',sans-serif;letter-spacing:.16em;text-align:center}.cdash b{display:block;margin-top:3px;font:700 15px 'Orbitron',sans-serif;color:#e6f4ff;letter-spacing:.06em}
+.ccap{position:absolute;left:4%;bottom:11%;z-index:3;font:600 11px 'Orbitron',sans-serif;letter-spacing:.22em;color:#bfefff;text-shadow:0 0 10px #000}.cn .skip{position:absolute;right:16px;top:11%;pointer-events:auto;z-index:4}.cfl{position:absolute;inset:0;background:#fff;opacity:0;z-index:6}
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<header>
+ <div class="brand">
+  <div><h1>VOID PARADIGM</h1><p>AVARTAN • PRESENTS</p></div>
+ </div>
+ <div style="display:flex;gap:10px;align-items:center;min-width:0"><span class="btn" id="who" hidden style="max-width:48vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:default"></span><button class="btn" id="admBtn" type="button">ADMIN <span>LOGIN</span></button></div>
+</header>
+<main><section class="card" id="hold" hidden style="text-align:center"><div class="hl">VOID PARADIGM // STANDBY</div><svg viewBox="-12 -12 224 224" role="img" aria-label="Loading: a rocket orbiting a planet" style="width:min(240px,70vw);height:auto;display:block;margin:0 auto 14px"><defs><filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><radialGradient id="pg" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#a78bfa"/><stop offset=".6" stop-color="#5b3fd1"/><stop offset="1" stop-color="#1d2a7a"/></radialGradient><radialGradient id="ps" cx=".3" cy=".3" r=".9"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></radialGradient><clipPath id="pc"><circle cx="100" cy="100" r="42"/></clipPath><g id="tl"><rect x="0" y="22" width="84" height="9" fill="#c4b5fd" opacity=".35"/><rect x="0" y="52" width="84" height="12" fill="#22d3ee" opacity=".22"/><circle cx="24" cy="44" r="7" fill="#1d2a7a" opacity=".45"/><circle cx="60" cy="68" r="5" fill="#1d2a7a" opacity=".45"/><circle cx="52" cy="26" r="4" fill="#1d2a7a" opacity=".4"/></g></defs><path d="M180.0,100.0 L182.1,102.9 L184.0,105.9 L185.6,109.0 L186.6,112.2 L187.1,115.4 L187.0,118.5 L186.3,121.5 L184.9,124.4 L183.0,127.0 L180.6,129.3 L177.8,131.4 L174.8,133.3 L171.6,134.9 L168.4,136.4 L165.4,137.8 L162.5,139.1 L160.0,140.5 L157.8,142.0 L156.0,143.7 L154.5,145.7 L153.3,148.0 L152.4,150.6 L151.7,153.6 L151.1,156.7 L150.4,160.1 L149.6,163.5 L148.7,167.0 L147.4,170.3 L145.8,173.3 L143.9,176.0 L141.6,178.3 L139.0,180.0 L136.1,181.1 L133.0,181.7 L129.7,181.7 L126.4,181.1 L123.0,180.1 L119.7,178.8 L116.4,177.3 L113.4,175.8 L110.4,174.2 L107.7,172.9 L105.0,171.9 L102.5,171.2 L100.0,171.0 L97.5,171.2 L95.0,171.9 L92.3,172.9 L89.6,174.2 L86.6,175.8 L83.6,177.3 L80.3,178.8 L77.0,180.1 L73.6,181.1 L70.3,181.7 L67.0,181.7 L63.9,181.1 L61.0,180.0 L58.4,178.3 L56.1,176.0 L54.2,173.3 L52.6,170.3 L51.3,167.0 L50.4,163.5 L49.6,160.1 L48.9,156.7 L48.3,153.6 L47.6,150.6 L46.7,148.0 L45.5,145.7 L44.0,143.7 L42.2,142.0 L40.0,140.5 L37.5,139.1 L34.6,137.8 L31.6,136.4 L28.4,134.9 L25.2,133.3 L22.2,131.4 L19.4,129.3 L17.0,127.0 L15.1,124.4 L13.7,121.5 L13.0,118.5 L12.9,115.4 L13.4,112.2 L14.4,109.0 L16.0,105.9 L17.9,102.9 L20.0,100.0 L22.2,97.3 L24.4,94.7 L26.4,92.3 L28.2,89.9 L29.5,87.6 L30.5,85.2 L31.0,82.8 L31.1,80.2 L30.8,77.5 L30.3,74.6 L29.5,71.5 L28.6,68.2 L27.8,64.8 L27.2,61.3 L26.8,57.7 L26.9,54.3 L27.3,51.0 L28.4,47.9 L29.9,45.2 L31.9,42.9 L34.4,41.0 L37.4,39.5 L40.6,38.5 L44.0,37.8 L47.6,37.5 L51.1,37.5 L54.6,37.5 L57.9,37.6 L61.0,37.6 L63.9,37.5 L66.5,37.0 L68.9,36.2 L71.0,35.0 L73.1,33.3 L75.0,31.3 L76.9,28.9 L78.9,26.3 L80.9,23.6 L83.2,20.8 L85.6,18.2 L88.2,15.8 L90.9,13.8 L93.9,12.3 L96.9,11.3 L100.0,11.0 L103.1,11.3 L106.1,12.3 L109.1,13.8 L111.8,15.8 L114.4,18.2 L116.8,20.8 L119.1,23.6 L121.1,26.3 L123.1,28.9 L125.0,31.3 L126.9,33.3 L129.0,35.0 L131.1,36.2 L133.5,37.0 L136.1,37.5 L139.0,37.6 L142.1,37.6 L145.4,37.5 L148.9,37.5 L152.4,37.5 L156.0,37.8 L159.4,38.5 L162.6,39.5 L165.6,41.0 L168.1,42.9 L170.1,45.2 L171.6,47.9 L172.7,51.0 L173.1,54.3 L173.2,57.7 L172.8,61.3 L172.2,64.8 L171.4,68.2 L170.5,71.5 L169.7,74.6 L169.2,77.5 L168.9,80.2 L169.0,82.8 L169.5,85.2 L170.5,87.6 L171.8,89.9 L173.6,92.3 L175.6,94.7 L177.8,97.3 L180.0,100.0" fill="none" stroke="rgba(34,211,238,.18)" stroke-width="4" stroke-linejoin="round"/><path d="M180.0,100.0 L182.1,102.9 L184.0,105.9 L185.6,109.0 L186.6,112.2 L187.1,115.4 L187.0,118.5 L186.3,121.5 L184.9,124.4 L183.0,127.0 L180.6,129.3 L177.8,131.4 L174.8,133.3 L171.6,134.9 L168.4,136.4 L165.4,137.8 L162.5,139.1 L160.0,140.5 L157.8,142.0 L156.0,143.7 L154.5,145.7 L153.3,148.0 L152.4,150.6 L151.7,153.6 L151.1,156.7 L150.4,160.1 L149.6,163.5 L148.7,167.0 L147.4,170.3 L145.8,173.3 L143.9,176.0 L141.6,178.3 L139.0,180.0 L136.1,181.1 L133.0,181.7 L129.7,181.7 L126.4,181.1 L123.0,180.1 L119.7,178.8 L116.4,177.3 L113.4,175.8 L110.4,174.2 L107.7,172.9 L105.0,171.9 L102.5,171.2 L100.0,171.0 L97.5,171.2 L95.0,171.9 L92.3,172.9 L89.6,174.2 L86.6,175.8 L83.6,177.3 L80.3,178.8 L77.0,180.1 L73.6,181.1 L70.3,181.7 L67.0,181.7 L63.9,181.1 L61.0,180.0 L58.4,178.3 L56.1,176.0 L54.2,173.3 L52.6,170.3 L51.3,167.0 L50.4,163.5 L49.6,160.1 L48.9,156.7 L48.3,153.6 L47.6,150.6 L46.7,148.0 L45.5,145.7 L44.0,143.7 L42.2,142.0 L40.0,140.5 L37.5,139.1 L34.6,137.8 L31.6,136.4 L28.4,134.9 L25.2,133.3 L22.2,131.4 L19.4,129.3 L17.0,127.0 L15.1,124.4 L13.7,121.5 L13.0,118.5 L12.9,115.4 L13.4,112.2 L14.4,109.0 L16.0,105.9 L17.9,102.9 L20.0,100.0 L22.2,97.3 L24.4,94.7 L26.4,92.3 L28.2,89.9 L29.5,87.6 L30.5,85.2 L31.0,82.8 L31.1,80.2 L30.8,77.5 L30.3,74.6 L29.5,71.5 L28.6,68.2 L27.8,64.8 L27.2,61.3 L26.8,57.7 L26.9,54.3 L27.3,51.0 L28.4,47.9 L29.9,45.2 L31.9,42.9 L34.4,41.0 L37.4,39.5 L40.6,38.5 L44.0,37.8 L47.6,37.5 L51.1,37.5 L54.6,37.5 L57.9,37.6 L61.0,37.6 L63.9,37.5 L66.5,37.0 L68.9,36.2 L71.0,35.0 L73.1,33.3 L75.0,31.3 L76.9,28.9 L78.9,26.3 L80.9,23.6 L83.2,20.8 L85.6,18.2 L88.2,15.8 L90.9,13.8 L93.9,12.3 L96.9,11.3 L100.0,11.0 L103.1,11.3 L106.1,12.3 L109.1,13.8 L111.8,15.8 L114.4,18.2 L116.8,20.8 L119.1,23.6 L121.1,26.3 L123.1,28.9 L125.0,31.3 L126.9,33.3 L129.0,35.0 L131.1,36.2 L133.5,37.0 L136.1,37.5 L139.0,37.6 L142.1,37.6 L145.4,37.5 L148.9,37.5 L152.4,37.5 L156.0,37.8 L159.4,38.5 L162.6,39.5 L165.6,41.0 L168.1,42.9 L170.1,45.2 L171.6,47.9 L172.7,51.0 L173.1,54.3 L173.2,57.7 L172.8,61.3 L172.2,64.8 L171.4,68.2 L170.5,71.5 L169.7,74.6 L169.2,77.5 L168.9,80.2 L169.0,82.8 L169.5,85.2 L170.5,87.6 L171.8,89.9 L173.6,92.3 L175.6,94.7 L177.8,97.3 L180.0,100.0" id="wvp" pathLength="1000" filter="url(#glow)" fill="none" stroke="#22d3ee" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1000" stroke-dashoffset="1000"><animate attributeName="stroke-dashoffset" from="1000" to="0" dur="7s" repeatCount="indefinite"/></path><circle cx="100" cy="100" r="53" fill="none" stroke="#22d3ee" stroke-opacity=".5" stroke-width="1" stroke-dasharray="4 7"><animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="18s" repeatCount="indefinite"/></circle><circle cx="100" cy="100" r="60" fill="none" stroke="#a855f7" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="1 9" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="360 100 100" to="0 100 100" dur="26s" repeatCount="indefinite"/></circle><circle cx="100" cy="100" r="43.5" fill="none" stroke="#a78bfa" stroke-opacity=".7" stroke-width="2" filter="url(#glow)"/><g clip-path="url(#pc)"><rect x="58" y="58" width="84" height="84" fill="url(#pg)"/><g><use href="#tl" x="58" y="58"/><use href="#tl" x="142" y="58"/><use href="#tl" x="226" y="58"/><animateTransform attributeName="transform" type="translate" from="0 0" to="-84 0" dur="7s" repeatCount="indefinite"/></g><circle cx="100" cy="100" r="42" fill="url(#ps)"/></g><g filter="url(#glow)"><circle r="3" fill="#22d3ee" opacity="0.6" visibility="hidden"><set attributeName="visibility" to="visible" begin="0.1s"/><animateMotion dur="7s" begin="0.1s" repeatCount="indefinite"><mpath href="#wvp"/></animateMotion></circle><circle r="2.6" fill="#22d3ee" opacity="0.5" visibility="hidden"><set attributeName="visibility" to="visible" begin="0.2s"/><animateMotion dur="7s" begin="0.2s" repeatCount="indefinite"><mpath href="#wvp"/></animateMotion></circle><circle r="2.2" fill="#22d3ee" opacity="0.4" visibility="hidden"><set attributeName="visibility" to="visible" begin="0.3s"/><animateMotion dur="7s" begin="0.3s" repeatCount="indefinite"><mpath href="#wvp"/></animateMotion></circle><circle r="1.8" fill="#22d3ee" opacity="0.3" visibility="hidden"><set attributeName="visibility" to="visible" begin="0.4s"/><animateMotion dur="7s" begin="0.4s" repeatCount="indefinite"><mpath href="#wvp"/></animateMotion></circle><circle r="1.4" fill="#22d3ee" opacity="0.2" visibility="hidden"><set attributeName="visibility" to="visible" begin="0.5s"/><animateMotion dur="7s" begin="0.5s" repeatCount="indefinite"><mpath href="#wvp"/></animateMotion></circle></g><g filter="url(#glow)"><g transform="scale(1.15)"><path d="M-9,0 L-17,-3 L-14,0 L-17,3Z" fill="#fb923c"><animate attributeName="opacity" values="1;.4;1" dur=".25s" repeatCount="indefinite"/></path><path d="M12,0 C8,-5 2,-5 -9,-4 L-9,4 C2,5 8,5 12,0Z" fill="#e6f4ff"/><path d="M-3,-4 L-9,-9 L-9,-4Z M-3,4 L-9,9 L-9,4Z" fill="#a855f7"/><circle cx="2" cy="0" r="2.3" fill="#22d3ee"/></g><animateMotion dur="7s" repeatCount="indefinite" rotate="auto" path="M180.0,100.0 L182.1,102.9 L184.0,105.9 L185.6,109.0 L186.6,112.2 L187.1,115.4 L187.0,118.5 L186.3,121.5 L184.9,124.4 L183.0,127.0 L180.6,129.3 L177.8,131.4 L174.8,133.3 L171.6,134.9 L168.4,136.4 L165.4,137.8 L162.5,139.1 L160.0,140.5 L157.8,142.0 L156.0,143.7 L154.5,145.7 L153.3,148.0 L152.4,150.6 L151.7,153.6 L151.1,156.7 L150.4,160.1 L149.6,163.5 L148.7,167.0 L147.4,170.3 L145.8,173.3 L143.9,176.0 L141.6,178.3 L139.0,180.0 L136.1,181.1 L133.0,181.7 L129.7,181.7 L126.4,181.1 L123.0,180.1 L119.7,178.8 L116.4,177.3 L113.4,175.8 L110.4,174.2 L107.7,172.9 L105.0,171.9 L102.5,171.2 L100.0,171.0 L97.5,171.2 L95.0,171.9 L92.3,172.9 L89.6,174.2 L86.6,175.8 L83.6,177.3 L80.3,178.8 L77.0,180.1 L73.6,181.1 L70.3,181.7 L67.0,181.7 L63.9,181.1 L61.0,180.0 L58.4,178.3 L56.1,176.0 L54.2,173.3 L52.6,170.3 L51.3,167.0 L50.4,163.5 L49.6,160.1 L48.9,156.7 L48.3,153.6 L47.6,150.6 L46.7,148.0 L45.5,145.7 L44.0,143.7 L42.2,142.0 L40.0,140.5 L37.5,139.1 L34.6,137.8 L31.6,136.4 L28.4,134.9 L25.2,133.3 L22.2,131.4 L19.4,129.3 L17.0,127.0 L15.1,124.4 L13.7,121.5 L13.0,118.5 L12.9,115.4 L13.4,112.2 L14.4,109.0 L16.0,105.9 L17.9,102.9 L20.0,100.0 L22.2,97.3 L24.4,94.7 L26.4,92.3 L28.2,89.9 L29.5,87.6 L30.5,85.2 L31.0,82.8 L31.1,80.2 L30.8,77.5 L30.3,74.6 L29.5,71.5 L28.6,68.2 L27.8,64.8 L27.2,61.3 L26.8,57.7 L26.9,54.3 L27.3,51.0 L28.4,47.9 L29.9,45.2 L31.9,42.9 L34.4,41.0 L37.4,39.5 L40.6,38.5 L44.0,37.8 L47.6,37.5 L51.1,37.5 L54.6,37.5 L57.9,37.6 L61.0,37.6 L63.9,37.5 L66.5,37.0 L68.9,36.2 L71.0,35.0 L73.1,33.3 L75.0,31.3 L76.9,28.9 L78.9,26.3 L80.9,23.6 L83.2,20.8 L85.6,18.2 L88.2,15.8 L90.9,13.8 L93.9,12.3 L96.9,11.3 L100.0,11.0 L103.1,11.3 L106.1,12.3 L109.1,13.8 L111.8,15.8 L114.4,18.2 L116.8,20.8 L119.1,23.6 L121.1,26.3 L123.1,28.9 L125.0,31.3 L126.9,33.3 L129.0,35.0 L131.1,36.2 L133.5,37.0 L136.1,37.5 L139.0,37.6 L142.1,37.6 L145.4,37.5 L148.9,37.5 L152.4,37.5 L156.0,37.8 L159.4,38.5 L162.6,39.5 L165.6,41.0 L168.1,42.9 L170.1,45.2 L171.6,47.9 L172.7,51.0 L173.1,54.3 L173.2,57.7 L172.8,61.3 L172.2,64.8 L171.4,68.2 L170.5,71.5 L169.7,74.6 L169.2,77.5 L168.9,80.2 L169.0,82.8 L169.5,85.2 L170.5,87.6 L171.8,89.9 L173.6,92.3 L175.6,94.7 L177.8,97.3 L180.0,100.0"/></g></svg><h3 class="gl" style="margin:0 0 8px">Please wait</h3><p class="lead" id="hm" style="margin:0 auto"></p><p class="stl" id="stl"></p></section><section class="card" id="app"></section></main>
+<footer><span>VOID PARADIGM • PRESENTS</span><span></span></footer>
+<div id="adm"><div class="card" style="width:min(920px,100%);max-height:90vh;overflow:auto"><h3>Admin</h3><div id="admBody"></div></div></div>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Rajdhani:wght@500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const $=s=>document.querySelector(s),app=$('#app');
+let TOTAL=1800,PEN=30;
+let G=null,tm=null,KILL=null;
+const fmt=s=>{s=Math.max(0,s);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
+const store=(k,v)=>{try{if(v===undefined)return JSON.parse(localStorage.getItem(k));localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
+const SHAPES=`<svg viewBox="0 0 120 120"><path d="M60 8l13 36h38L80 66l12 38-32-24-32 24 12-38L9 44h38z" fill="none" stroke="#000" stroke-width="7" stroke-linejoin="round"/></svg>`;
+const STROKES=`<svg viewBox="0 0 120 120"><rect width="120" height="120" fill="#000"/><g stroke-linecap="round" stroke-width="10" fill="none"><path d="M22 70l22-36" stroke="#7c3aed"/><path d="M40 78l24-48" stroke="#8b5cf6"/><path d="M58 86l26-56" stroke="#a855f7"/><path d="M76 92l22-52" stroke="#c026d3"/></g></svg>`;
+
+/* ---------- screens ---------- */
+/* SUPABASE CONFIG: change table / column names here if yours differ */
+const SB={url:'https://jbydaklyvepixtzrcgfp.supabase.co/rest/v1/',key:'sb_publishable_z-SnsaEpRt47cE7rOumIwA_DwY3tgJE'};
+const HD={apikey:SB.key,'Content-Type':'application/json'},enc=encodeURIComponent,esc=s=>String(s).replace(/[<>&"]/g,'');
+function DEF(){return{s1t:180,s1seed:2026,s3ch:5,s5:{vv:3,hv:2,tilt:5,zone:8},total:30,pen:30,st:[{max:20,neg:25},{max:20,neg:25},{max:20,neg:25},{max:20,neg:25},{max:35,neg:25}],
+q1:[['3, 7, 15, 31, 63, ?',127],['2, 6, 12, 20, 30, ?',42],['1, 2, 6, 24, 120, ?',720],['2, 3, 5, 7, 11, 13, ?',17]],
+q4:[['The lander is 12,000 m up and falls at a constant 40 m/s. How many seconds until it reaches the surface?',300],['The parachute opens at 6,000 m. The retro burn starts at one quarter of that altitude. At what altitude (m) does the burn start?',1500],['Retro rockets slow the lander uniformly from 60 m/s to 0 over 15 s. How many metres does it cover?',450],['The burn uses 8 kg of fuel per second for 15 s. The tank held 200 kg. How many kg remain?',80]],
+pw:{budget:100,sys:[{n:'Navigation',min:20,ref:'',mult:0},{n:'Oxygen',min:25,ref:'',mult:0},{n:'Propulsion',min:0,ref:'Navigation',mult:2},{n:'Thermal',min:10,ref:'',mult:0},{n:'Comms',min:5,ref:'',mult:0}]},
+zn:{slope:10,wind:40,dust:50,zones:[{n:'A',slope:6,wind:55,dust:30,rock:'Low'},{n:'B',slope:12,wind:20,dust:20,rock:'Low'},{n:'C',slope:8,wind:32,dust:45,rock:'Low'},{n:'D',slope:5,wind:25,dust:70,rock:'Low'},{n:'E',slope:4,wind:18,dust:35,rock:'High'}]},
+sq:['Atmospheric entry burn','Communications blackout','Heat shield jettison','Parachute deployment','Retro rocket ignition','Landing legs extended','Touchdown and engine cutoff']}}
+let CFG=DEF();const r2=x=>Math.round(x*100)/100,tp=()=>sum(CFG.st.map(x=>x.max)),per=(n,c)=>CFG.st[n].max/Math.max(1,c);
+const sum=a=>a.reduce((x,y)=>x+y,0);
+function landing(){
+ KILL&&KILL();clearInterval(tm);G=null;$('#who').hidden=true;
+ 
+ // Try auto-login from sessionStorage (passed from main game)
+ try {
+   const stored = sessionStorage.getItem('void_team');
+   if (stored) {
+     const auth = JSON.parse(stored);
+     if (auth.team && auth.pw) {
+       (async ()=>{
+         try {
+           const r=await fetch(SB.url+'rpc/team_login',{method:'POST',headers:HD,body:JSON.stringify({p_name:auth.team,p_pass:auth.pw})});
+           if(r.ok){
+             const d=await r.json();
+             if(d.length){
+               const row=d[0];
+               if(row.l3_sec==0){
+                 await loadCfg();G={id:row.id,pw:auth.pw,team:row.team_name,stage:0,t:TOTAL,pen:0,c:null,pts:[0,0,0,0,0]};
+                 const w=$('#who');w.textContent=G.team+' · ID '+G.id;w.hidden=false;
+                 tm=setInterval(tick,1000);stage();
+                 return;
+               }
+             }
+           }
+         } catch(e){}
+         // If auto-login fails, try to continue with stored data anyway
+         try {
+           await loadCfg();G={id:auth.id||'',pw:auth.pw,team:auth.team,stage:0,t:TOTAL,pen:0,c:null,pts:[0,0,0,0,0]};
+           const w=$('#who');w.textContent=G.team+' · ID '+G.id;w.hidden=false;
+           tm=setInterval(tick,1000);stage();
+           return;
+         } catch(e2){}
+       })();
+       return;
+     }
+   }
+ } catch(e){}
+ 
+ // No login screen - go straight to mission if possible or just show error
+ app.innerHTML='<div style="text-align:center;color:#fb7185">Session expired. Please login again.</div>';
+}
+
+function showLogin(){
+ app.innerHTML=`
+ <div style="position:relative;width:min(880px,100%);border-radius:28px;background:radial-gradient(circle at top,rgba(34,211,238,0.12),transparent 55%),rgba(8,20,34,0.92);border:1px solid rgba(34,211,238,0.4);box-shadow:0 0 80px rgba(34,211,238,0.16);overflow:hidden;text-align:center;padding:clamp(24px,6vw,64px)">
+   <div style="position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 20% 10%,rgba(168,85,247,0.16),transparent 45%),radial-gradient(circle at 80% 90%,rgba(59,130,246,0.12),transparent 50%)"></div>
+   <div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:18px">
+     <div style="display:inline-flex;align-items:center;gap:10px;padding:8px 18px;border-radius:999px;border:1px solid rgba(34,211,238,0.5);background:rgba(14,116,144,0.18);text-transform:uppercase;letter-spacing:0.32em;font-size:10px;color:#a5f3fc;font-family:'Orbitron',sans-serif">
+       <span style="width:6px;height:6px;border-radius:50%;background:#22d3ee;box-shadow:0 0 16px rgba(34,211,238,0.9)"></span>
+       ROUND 3 · MARSFALL
+     </div>
+     <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:clamp(14px,4vw,36px)">
+       <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+         <div style="font-family:'Orbitron',sans-serif;text-transform:uppercase;letter-spacing:0.5em;font-size:clamp(10px,1.6vw,14px);color:#67e8f9">Gradient Presents</div>
+         <div style="font-family:'Orbitron',sans-serif;font-weight:800;font-size:clamp(42px,10vw,96px);letter-spacing:0.18em;background:linear-gradient(180deg,#ffffff 0%,#67e8f9 55%,#a78bfa 100%);-webkit-background-clip:text;color:transparent;text-shadow:0 0 60px rgba(103,232,249,0.25)">VOID PARADIGM</div>
+         <div style="margin-top:4px;font-size:clamp(12px,2vw,18px);letter-spacing:0.6em;text-transform:uppercase;color:rgba(165,243,252,0.8)">Blackout Protocol</div>
+       </div>
+       <div style="width:clamp(90px,16vw,150px);height:clamp(90px,16vw,150px);border-radius:24px;background:radial-gradient(circle,rgba(168,85,247,0.4),rgba(15,23,42,0.9));border:1px solid rgba(192,132,252,0.6);display:flex;align-items:center;justify-content:center;box-shadow:0 0 60px rgba(168,85,247,0.28)">${STROKES}</div>
+     </div>
+     <div style="width:min(420px,100%);display:flex;flex-direction:column;gap:16px;margin-top:clamp(10px,4vw,26px)">
+       <label style="text-align:left;display:flex;flex-direction:column;gap:8px">
+         <span style="font-size:11px;text-transform:uppercase;letter-spacing:0.28em;color:rgba(165,243,252,0.7)">Team Name</span>
+         <input type="text" id="team" maxlength="64" placeholder="Enter your team name" autocomplete="off" style="width:100%;background:rgba(15,23,42,0.8);border:1px solid rgba(34,211,238,0.45);border-radius:999px;color:var(--tx);font:600 15px 'JetBrains Mono',monospace;padding:14px 22px;text-align:center">
+       </label>
+       <label style="text-align:left;display:flex;flex-direction:column;gap:8px">
+         <span style="font-size:11px;text-transform:uppercase;letter-spacing:0.28em;color:rgba(165,243,252,0.7)">Password</span>
+         <input type="password" id="pw0" maxlength="64" placeholder="Enter your password" autocomplete="off" style="width:100%;background:rgba(15,23,42,0.8);border:1px solid rgba(34,211,238,0.45);border-radius:999px;color:var(--tx);font:600 15px 'JetBrains Mono',monospace;padding:14px 22px;text-align:center">
+       </label>
+       <div class="msg" id="msg" style="text-align:center;min-height:24px"></div>
+       <button class="btn go" id="start" type="button" style="align-self:center;padding:18px 54px;border-radius:999px;font-family:'Orbitron',sans-serif;letter-spacing:0.4em;text-transform:uppercase">ENTER MISSION PORTAL</button>
+     </div>
+     <p style="margin-top:clamp(10px,4vw,20px);color:rgba(148,163,184,0.9);font-size:12px;max-width:520px">Five stages. Finish before the mission clock runs out. Wrong answers cost time and points.<br>Login details are issued by the organisers for this round.</p>
+   </div>
+ </div>`;
+ const m=t=>{const e=$('#msg');e.className='msg bad';e.textContent=t};
+ $('#start').onclick=async()=>{const name=$('#team').value.trim(),pw=$('#pw0').value;if(!name||!pw){m('Enter your team name and password.');return}
+  const b=$('#start'),reset=()=>{b.disabled=false;b.textContent='ENTER MISSION PORTAL'};b.disabled=true;b.textContent='CHECKING TEAM…';
+  try{const r=await fetch(SB.url+'rpc/team_login',{method:'POST',headers:HD,body:JSON.stringify({p_name:name,p_pass:pw})});
+   if(!r.ok)throw new Error('Server replied '+r.status);const d=await r.json();
+   if(!d.length){m('Team name or password is wrong.');reset();return}
+   const row=d[0];if(row.l3_sec>0){m('This team has already completed Level 3.');reset();return}
+   await loadCfg();G={id:row.id,pw,team:row.team_name,stage:0,t:TOTAL,pen:0,c:null,pts:[0,0,0,0,0]};
+   const w=$('#who');w.textContent=G.team+' · ID '+G.id;w.hidden=false;
+   tm=setInterval(tick,1000);stage()}
+  catch(e){m('Could not reach the server: '+e.message);reset()}};
+}
+function tick(){if(!G)return;G.t--;
+ if(G.c!==null){G.c--;const e=$('#sc');if(e)e.textContent=fmt(G.c);if(G.c<=0){G.c=null;G.auto&&G.auto()}}
+ if(!G)return;if(G.t<=0)return end(false,'Mission time ran out.');
+ const e=$('#clk');if(e){e.textContent=fmt(G.t);e.classList.toggle('low',G.t<=300)}}
+function hud(n,name){return`<div class="hud"><div><div class="pips">${[0,1,2,3,4].map(i=>`<i class="${i<n?'d':i==n?'on':''}"></i>`).join('')}</div><p style="margin:8px 0 0;color:var(--mu);font-size:12px">${esc(G.team)} · ID ${esc(G.id)} · STAGE ${n+1} OF 5 · SCORE ${r2(sum(G.pts))}/${tp()}</p></div><div class="clock" id="clk">${fmt(G.t)}</div></div><h3>${name}</h3>`}
+/* finish a stage: the stage total is split across its items; each wrong item loses a % of its marks and costs time (max 3 per stage) */
+function fin(n,correct,wrong,cnt,hold){const p=per(n,cnt),d=p*CFG.st[n].neg/100;G.pts[n]=r2(Math.max(0,correct*p-wrong*d));
+ const tpn=Math.min(wrong,3)*PEN;G.t-=tpn;G.pen+=wrong;G.auto=null;G.c=null;
+ const e=$('#msg');e.className='msg '+(G.pts[n]>0?'good':'bad');e.textContent=`Round score: ${G.pts[n]} / ${CFG.st[n].max}`+(wrong?` · −${r2(wrong*d)} pts`:'')+(tpn?` · −${tpn}s`:'');
+ const b=$('#ok');if(b)b.disabled=true;if(tpn){app.classList.remove('flash');void app.offsetWidth;app.classList.add('flash')}
+ if(G.t<=0)return end(false,'Mission time ran out.');if(!hold)setTimeout(next,2200)}
+const info=(n,c)=>{const p=per(n,c);return `Each correct item earns ${r2(p)} points; each wrong one costs ${r2(p*CFG.st[n].neg/100)}.`};
+function next(){if(!G)return;G.stage++;G.stage>4?end(true):stage()}
+function stage(){KILL&&KILL();G.c=null;[s1,s2,s3,s4,s5][G.stage]()}
+function qstage(n,title,lead,qs){
+ app.innerHTML=hud(n,title)+`<p class="lead">${lead} ${info(n,qs.length)} You get one submission.</p>`+qs.map((q,i)=>`<div class="q" id="q${i}"><b>${esc(q[0])}</b><input type="number" id="a${i}" inputmode="numeric" aria-label="Answer ${i+1}"></div>`).join('')+`<div class="msg" id="msg"></div><button class="btn go" id="ok" type="button" style="padding:14px 28px">SUBMIT ANSWERS</button>`;
+ $('#ok').onclick=()=>{let c=0,w=0;qs.forEach((q,i)=>{const el=$('#a'+i),has=el.value!=='',ok=has&&+el.value===+q[1];el.disabled=true;
+  $('#q'+i).style.borderColor=ok?'var(--ok)':'var(--bad)';if(ok)c++;else if(has)w++});fin(n,c,w,qs.length)};
+}
+/* ---------- Stage 1 · MISSION X : terrain, candidates, scoring (no DOM) ---------- */
+let MD=null;
+const KD=.07,clp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x)),sst=(a,b,x)=>{x=clp((x-a)/(b-a));return x*x*(3-2*x)};
+const rng=a=>()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+function perlin(r){const P=new Uint8Array(512),p=Array.from({length:256},(_,i)=>i);for(let i=255;i>0;i--){const j=Math.floor(r()*(i+1));[p[i],p[j]]=[p[j],p[i]]}for(let i=0;i<512;i++)P[i]=p[i&255];
+ const F=t=>t*t*t*(t*(t*6-15)+10),L=(t,a,b)=>a+t*(b-a),g=(h,x,y,z)=>{h&=15;const u=h<8?x:y,v=h<4?y:h==12||h==14?x:z;return(h&1?-u:u)+(h&2?-v:v)};
+ return(x,y,z)=>{const fx=Math.floor(x),fy=Math.floor(y),fz=Math.floor(z),X=fx&255,Y=fy&255,Z=fz&255;x-=fx;y-=fy;z-=fz;const u=F(x),v=F(y),w=F(z),A=P[X]+Y,AA=P[A]+Z,AB=P[A+1]+Z,B=P[X+1]+Y,BA=P[B]+Z,BB=P[B+1]+Z;
+  return L(w,L(v,L(u,g(P[AA],x,y,z),g(P[BA],x-1,y,z)),L(u,g(P[AB],x,y-1,z),g(P[BB],x-1,y-1,z))),L(v,L(u,g(P[AA+1],x,y,z-1),g(P[BA+1],x-1,y,z-1)),L(u,g(P[AB+1],x,y-1,z-1),g(P[BB+1],x-1,y-1,z-1))))}}
+const dot3=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],ang3=(a,b)=>Math.acos(clp(dot3(a,b),-1,1));
+const tb=v=>{const up=Math.abs(v[1])>.95?[1,0,0]:[0,1,0];let a=[v[1]*up[2]-v[2]*up[1],v[2]*up[0]-v[0]*up[2],v[0]*up[1]-v[1]*up[0]];const l=Math.hypot(...a);a=a.map(x=>x/l);return[a,[v[1]*a[2]-v[2]*a[1],v[2]*a[0]-v[0]*a[2],v[0]*a[1]-v[1]*a[0]]]};
+function mkWorld(seed){
+ const r=rng(seed*7919+13),N=perlin(r),rd=()=>{const u=r()*2-1,a=r()*6.2832,s=Math.sqrt(1-u*u);return[s*Math.cos(a),u,s*Math.sin(a)]},
+ cr=Array.from({length:16},()=>{const q=r();return{d:rd(),r:.05+q*q*.2+.03,k:.4+r()*.6}}),
+ fl=Array.from({length:34},()=>({d:rd(),r:.035+r()*.06}));
+ const h=v=>{const[x,y,z]=v;let s=0,a=1,f=1.4,n=0;for(let o=0;o<5;o++){s+=a*N(x*f+3.1,y*f+1.7,z*f+5.3);n+=a;a*=.5;f*=2.1}s=s/n*2;
+  const rg=clp(1-Math.abs(N(x*2.1+9,y*2.1,z*2.1-4)*2.4)),mk=sst(-.05,.3,N(x*.9-6,y*.9+2,z*.9));
+  let H=s*.5+mk*rg*rg*1.1;H*=.4+.6*sst(.05,.45,Math.abs(H));
+  H+=sst(.1,.45,N(x*2.6+4,y*2.6,z*2.6))*.2*N(x*14,y*14,z*14);
+  for(const c of cr){const d=dot3(v,c.d);if(d<Math.cos(c.r*1.6))continue;const t=Math.acos(clp(d,-1,1))/c.r;if(t<1)H-=c.k*Math.pow(1-t*t,.8);H+=c.k*.45*Math.exp(-(((t-1.08)/.2)**2))}
+  return H};
+ return{h,cr,fl,N}}
+const xyOf=d=>[(Math.atan2(d[2],d[0])+Math.PI)/(2*Math.PI)*500,(Math.PI/2-Math.asin(clp(d[1],-1,1)))/Math.PI*250];
+function metrics(W,d){
+ const h0=W.h(d),[t1,t2]=tb(d),ring=(e,n)=>Array.from({length:n},(_,i)=>{const p=i/n*6.2832,c=Math.cos(e),s=Math.sin(e),co=Math.cos(p),si=Math.sin(p);return W.h([0,1,2].map(k=>d[k]*c+(t1[k]*co+t2[k]*si)*s))-h0}),
+ a=ring(.03,8),b=ring(.075,8),
+ slope=Math.atan(Math.max(...a.map(Math.abs))*KD/.03)*57.3,
+ rough=([0,1,2,3].reduce((s,i)=>s+Math.abs(a[i]+a[i+4])+Math.abs(b[i]+b[i+4]),0)/8)*KD/.04,
+ crC=Math.min(...W.cr.map(c=>ang3(d,c.d)-1.25*c.r)),obC=Math.min(...W.fl.map(c=>ang3(d,c.d)-c.r)),N=W.N,
+ wind=clp(36+50*N(d[0]*1.7+5.2,d[1]*1.7+1.3,d[2]*1.7+7.7)+14*N(d[0]*4.1+2,d[1]*4.1,d[2]*4.1+9),0,80),
+ dust=clp(40+58*N(d[0]*1.4+2.1,d[1]*1.4+8.8,d[2]*1.4+3.3)+12*N(d[0]*3.9,d[1]*3.9+4,d[2]*3.9+6),0,100),
+ rock=clp(8+70*clp(1-obC/.2)+50*clp(rough/.7)+9*N(d[0]*5+3,d[1]*5+1,d[2]*5+8),0,100);
+ return{h0,slope,rough,crC,obC,wind,dust,rock}}
+function evalM(m,L){
+ const fl=1-clp(m.slope/L.slope),wi=1-clp(m.wind/L.wind),du=1-clp(m.dust/L.dust),ro=1-clp(m.rock/33),st=1-clp(m.rough/.5),el=1-clp(Math.abs(m.h0+.05)/.95),cp=clp(m.crC/.16);
+ const score=Math.round(100*Math.pow(.22*fl+.18*wi+.18*du+.14*ro+.1*st+.08*el+.1*cp,1.25));
+ const valid=m.slope<L.slope&&m.wind<=L.wind&&m.dust<=L.dust&&m.rock<33&&m.rough<.4&&m.h0<.65&&m.h0>-.8&&m.obC>.015&&m.crC>.015;
+ const ter=m.crC<.07?'Crater-adjacent':m.h0>.4?'Elevated':m.slope>7||m.rough>.3?'Rocky':m.h0<-.35?'Low basin':'Relatively flat',
+ surf=m.rough<.15&&m.slope<4.5?'Stable':m.rough<.3&&m.slope<8?'Mostly stable':'Loose and uneven';
+ return{score,valid,ter,surf}}
+function mkCands(seed,L,n){L=L||{slope:10,wind:40,dust:50};n=n||25;let last;
+ for(let s=seed;s<seed+120;s++){const W=mkWorld(s),r=rng(s*31+7),C=[],ids=Array.from({length:n},(_,i)=>i+1).sort(()=>r()-.5);
+  for(let i=0;i<n;i++){const y=clp(1-2*(i+.5)/n+(r()-.5)*.12,-.97,.97),q=Math.sqrt(1-y*y),th=i*2.39996+(r()-.5)*.8,d=[q*Math.cos(th),y,q*Math.sin(th)],m=metrics(W,d),e=evalM(m,L),[x,yy]=xyOf(d);
+   C.push({id:'P'+String(ids[i]).padStart(2,'0'),d,m,x,y:yy,i,slope:m.slope,wind:m.wind,dust:m.dust,rock:m.rock,...e})}
+  const ok=C.filter(c=>c.valid);last={W,C,seed:s};
+  if(ok.length>=3&&ok.length<=9){last.best=ok.reduce((a,c)=>c.score>a.score?c:a);return last}}
+ const ok=last.C.filter(c=>c.valid);last.best=(ok.length?ok:last.C).reduce((a,c)=>c.score>a.score?c:a);return last}
+
+/* shared realistic rocket model (used by the arrival movie, Stage 1 and Stage 5) */
+function mkLander(T,tx){
+ const rcsF=[],RK=new T.Group(),mt=(c,m,r,e,ei)=>new T.MeshStandardMaterial({color:c,metalness:m,roughness:r,emissive:e||0,emissiveIntensity:ei||0,envMapIntensity:1.5}),hull=mt(0xe9eff7,.8,.3),dkm=mt(0x1b2433,.85,.38),dks=mt(0x1b2433,.85,.38);dks.side=T.DoubleSide;
+ const cy=new T.MeshBasicMaterial({color:0x22d3ee}),org=mt(0xf97316,.4,.45,0xf97316,.3),glass=mt(0x050c18,1,.08,0x0a5b88,.9),rimM=new T.MeshBasicMaterial({color:0xff9a3c}),
+ add=(g,m,x,y,z,par)=>{const o=new T.Mesh(g,m);o.position.set(x,y,z);o.castShadow=true;(par||RK).add(o);return o};
+ add(new T.LatheGeometry([[.5,-2.05],[.8,-1.9],[1.02,-1.55],[1.14,-1.1],[1.17,-.2],[1.15,1],[1.05,1.9],[.85,2.7],[.55,3.4],[.22,3.85],[0,4]].map(p=>new T.Vector2(p[0],p[1])),40),hull,0,0,0).material.side=T.DoubleSide;
+ [-.35,1.45].forEach(y=>{add(new T.TorusGeometry(1.18,.035,8,48),cy,0,y,0).rotation.x=Math.PI/2});[.45,.95].forEach(y=>{add(new T.TorusGeometry(1.165,.012,6,48),dkm,0,y,0).rotation.x=Math.PI/2});
+ add(new T.CylinderGeometry(1.19,1.17,.5,40,1,true),org,0,-1.2,0).material.side=T.DoubleSide;
+ const can=add(new T.SphereGeometry(1,24,16),glass,0,2.45,-.82);can.scale.set(.5,.75,.38);can.rotation.x=-.35;
+ add(new T.CylinderGeometry(.015,.03,.9,6),dkm,0,4.4,0);add(new T.SphereGeometry(.05,8,6),new T.MeshBasicMaterial({color:0xff3b3b}),0,4.85,0);
+ for(let k=0;k<4;k++){const a=k*Math.PI/2+.4;const n=add(new T.BoxGeometry(.16,.12,.22),dkm,Math.cos(a)*1.13,2.2,Math.sin(a)*1.13);n.rotation.y=-a;add(new T.SphereGeometry(.035,6,5),cy,Math.cos(a)*1.25,2.2,Math.sin(a)*1.25);const rj=add(new T.ConeGeometry(.2,1.3,10),new T.MeshBasicMaterial({color:0x9be8ff,transparent:true,opacity:.85,blending:T.AdditiveBlending,depthWrite:false}),Math.cos(a)*1.2,2.9,Math.sin(a)*1.2);rj.castShadow=false;rj.visible=false;rcsF.push(rj)}
+ const fsh=new T.Shape();fsh.moveTo(0,.6);fsh.lineTo(1.25,-1.1);fsh.lineTo(1.25,-2);fsh.lineTo(0,-1.6);fsh.closePath();const fg=new T.ExtrudeGeometry(fsh,{depth:.09,bevelEnabled:false});fg.translate(0,0,-.045);const navs=[];
+ for(let k=0;k<4;k++){const P=new T.Group();P.rotation.y=Math.PI/4+k*Math.PI/2;RK.add(P);add(fg,dkm,1,0,0,P);add(new T.BoxGeometry(.05,.9,.11),cy,2.25,-1.55,0,P);const nv=add(new T.SphereGeometry(.07,8,6),new T.MeshBasicMaterial({color:k%2?0x34d399:0xff4d4d}),2.25,-2,0,P);navs.push(nv)}
+ add(new T.CylinderGeometry(.5,.82,.8,28,1,true),dks,0,-2.15,0);add(new T.TorusGeometry(.82,.04,8,32),rimM,0,-2.55,0).rotation.x=Math.PI/2;
+ for(let k=0;k<3;k++){const a=k*2.094+.5,x=Math.cos(a)*.66,z=Math.sin(a)*.66;add(new T.CylinderGeometry(.13,.23,.5,14,1,true),dks,x,-2.05,z);add(new T.TorusGeometry(.23,.025,6,16),rimM,x,-2.3,z).rotation.x=Math.PI/2}
+ const legs=[0,1,2,3].map(k=>{const P=new T.Group();P.rotation.y=k*Math.PI/2;const G=new T.Group();G.position.set(.9,-1,0);
+  add(new T.CylinderGeometry(.13,.15,3.2,12),dkm,1,-1.25,0,G).rotation.z=.675;add(new T.CylinderGeometry(.08,.08,1.8,10),hull,1.45,-1.8,0,G).rotation.z=.675;add(new T.CylinderGeometry(.19,.19,.55,12),org,.62,-.78,0,G).rotation.z=.675;add(new T.CylinderGeometry(.075,.075,2,8),hull,.45,-.85,0,G).rotation.z=.855;
+  add(new T.CylinderGeometry(.75,.9,.16,28),hull,2,-2.5,0,G);add(new T.TorusGeometry(.66,.035,6,32),cy,2,-2.4,0,G).rotation.x=Math.PI/2;add(new T.CylinderGeometry(.45,.5,.1,20),dkm,2,-2.58,0,G);P.add(G);RK.add(P);return G});
+ const fl=new T.Mesh(new T.ConeGeometry(.62,3,16),new T.MeshBasicMaterial({color:0xff9a3c,transparent:true,opacity:.8,blending:T.AdditiveBlending,depthWrite:false}));fl.rotation.x=Math.PI;RK.add(fl);const fl2=new T.Mesh(new T.ConeGeometry(.32,2,12),new T.MeshBasicMaterial({color:0x9be8ff,transparent:true,opacity:.95,blending:T.AdditiveBlending,depthWrite:false}));fl2.rotation.x=Math.PI;RK.add(fl2);
+ const gl=new T.Sprite(new T.SpriteMaterial({map:tx(),color:0x6fd3ff,blending:T.AdditiveBlending,transparent:true,depthWrite:false}));gl.position.y=-2.7;RK.add(gl);
+ const fli=new T.PointLight(0xff8c3a,0,40);fli.position.y=-3;RK.add(fli);
+ return{RK,legs,fl,fl2,gl,fli,navs,rcsF}}
+
+/* ---------- Stage 1 · MISSION X : 3D planetary landing game ---------- */
+let AC=null,MUTE=false;
+const au=()=>{if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC};
+function tone(f,d,ty,v,f2,at){const a=au();if(!a||MUTE)return;const t=a.currentTime+(at||0),o=a.createOscillator(),g=a.createGain();o.type=ty||'sine';o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+d);g.gain.setValueAtTime(v||.06,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+d)}
+const SFX={click:()=>tone(620,.1,'triangle',.05),insp:()=>{tone(520,.16,'sine',.06,820)},sel:()=>{tone(660,.2,'triangle',.06);tone(990,.25,'triangle',.05,0,.1)},scan:()=>tone(180,1.8,'sawtooth',.025,1400),land:()=>tone(110,3.2,'sawtooth',.04,55),
+ win:()=>[523,659,784,1047].forEach((f,i)=>tone(f,.35,'triangle',.07,0,i*.14)),lose:()=>[440,370,311,247].forEach((f,i)=>tone(f,.4,'sawtooth',.04,0,i*.16))};
+function s1(){
+ if(!window.THREE){app.innerHTML=hud(0,'MISSION X')+'<p class="lead">The 3D engine could not be loaded. Check your connection and refresh the page.</p>';return}
+ const NS=+CFG.s1seed||2026,ST=+CFG.s1t||180,MW=mkCands(NS,{slope:+CFG.zn.slope||10,wind:+CFG.zn.wind||40,dust:+CFG.zn.dust||50},25),W=MW.W,C=MW.C,best=MW.best,n=C.length;
+ MD={id:best.id,x:best.x,y:best.y,slope:best.slope,wind:best.wind,dust:best.dust,rock:best.rock,score:best.score};
+ const lvh=k=>`<i class="lv">${[1,2,3].map(j=>`<u class="${j<=k?'on':''}"></u>`).join('')}</i>`;
+ app.style.width='min(1280px,100%)';
+ app.innerHTML=hud(0,'MISSION X · FIND THE PERFECT LANDING ZONE')+`<div id="mxw" class="in"><div class="ms"><span>SCAN WINDOW <b id="sc">${fmt(ST)}</b></span><div class="pgb"><i id="pg"></i></div><span id="pgt">INSPECTED 0/${n}</span></div>
+ <div class="mx"><div class="mp"><div class="rb"><svg viewBox="0 0 80 80" width="62" height="62"><line x1="40" y1="6" x2="40" y2="16" stroke="#22d3ee" stroke-width="2"/><circle cx="40" cy="6" r="4" fill="#fbbf24"><animate attributeName="opacity" values="1;.3;1" dur="1.2s" repeatCount="indefinite"/></circle><rect x="14" y="16" width="52" height="40" rx="12" fill="#0b1d33" stroke="#22d3ee" stroke-width="2"/><g class="eye"><circle cx="29" cy="34" r="5" fill="#22d3ee"/><circle cx="51" cy="34" r="5" fill="#22d3ee"/></g><rect x="30" y="46" width="20" height="3" rx="1.5" fill="#a855f7"/><rect x="22" y="58" width="36" height="16" rx="6" fill="#0b1d33" stroke="#22d3ee"/></svg><div class="bub" id="aiT">AI-7 online. Awaiting mission start.</div></div>
+  <div class="lh">MISSION BRIEFING</div><p>Drag to rotate, scroll to zoom, click a glowing marker to inspect it. Use SCAN to read the ground around you. Select the safest site, then confirm. One confirmation only: the best site scores ${CFG.st[0].max} points, any other site scores 0 and costs ${PEN} s.</p><div class="lh">EXPLORATION HINTS</div><div id="hints"><span class="dim">Run a SCAN to receive terrain hints.</span></div></div>
+  <div id="cv"><div class="ov" id="ov"></div><div class="vc" id="vc"></div>
+   <div class="cn" id="fpv"><div class="bar t"></div><div class="bar b"></div><svg class="cfm" id="cfm" viewBox="0 0 1600 900" preserveAspectRatio="none"><path fill-rule="evenodd" fill="#04070d" d="M0 0H1600V900H0Z M210 150C620 60 980 60 1390 150L1470 640C1000 720 600 720 130 640Z"/><path fill="none" stroke="rgba(120,210,255,.55)" stroke-width="4" d="M210 150C620 60 980 60 1390 150L1470 640C1000 720 600 720 130 640Z"/><path fill="none" stroke="rgba(120,210,255,.2)" stroke-width="2" d="M60 40L210 150M1540 40L1390 150M0 520L130 640M1600 520L1470 640"/></svg><div class="cdash" id="cdash"><div>DISTANCE TO MARS<b id="fd">–</b></div><div>VELOCITY<b id="fv">–</b></div><div>ORBIT INSERTION<b id="ft2">T-00:07</b></div></div><div class="ccap" id="cap">CAMERA 01 · COCKPIT</div><button class="gb skip" id="skipc" type="button">SKIP INTRO ▶</button><div class="cfl" id="fls"></div></div>
+   <div class="mo" id="intro"><div><div class="hl">ROUND 3 · STAGE 1</div><h4>MISSION X – FIND THE PERFECT LANDING ZONE</h4><p>Your spacecraft is approaching an unknown planet. Due to limited fuel, you must identify the safest possible landing location. Explore the planetary surface, investigate available landing coordinates and make your final selection before time runs out.</p><button class="btn go" id="go1" type="button" style="padding:16px 34px">START MISSION</button></div></div>
+   <div class="mo bn" id="bn" hidden><div><h4 id="bnT"></h4><p id="bnS"></p><button class="btn go" id="bnB" type="button" style="padding:12px 24px">VIEW MISSION REPORT</button></div></div></div>
+  <div class="mp"><div class="lh">SELECTED CANDIDATE</div><div id="det"></div><div class="lh" style="margin-top:14px">INSPECTED SITES</div><div id="insp" class="chips"></div></div></div>
+ <div class="mb"><button class="btn" id="bScan" type="button">SCAN</button><button class="btn" id="bReset" type="button">RESET VIEW</button><button class="btn" id="bGrid" type="button">GRID: OFF</button><button class="btn" id="bSnd" type="button">SOUND: ${MUTE?'OFF':'ON'}</button><button class="btn go" id="bCf" type="button" disabled style="padding:12px 24px">CONFIRM LANDING</button></div><div class="msg" id="msg"></div></div>`;
+ const cv=$('#cv'),ov=$('#ov');let rn;
+ try{rn=new THREE.WebGLRenderer({antialias:true,alpha:true})}catch(e){app.innerHTML=hud(0,'MISSION X')+'<p class="lead">This browser could not start WebGL. Use an up-to-date desktop browser.</p>';app.style.width='';return}
+ rn.setPixelRatio(Math.min(devicePixelRatio||1,2));rn.shadowMap.enabled=true;rn.shadowMap.type=THREE.PCFSoftShadowMap;cv.prepend(rn.domElement);
+ const V3=(a)=>new THREE.Vector3(a[0],a[1],a[2]),sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(40,1,.05,400),P=new THREE.Group();sc.add(P);
+ P.quaternion.setFromEuler(new THREE.Euler(.35,-.6,.12));const Q0=P.quaternion.clone(),ZZ=new THREE.Vector3(0,0,1);
+ {const st=new Float32Array(1800);for(let i=0;i<600;i++){const a=rng(11+i)()*6.28,e=(rng(77+i)()-.5)*3.1,R=150;st[i*3]=Math.cos(a)*Math.cos(e)*R;st[i*3+1]=Math.sin(e)*R;st[i*3+2]=Math.sin(a)*Math.cos(e)*R}sc.add(new THREE.Points(new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(st,3)),new THREE.PointsMaterial({color:0xcfe9ff,size:1.5,sizeAttenuation:false,fog:false})))}
+ const sun=new THREE.DirectionalLight(0xfff0dc,1.7),L0=new THREE.Vector3(4,2.2,3.2);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);const sh=sun.shadow.camera;sh.left=sh.bottom=-1.4;sh.right=sh.top=1.4;sh.near=1;sh.far=12;sun.shadow.bias=-.0006;sun.shadow.normalBias=.02;
+ sc.add(sun,sun.target,new THREE.HemisphereLight(0x8fb4ff,0x3a1a12,.5));
+ /* terrain mesh: the same height function drives the surface, the markers and the scoring */
+ const sp=v=>{const hh=W.h(v),R=1+KD*hh;return[v[0]*R,v[1]*R,v[2]*R,hh]},nz=v=>{const l=Math.hypot(...v);return v.map(x=>x/l)};
+ const g=new THREE.SphereGeometry(1,200,140),pa=g.attributes.position,col=new Float32Array(pa.count*3),nm=new Float32Array(pa.count*3),mx=(a,b,t)=>a.map((x,i)=>x+(b[i]-x)*t),
+  LO=[.3,.14,.1],MI=[.62,.3,.19],PL=[.78,.46,.28],HI=[.88,.72,.6],RK=[.2,.13,.12],rr0=rng(NS+3);
+ for(let i=0;i<pa.count;i++){const v=nz([pa.getX(i),pa.getY(i),pa.getZ(i)]),p0=sp(v),[a,b]=tb(v),e=.006,p1=sp(nz(v.map((x,k)=>x+a[k]*e))),p2=sp(nz(v.map((x,k)=>x+b[k]*e))),
+   u=[p1[0]-p0[0],p1[1]-p0[1],p1[2]-p0[2]],w=[p2[0]-p0[0],p2[1]-p0[1],p2[2]-p0[2]];let q=[u[1]*w[2]-u[2]*w[1],u[2]*w[0]-u[0]*w[2],u[0]*w[1]-u[1]*w[0]];q=nz(q);if(dot3(q,v)<0)q=q.map(x=>-x);
+   pa.setXYZ(i,p0[0],p0[1],p0[2]);nm[i*3]=q[0];nm[i*3+1]=q[1];nm[i*3+2]=q[2];
+   const t=clp((p0[3]+.8)/2.2);let c=t<.35?mx(LO,MI,t/.35):t<.65?mx(MI,PL,(t-.35)/.3):mx(PL,HI,(t-.65)/.35);c=mx(c,RK,sst(.9,.72,dot3(q,v))*.8);const j=(rr0()-.5)*.05;
+   col[i*3]=clp(c[0]+j);col[i*3+1]=clp(c[1]+j);col[i*3+2]=clp(c[2]+j)}
+ g.setAttribute('color',new THREE.BufferAttribute(col,3));g.setAttribute('normal',new THREE.BufferAttribute(nm,3));pa.needsUpdate=true;g.computeBoundingSphere();
+ const planet=new THREE.Mesh(g,new THREE.MeshStandardMaterial({vertexColors:true,roughness:.96,metalness:0}));planet.castShadow=planet.receiveShadow=true;P.add(planet);
+ P.add(new THREE.Mesh(new THREE.SphereGeometry(1.2,48,32),new THREE.ShaderMaterial({transparent:true,side:THREE.BackSide,blending:THREE.AdditiveBlending,depthWrite:false,vertexShader:'varying vec3 n;void main(){n=normalize(normalMatrix*normal);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',fragmentShader:'varying vec3 n;void main(){float i=pow(max(.0,.62-dot(n,vec3(0.,0.,1.))),3.);gl_FragColor=vec4(.35,.7,1.,1.)*i*.9;}'})));
+ /* boulder fields (the obstacles used by the scoring) */
+ const RN=W.fl.length*14,rk=new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1,0),new THREE.MeshStandardMaterial({color:0x4a342d,roughness:1,flatShading:true}),RN),M4=new THREE.Matrix4(),rr=rng(NS+5);let ri=0;
+ W.fl.forEach(f=>{const[a,b]=tb(f.d);for(let k=0;k<14;k++){const ra=Math.sqrt(rr())*f.r*.95,ph=rr()*6.2832,s=sp(nz(f.d.map((x,j)=>x+(a[j]*Math.cos(ph)+b[j]*Math.sin(ph))*ra))),z=.004+rr()*.008;
+  M4.compose(new THREE.Vector3(s[0]*1.001,s[1]*1.001,s[2]*1.001),new THREE.Quaternion().setFromEuler(new THREE.Euler(rr()*6,rr()*6,rr()*6)),new THREE.Vector3(z,z*(.6+rr()*.6),z));rk.setMatrixAt(ri++,M4)}});rk.castShadow=rk.receiveShadow=true;P.add(rk);
+ /* coordinate grid + scan sweep */
+ const gp=[],pv=(la,lo)=>[Math.cos(la)*Math.cos(lo),Math.sin(la),Math.cos(la)*Math.sin(lo)].map(x=>x*1.1);
+ for(let lo=0;lo<12;lo++)for(let k=0;k<64;k++){const a=(-85+170*k/64)*Math.PI/180,b=(-85+170*(k+1)/64)*Math.PI/180;gp.push(...pv(a,lo*Math.PI/6),...pv(b,lo*Math.PI/6))}
+ for(let la=-60;la<=60;la+=20)for(let k=0;k<96;k++)gp.push(...pv(la*Math.PI/180,k/96*6.2832),...pv(la*Math.PI/180,(k+1)/96*6.2832));
+ const grid=new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position',new THREE.Float32BufferAttribute(gp,3)),new THREE.LineBasicMaterial({color:0x22d3ee,transparent:true,opacity:.4}));grid.visible=false;P.add(grid);
+ const scanU={o:{value:new THREE.Vector3(0,0,1)},a:{value:-1}},scanM=new THREE.Mesh(new THREE.SphereGeometry(1.115,64,48),new THREE.ShaderMaterial({transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,uniforms:scanU,vertexShader:'varying vec3 v;void main(){v=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',fragmentShader:'uniform vec3 o;uniform float a;varying vec3 v;void main(){float d=acos(clamp(dot(v,o),-1.,1.));float b=smoothstep(.13,.0,abs(d-a));float f=step(d,a)*.07;gl_FragColor=vec4(.2,.9,1.,1.)*(b*.95+f)*step(.0,a);}'}));scanM.visible=false;P.add(scanM);
+ /* markers */
+ const tex=f=>{const c=document.createElement('canvas');c.width=c.height=64;f(c.getContext('2d'));return new THREE.CanvasTexture(c)},
+  tDot=tex(x=>{const q=x.createRadialGradient(32,32,0,32,32,32);q.addColorStop(0,'#fff');q.addColorStop(.25,'rgba(255,255,255,.9)');q.addColorStop(.5,'rgba(255,255,255,.28)');q.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=q;x.fillRect(0,0,64,64)}),
+  tRing=tex(x=>{x.strokeStyle='#fff';x.lineWidth=4;x.beginPath();x.arc(32,32,24,0,7);x.stroke()}),COL={w:0xffffff,b:0x38bdf8,g:0xfbbf24,o:0x34d399},
+  SM=(m,c)=>new THREE.Sprite(new THREE.SpriteMaterial({map:m,color:c,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending})),spr=[],rgs=[],pin=[];
+ C.forEach((c,i)=>{const s=sp(c.d);c.p=V3(s);const m=SM(tDot,COL.w);m.position.copy(c.p).multiplyScalar(1.012);m.userData.i=i;P.add(m);spr.push(m);const r=SM(tRing,COL.g);r.position.copy(m.position);r.visible=false;P.add(r);rgs.push(r);pin.push(c.p.x,c.p.y,c.p.z,c.p.x*1.03,c.p.y*1.03,c.p.z*1.03);c.st=0});
+ P.add(new THREE.LineSegments(new THREE.BufferGeometry().setAttribute('position',new THREE.Float32BufferAttribute(pin,3)),new THREE.LineBasicMaterial({color:0x7dd3fc,transparent:true,opacity:.55})));
+ /* spacecraft: the same realistic rocket as Stage 5 (nose along +z once wrapped) */
+ const LD=mkLander(THREE,()=>tDot),CR=new THREE.Group();LD.RK.rotation.x=Math.PI/2;LD.legs.forEach(G=>G.scale.setScalar(.45));CR.add(LD.RK);CR.scale.setScalar(.026);sc.add(CR);
+ const flame={set visible(v){LD.fl.visible=LD.fl2.visible=LD.gl.visible=v},scale:{setScalar:s=>{const k=Math.max(.01,s/.05);LD.fl.scale.set(1,k,1);LD.fl2.scale.set(1,k*.8,1);LD.fl.position.y=-2.45-1.5*k;LD.fl2.position.y=-2.45-k*.8;LD.gl.scale.setScalar(2+k*2)}}};
+ /* state */
+ let dist=3.7,dT=3.7,offT=0,T=0,vx=0,vy=0,lm=0,tgtQ=null,land=null,cur=-1,sel=-1,rev=false,locked=false,started=false,scanT=-1,scanCD=0,raf=0,fr=0,dr=null,dn=[],dg=null;const insp=[],tags=[];
+ const qx=new THREE.Quaternion(),qy=new THREE.Quaternion(),AX=new THREE.Vector3(1,0,0),AY=new THREE.Vector3(0,1,0),tv=new THREE.Vector3(),tw=new THREE.Vector3(),cw=new THREE.Vector3();
+ const rot=(ax,ay)=>{qy.setFromAxisAngle(AY,ay);qx.setFromAxisAngle(AX,ax);P.quaternion.premultiply(qy).premultiply(qx)};
+ const say=t=>{const e=$('#aiT');if(!e)return;e.textContent=t;e.classList.remove('pop');void e.offsetWidth;e.classList.add('pop')};
+ const viewDir=()=>new THREE.Vector3(0,0,1).applyQuaternion(P.quaternion.clone().invert());
+ const paint=()=>{C.forEach((c,i)=>{spr[i].material.color.setHex(COL[rev&&i===best.i?'o':sel===i?'g':c.st?'b':'w']);const r=rgs[i];r.visible=(i===cur||i===sel||(rev&&i===best.i));r.material.color.setHex(rev&&i===best.i?COL.o:i===sel?COL.g:0x7dd3fc)})};
+ const prog=()=>{$('#pg').style.width=insp.length/n*100+'%';$('#pgt').textContent=`INSPECTED ${insp.length}/${n}`+(sel>=0?` · SELECTED ${C[sel].id}`:'')};
+ const det=()=>{const e=$('#det');if(cur<0){e.innerHTML='<span class="dim">Click a glowing marker on the planet to inspect a landing candidate.</span>';return}
+  const c=C[cur];e.innerHTML=`<div class="cid">Candidate ${c.id}</div><div class="kv"><span>X</span><b>${c.x.toFixed(2)}</b></div><div class="kv"><span>Y</span><b>${c.y.toFixed(2)}</b></div><div class="kv"><span>Terrain</span><b>${c.ter}</b></div><div class="kv"><span>Surface</span><b>${c.surf}</b></div><div class="kv"><span>Slope angle</span><b>${c.slope.toFixed(1)}°</b></div><div class="kv"><span>Wind speed</span><b>${c.wind.toFixed(1)} km/h</b></div><div class="kv"><span>Dust</span><b>${c.dust.toFixed(1)}%</b></div><div class="kv"><span>Rock / debris</span><b>${c.rock.toFixed(1)}%</b></div><button class="btn" id="bSel" type="button" style="width:100%;margin-top:10px"${locked?' disabled':''}>${sel===cur?'✓ SELECTED SITE':'SELECT THIS SITE'}</button>`;$('#bSel').onclick=()=>choose(cur)};
+ const lst=()=>{const e=$('#insp');e.innerHTML=insp.length?insp.map(i=>`<button class="chip2${sel===i?' g':''}" data-i="${i}" type="button">${C[i].id} · ${C[i].ter}</button>`).join(''):'<span class="dim">None yet.</span>';e.querySelectorAll('button').forEach(b=>b.onclick=()=>{if(!locked)look(+b.dataset.i)})};
+ const focus=i=>{const q=new THREE.Quaternion().setFromUnitVectors(V3(C[i].d).applyQuaternion(P.quaternion),ZZ);tgtQ=q.multiply(P.quaternion)};
+ const look=i=>{const c=C[i];cur=i;if(!c.st){c.st=1;insp.push(i);SFX.insp();say(`${c.id} logged. ${c.ter}. Inspect a few more sites and compare.`)}else SFX.click();dT=Math.min(dT,2.3);focus(i);paint();det();lst();prog()};
+ const choose=i=>{if(locked)return;sel=i;SFX.sel();say(`${C[i].id} marked as your landing site. You can still change it.`);$('#bCf').disabled=false;paint();det();lst();prog()};
+ const tag=(i,t,cl,ms)=>{const el=document.createElement('div');el.className='mxt '+(cl||'');el.textContent=t;ov.appendChild(el);tags.push({i,el,u:ms?performance.now()+ms:1e18})};
+ const hintOf=c=>{const m=c.m,p=[];if(c.ter!=='Crater-adjacent')p.push(c.ter.toLowerCase());if(m.crC<.12)p.push(m.crC<.06?'crater rim very close':'crater nearby');if(m.obC<.07)p.push('boulder field close');if(m.slope<3.5)p.push('very level ground');else if(m.slope>7)p.push('steep ground');if(m.h0>.4)p.push('high ground');if(c.wind>40)p.push('strong winds');if(c.dust>50)p.push('heavy dust');return p.slice(0,4).join(' · ')};
+ const scan=()=>{if(!started||locked||scanT>=0||scanCD>0)return;const o=sel>=0?C[sel].d:cur>=0?C[cur].d:viewDir().toArray();scanU.o.value.set(o[0],o[1],o[2]);scanU.o.d=o;scanT=0;scanM.visible=true;$('#bScan').disabled=true;SFX.scan();say('Scanning the surface…')};
+ const scanDone=()=>{const o=scanU.o.d,l=C.map(c=>({c,a:ang3(o,c.d)})).sort((x,y)=>x.a-y.a),hit=l.filter((x,k)=>x.a<.62||k<3).slice(0,6);
+  hit.forEach(x=>tag(x.c.i,x.c.ter,'sc',5200));$('#hints').innerHTML=hit.map(x=>`<div class="hn"><b>${x.c.id}</b> ${hintOf(x.c)}</div>`).join('');say(`Scan complete: ${hit.length} candidates in range. Weigh slope, boulders and craters before you commit.`);scanCD=2.5};
+ const buttons=()=>['bScan','bReset','bGrid','bCf','bSel'].forEach(k=>{const b=$('#'+k);if(b)b.disabled=true});
+ const drone=()=>{const a=au();if(!a||dn.length)return;dg=a.createGain();dg.gain.value=.0001;dg.gain.setTargetAtTime(MUTE?.0001:.025,a.currentTime,.8);dg.connect(a.destination);[55,82.6].forEach((f,k)=>{const o=a.createOscillator();o.type='sine';o.frequency.value=f*(k?1.004:1);o.connect(dg);o.start();dn.push(o)})};
+ const timeUp=()=>{if(sel>=0)return confirm();locked=true;G.c=null;G.auto=null;buttons();reveal(true)};
+ const confirm=()=>{if(locked||sel<0)return;locked=true;G.c=null;G.auto=null;buttons();SFX.land();say('Landing sequence engaged. Hold on…');focus(sel);dT=1.9;land={t:0,s:CR.position.clone()}};
+ const reveal=to=>{rev=true;const okk=!to&&sel===best.i,pk=!to&&sel>=0?sel:-1;paint();tag(best.i,'OPTIMAL · '+best.id,'go');if(pk>=0&&!okk)tag(pk,'YOUR PICK · '+C[pk].id,'gd');
+  const bn=$('#bn');$('#bnT').textContent=okk?'MISSION SUCCESSFUL!':to?'LANDING WINDOW CLOSED!':'LANDING LOCATION NOT OPTIMAL!';$('#bnT').className=okk?'ok':'bad';$('#bnS').textContent=okk?'You identified the safest landing location.':'The recommended landing location has been revealed.';bn.hidden=false;
+  okk?SFX.win():SFX.lose();say(okk?'Perfect touchdown, Commander!':'Not the safest site. The optimal location is highlighted in green.');
+  fin(0,okk?1:0,pk>=0&&!okk?1:0,1,true);$('#bnB').onclick=()=>{const sm=$('#msg'),mt=sm.textContent,mc=sm.className,ps=pk>=0?C[pk].id:'None';KILL();
+   app.innerHTML=hud(0,'Mission Report')+`<div class="res"><span class="chip">${okk?'MISSION SUCCESSFUL':'LANDING NOT OPTIMAL'}</span><div class="rp"><div class="hl">OPTIMAL LANDING LOCATION</div><div class="kv"><span>X Coordinate</span><b>${best.x.toFixed(2)}</b></div><div class="kv"><span>Y Coordinate</span><b>${best.y.toFixed(2)}</b></div><div class="kv"><span>Candidate ID</span><b>${best.id}</b></div><div class="kv"><span>Landing Suitability</span><b>${best.score}/100</b></div><div class="hl" style="margin-top:8px">SITE CONDITIONS · NOTE THESE DOWN</div><div class="kv"><span>Slope angle (tilt)</span><b>${best.slope.toFixed(1)}°</b></div><div class="kv"><span>Wind speed</span><b>${best.wind.toFixed(1)} km/h</b></div><div class="kv"><span>Dust concentration</span><b>${best.dust.toFixed(1)}%</b></div><div class="kv"><span>Rock / debris density</span><b>${best.rock.toFixed(1)}%</b></div><p class="dim" style="font-size:12px;margin:6px 0 0">You will need these values in Stage 3, and Stage 5 lands on these coordinates.</p><div class="kv"><span>Player Selection</span><b>${ps}</b></div><div class="kv"><span>Mission Result</span><b class="${okk?'ok':'bad'}">${okk?'SUCCESS':'TRY AGAIN'}</b></div></div><div class="${mc}" id="msg">${mt}</div><button class="btn go" id="nx" type="button" style="padding:14px 28px">CONTINUE TO STAGE 2</button></div>`;$('#nx').onclick=next}};
+ /* input */
+ const pick=e=>{const rc=cv.getBoundingClientRect(),ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2((e.clientX-rc.left)/rc.width*2-1,-((e.clientY-rc.top)/rc.height)*2+1),cam);
+  const hp=ray.intersectObject(planet)[0],sh2=ray.intersectObjects(spr)[0];if(sh2&&(!hp||sh2.distance<hp.distance+.05))return sh2.object.userData.i;if(!hp)return -1;
+  const l=P.worldToLocal(hp.point.clone()).normalize(),d=l.toArray();let bi=-1,bd=9;C.forEach((c,i)=>{const a=ang3(d,c.d);if(a<bd){bd=a;bi=i}});return bd<.03*dist?bi:-1};
+ cv.addEventListener('pointerdown',e=>{if(e.button>0||e.target.closest('button'))return;dr={x:e.clientX,y:e.clientY,sx:e.clientX,sy:e.clientY};lm=performance.now();try{cv.setPointerCapture(e.pointerId)}catch(x){}cv.style.cursor='grabbing';tgtQ=null;vx=vy=0});
+ cv.addEventListener('pointermove',e=>{if(!dr)return;const k=.0045*Math.min(1.4,dist/3.2);vy=(e.clientX-dr.x)*k;vx=(e.clientY-dr.y)*k;dr.x=e.clientX;dr.y=e.clientY;lm=performance.now();if(!land)rot(vx,vy)});
+ cv.addEventListener('pointerup',e=>{if(!dr)return;cv.style.cursor='grab';if(performance.now()-lm>80)vx=vy=0;const m=Math.hypot(e.clientX-dr.sx,e.clientY-dr.sy);dr=null;if(m<5&&started&&!locked){const i=pick(e);if(i>=0)look(i)}});
+ cv.addEventListener('wheel',e=>{e.preventDefault();dT=clp(dT*(1+e.deltaY*.0012),1.5,4.6)},{passive:false});
+ $('#go1').onclick=()=>{au();started=true;$('#mxw').classList.remove('in');$('#intro').hidden=true;offT=0;dT=3.2;drone();SFX.sel();G.c=ST;G.auto=timeUp;say('Welcome aboard, Commander. Rotate the planet and inspect the glowing markers.')};
+ $('#bScan').onclick=scan;$('#bReset').onclick=()=>{if(locked)return;tgtQ=Q0.clone();dT=3.2;SFX.click()};$('#bCf').onclick=confirm;
+ $('#bGrid').onclick=e=>{grid.visible=!grid.visible;e.target.textContent='GRID: '+(grid.visible?'ON':'OFF');SFX.click()};
+ $('#bSnd').onclick=e=>{MUTE=!MUTE;e.target.textContent='SOUND: '+(MUTE?'OFF':'ON');if(dg)dg.gain.setTargetAtTime(MUTE?.0001:.025,AC.currentTime,.1)};
+ const ro=new ResizeObserver(()=>{const w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;rn.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();if(!started)offT=w/h>1.3?1.15:0});ro.observe(cv);
+ cam.position.set(0,0,dist);det();lst();paint();
+ /* ---- arrival movie: cockpit view, cut to external view, then into the Stage 1 intro ---- */
+ const fpv=$('#fpv'),capE=$('#cap'),fls=$('#fls'),ghost=new THREE.Object3D(),CT={fpv:7.2,tpp:13.6,end:16.2};let cine={t:0,c0:null};$('#intro').hidden=true;
+ const endCine=()=>{if(!cine)return;cine=null;fpv.hidden=true;$('#intro').hidden=false;CR.visible=true;cam.position.set(0,0,dist);cam.up.set(0,1,0);cam.quaternion.set(0,0,0,1);P.position.x=offT;fls.style.opacity=0;LD.rcsF.forEach(c=>c.visible=false);SFX.sel()};
+ $('#skipc').onclick=()=>endCine();
+ const ez=x=>{x=clp(x);return x*x*(3-2*x)};
+ const cineStep=dt=>{const t=cine.t+=dt;sun.position.copy(P.position).add(L0);sun.target.position.copy(P.position);rot(0,dt*.04);
+  if(t<CT.fpv){ /* first person: out of the cockpit window, Mars growing */
+   if(!cine.s0){cine.s0=1;tone(46,CT.fpv,'sawtooth',.025,34)}
+   const u=t/CT.fpv,z=3.1+76.9*Math.pow(1-u,2.4);CR.visible=false;P.position.x=0;cam.position.set(Math.sin(t*1.9)*.006*(1+z/20),Math.cos(t*2.3)*.005*(1+z/20),z);cam.up.set(Math.sin(t*.4)*.05,1,0);tw.set(.3*(1-u),-.14,0);cam.lookAt(tw);
+   if(fr%4===0){$('#fd').textContent=Math.round((z-1)*3390).toLocaleString()+' km';$('#fv').textContent=(.9+4.3*Math.pow(1-u,1.6)).toFixed(2)+' km/s';$('#ft2').textContent='T-00:0'+Math.max(0,Math.ceil(CT.tpp-t-6.4))}
+  }else{ /* external camera */
+   if(!cine.s1){cine.s1=1;fpv.querySelector('#cfm').style.display='none';$('#cdash').style.display='none';capE.textContent='CAMERA 02 · EXTERNAL · MARS ORBIT INSERTION';cam.up.set(0,1,0);CR.visible=true;tone(900,.6,'sine',.04,110);tone(70,6,'sawtooth',.035,55)}
+   const u=clp((t-CT.fpv)/(CT.tpp-CT.fpv)),rz=3.7-1.5*ez(u);
+   if(t<CT.tpp){CR.position.set(.1,.04,rz);CR.lookAt(tw.set(0,0,0));CR.rotateZ(Math.sin(t*.7)*.05);const az=1.05-1.6*ez(u),r=.55+.25*u;cam.position.set(CR.position.x+Math.sin(az)*r,CR.position.y+.12+.05*u,CR.position.z+Math.cos(az)*r);cam.lookAt(tw.set(CR.position.x,CR.position.y,CR.position.z-.03));flame.scale.setScalar(.06+.012*Math.sin(t*38));LD.rcsF.forEach((c,i)=>c.visible=u>.25&&u<.75&&((t*7+i)|0)%2===0);
+    cine.c0=cam.position.clone();cine.l0=CR.position.clone();cine.r0=CR.position.clone();cine.q0=CR.quaternion.clone()}
+   else{ /* glide into the Stage 1 intro framing */
+    const k=ez((t-CT.tpp)/(CT.end-CT.tpp));LD.rcsF.forEach(c=>c.visible=false);P.position.x=offT*k;
+    cam.position.lerpVectors(cine.c0,tv.set(0,0,dist),k);tw.lerpVectors(cine.l0,tv.set(0,0,0),k);cam.lookAt(tw);
+    const a=T*.33;ghost.position.set(Math.cos(a),0,Math.sin(a)).applyAxisAngle(AX,.5).multiplyScalar(1.42).add(P.position);ghost.lookAt(tv.set(Math.cos(a+.05),0,Math.sin(a+.05)).applyAxisAngle(AX,.5).multiplyScalar(1.42).add(P.position));
+    CR.position.lerpVectors(cine.r0,ghost.position,k);CR.quaternion.copy(cine.q0).slerp(ghost.quaternion,k);flame.scale.setScalar(.05+.012*Math.sin(T*40));if(t>=CT.end)return endCine()}}
+  fls.style.opacity=Math.max(0,1-Math.abs(t-CT.fpv)/.45)};
+ let last=performance.now();
+ const loop=now=>{raf=requestAnimationFrame(loop);const dt=Math.min(.05,(now-last)/1000);last=now;T+=dt;fr++;
+  if(cine){cineStep(dt);rn.render(sc,cam);return}
+  if(!started)rot(0,dt*.12);else if(!dr&&!land&&(vx||vy)){rot(vx,vy);vx*=.9;vy*=.9;if(Math.abs(vx)+Math.abs(vy)<1e-4)vx=vy=0}
+  if(tgtQ){P.quaternion.slerp(tgtQ,.12);if(P.quaternion.angleTo(tgtQ)<.002)tgtQ=null}
+  P.position.x+=(offT-P.position.x)*.06;dist+=(dT-dist)*.1;cam.position.z=dist;sun.position.copy(P.position).add(L0);sun.target.position.copy(P.position);
+  /* spacecraft: approach, orbit, descent */
+  if(land){land.t+=dt/3.2;const e=clp(land.t),s=e*e*(3-2*e),c=C[sel];tw.copy(c.p);P.localToWorld(tw);const dT2=tw.clone().sub(P.position),rT=dT2.length()+.09;dT2.normalize();const dS=land.s.clone().sub(P.position),rS=dS.length();dS.normalize();
+   const q=new THREE.Quaternion().slerp(new THREE.Quaternion().setFromUnitVectors(dS,dT2),s),d2=dS.applyQuaternion(q);CR.position.copy(P.position).addScaledVector(d2,rS+(rT-rS)*s);CR.quaternion.setFromUnitVectors(ZZ,d2);LD.legs.forEach(G=>G.scale.setScalar(.45+.55*Math.min(1,s*2)));flame.scale.setScalar((.05+.025*Math.sin(T*70))*(1-s));
+   if(land.t>=1){land=null;flame.visible=false;reveal(false)}}
+  else if(!rev){const R=1.42+2.3*Math.pow(Math.max(0,1-T/5),2),a=T*.33;tv.set(Math.cos(a),0,Math.sin(a)).applyAxisAngle(AX,.5).multiplyScalar(R);CR.position.copy(tv).add(P.position);const a2=a+.05;tw.set(Math.cos(a2),0,Math.sin(a2)).applyAxisAngle(AX,.5).multiplyScalar(R).add(P.position);CR.lookAt(tw);flame.scale.setScalar(.05+.012*Math.sin(T*40))}
+  /* markers */
+  const ms=clp(dist/3,.55,1.5);spr.forEach((m,i)=>{const b=(i===cur||i===sel?.085:.062);m.scale.setScalar(b*ms*(1+.12*Math.sin(T*3+i)))});
+  rgs.forEach((r,i)=>{if(r.visible){const k=(rev&&i===best.i?.15:.1)*ms*(1+.18*Math.sin(T*4));r.scale.setScalar(k)}});
+  if(scanT>=0){scanT+=dt;scanU.a.value=scanT/1.8*1.5;if(scanT>=1.8){scanT=-1;scanU.a.value=-1;scanM.visible=false;scanDone()}}
+  if(scanCD>0){scanCD-=dt;if(scanCD<=0&&!locked){scanCD=0;const b=$('#bScan');if(b)b.disabled=false}}
+  const w=cv.clientWidth,h=cv.clientHeight,nw=performance.now();
+  for(let k=tags.length-1;k>=0;k--){const t=tags[k];if(nw>t.u){t.el.remove();tags.splice(k,1);continue}tv.copy(C[t.i].p).multiplyScalar(1.04);P.localToWorld(tv);tw.copy(C[t.i].d).applyQuaternion(P.quaternion);cw.copy(cam.position).sub(tv).normalize();
+   if(tw.dot(cw)<.08){t.el.style.display='none';continue}t.el.style.display='';tv.project(cam);t.el.style.transform=`translate(${(tv.x*.5+.5)*w}px,${(-tv.y*.5+.5)*h}px) translate(-50%,-140%)`}
+  if(fr%8===0&&started){const v=viewDir().toArray(),[x,y]=xyOf(v);$('#vc').textContent=`VIEW CENTRE  X ${x.toFixed(1)} · Y ${y.toFixed(1)}`}
+  rn.render(sc,cam)};
+ raf=requestAnimationFrame(loop);
+ KILL=()=>{cancelAnimationFrame(raf);ro.disconnect();dn.forEach(o=>{try{o.stop()}catch(e){}});try{g.dispose();rn.dispose();rn.forceContextLoss()}catch(e){}app.style.width='';KILL=null};
+}
+
+
+function s4(){qstage(3,'Calculate the Descent','Use the landing parameters to compute the descent. Answers are whole numbers.',CFG.q4)}
+
+function s2(){const P=CFG.pw,S=P.sys,STEP=5,NS=Math.max(1,Math.round(P.budget/STEP)),val=S.map(()=>0),R=47,CI=2*Math.PI*R;let locked=false;
+ const rule=s=>[s.min>0?`Needs at least ${s.min} units`:'',s.ref&&s.mult>0?`At least ${s.mult}× of ${esc(s.ref)}`:''].filter(Boolean),
+ ic=n=>{n=n.toLowerCase();return/nav|guid/.test(n)?'🧭':/oxy|air|life/.test(n)?'🫧':/prop|engine|thrust/.test(n)?'🚀':/therm|heat|cool/.test(n)?'🔥':/comm|radio|signal/.test(n)?'📡':/shield/.test(n)?'🛡️':'⚡'};
+ app.innerHTML=hud(1,'Restore the Systems')+`<p class="lead">The reactor can give you ${P.budget} energy units. Power every system correctly without overdrawing the grid. ${info(1,S.length)} An overdrawn grid earns nothing. You get one submission.</p>
+ <div class="rx"><svg viewBox="0 0 120 120" class="rg" role="img" aria-label="Reactor output"><defs><linearGradient id="rgd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#22d3ee"/><stop offset="1" stop-color="#a855f7"/></linearGradient></defs><circle cx="60" cy="60" r="${R}" fill="none" stroke="#12263a" stroke-width="9"/><circle id="rarc" cx="60" cy="60" r="${R}" fill="none" stroke="url(#rgd)" stroke-width="9" stroke-linecap="round" stroke-dasharray="${CI}" stroke-dashoffset="${CI}" transform="rotate(-90 60 60)"/><circle cx="60" cy="60" r="33" fill="rgba(34,211,238,.06)" class="rcore"/><text id="rnum" x="60" y="62" text-anchor="middle" font-size="26" font-weight="700" fill="#e6f4ff" font-family="Space Grotesk,sans-serif">0</text><text x="60" y="78" text-anchor="middle" font-size="8" fill="#7c93ab" letter-spacing="2">/ ${P.budget}</text></svg>
+ <div class="rt"><div class="hl">REACTOR CORE</div><div class="tot" id="tot">Allocated: 0 / ${P.budget}</div><div id="rrem" class="rrem">${P.budget} units available</div></div></div>
+ <div class="sg" id="sg">${S.map((s,i)=>`<div class="sy" id="c${i}"><div class="sh"><span class="si">${ic(s.n)}</span><b>${esc(s.n)}</b><em id="v${i}">0</em></div><div class="sq">${rule(s).map(t=>`<span>${t}</span>`).join('')||'<span>No minimum</span>'}</div><div class="sb"><button class="sm" type="button" data-i="${i}" data-d="-1" aria-label="Less power to ${esc(s.n)}">−</button><div class="bar" id="b${i}" role="slider" tabindex="0" aria-label="${esc(s.n)} power" aria-valuemin="0" aria-valuemax="${NS*STEP}" aria-valuenow="0">${Array.from({length:NS},(_,k)=>`<i style="--k:${(k/NS).toFixed(2)}"></i>`).join('')}</div><button class="sm" type="button" data-i="${i}" data-d="1" aria-label="More power to ${esc(s.n)}">+</button></div></div>`).join('')}</div>
+ <div class="msg" id="msg"></div><div class="mb" style="justify-content:flex-start"><button class="btn go" id="ok" type="button" style="padding:14px 28px">ROUTE POWER</button><button class="btn" id="rz" type="button">RESET ALL</button></div>`;
+ const tot=()=>val.reduce((a,b)=>a+b,0),
+ draw=()=>{const t=tot(),over=t>P.budget;S.forEach((s,i)=>{const lv=val[i]/STEP;$('#v'+i).textContent=val[i];$('#b'+i).setAttribute('aria-valuenow',val[i]);$('#b'+i).querySelectorAll('i').forEach((e,k)=>e.classList.toggle('on',k<lv));$('#c'+i).classList.toggle('pw',lv>0)});
+  $('#rarc').style.strokeDashoffset=CI*(1-Math.min(1,t/P.budget));$('#rnum').textContent=t;$('#tot').textContent='Allocated: '+t+' / '+P.budget;$('#tot').classList.toggle('over',over);$('#sg').classList.toggle('over',over);$('.rx').classList.toggle('over',over);
+  $('#rrem').textContent=over?`Overdrawn by ${t-P.budget} units`:`${P.budget-t} units available`},
+ set=(i,v)=>{if(locked)return;v=Math.max(0,Math.min(NS*STEP,Math.round(v/STEP)*STEP));if(v===val[i])return;val[i]=v;tone(300+v*4,.08,'triangle',.035);draw()};
+ S.forEach((s,i)=>{const b=$('#b'+i),at=e=>{const r=b.getBoundingClientRect();set(i,Math.round(Math.max(0,Math.min(1,(e.clientX-r.left)/r.width))*NS)*STEP)};let dn=false;
+  b.addEventListener('pointerdown',e=>{if(locked)return;dn=true;try{b.setPointerCapture(e.pointerId)}catch(x){}at(e)});b.addEventListener('pointermove',e=>{if(dn)at(e)});b.addEventListener('pointerup',()=>dn=false);b.addEventListener('pointercancel',()=>dn=false);
+  b.addEventListener('keydown',e=>{const k={ArrowRight:1,ArrowUp:1,ArrowLeft:-1,ArrowDown:-1}[e.key];if(k){e.preventDefault();set(i,val[i]+k*STEP)}else if(e.key==='Home'){e.preventDefault();set(i,0)}else if(e.key==='End'){e.preventDefault();set(i,NS*STEP)}})});
+ document.querySelectorAll('.sm').forEach(b=>b.onclick=()=>set(+b.dataset.i,val[+b.dataset.i]+ +b.dataset.d*STEP));
+ $('#rz').onclick=()=>{if(locked)return;S.forEach((s,i)=>val[i]=0);draw()};
+ $('#ok').onclick=()=>{if(locked)return;locked=true;$('#sg').classList.add('lk');$('#rz').disabled=true;const mark=ok=>S.forEach((s,i)=>$('#c'+i).classList.add(ok[i]?'good':'bad'));
+  if(tot()>P.budget){mark(S.map(()=>false));return fin(1,0,1,S.length)}
+  const ok=S.map((s,i)=>{const r=S.findIndex(x=>x.n===s.ref);return val[i]>=s.min&&(!(s.ref&&s.mult>0)||r<0||val[i]>=s.mult*val[r])}),c=ok.filter(Boolean).length;mark(ok);fin(1,c,S.length-c,S.length)};
+ draw();
+}
+
+/* ---------- Stage 3 · Rocket Landing Simulator (continuous inputs, deterministic) ---------- */
+const LS_H=40,LS_TD=5.5,LS_T0=3,LS_T1=LS_T0+LS_TD,LS_T2=LS_T1+3.3,LS_END=LS_T2+.9,LS_OPT={slope:4,wind:15,dust:20,rock:10};
+function simLand(p,L){
+ const sl=p.slope,w=p.wind,du=p.dust,rk=p.rock,TH=Math.tan(sl*Math.PI/180),exS=sl>=L.slope,exW=w>L.wind,exD=du>L.dust,exR=rk>=33,hiR=rk>=66,
+ dk=exD?(du-L.dust)/(100-L.dust):0,drift=exW?(w-L.wind)*.25:w*.01,miss=drift>4,vis=1-dk*.85,sFail=du>=85,hv=2.2+dk*1.8+(sFail?1.6:0),dmg=hiR?(rk>=85||exS?2:1):0,
+ eff=sl+(exR?(rk-33)/67*3:0)+(hv>3?(hv-3)*1.2:0)+(exW?(w-L.wind)/40*2:0)+dmg*2,tip=eff>=L.slope*1.4||(exS&&w>L.wind*1.25),
+ nEx=[exS,exW,exD,exR].filter(Boolean).length,status=nEx===0?'SUCCESSFUL':(tip||miss||nEx>=3||(sFail&&nEx>=2))?'FAILED':'UNSTABLE',
+ phi=tip?84:(exS||exR||hv>3)?Math.min(eff,13):sl*.35,wob=Math.min(1,(exR?(rk-33)/67*.8:0)+(exW?.25:0)+(sFail?.3:0)+(exS?.2:0)),sway=(exW?1+(w-L.wind)/40*2:w/L.wind*.12)+(sFail?1.2:0);
+ const why=[],rec=[];
+ if(exS)why.push(`The slope was too steep, so the lander ${tip?'tipped over':'tilted on touchdown'}.`);
+ if(exW)why.push(`Strong wind pushed the lander ${drift.toFixed(1)} m off course${miss?', missing the landing target':''}.`);
+ if(exD)why.push(`Heavy dust cut sensor visibility to ${Math.round(vis*100)}%${sFail?', causing a sensor visibility failure':''}.`);
+ if(exR)why.push(hiR?'Dense rock fields damaged the landing legs.':'A rocky surface made the touchdown less stable.');
+ if(!why.length)why.push('Every condition stayed in the safe range.');
+ if(exS)rec.push('Try a flatter landing site.');if(exW)rec.push('Try calmer wind conditions.');if(exD)rec.push('Try a site with less dust.');if(exR)rec.push('Try terrain with fewer rocks.');
+ if(!rec.length)rec.push('Keep this configuration, or add more margin on every condition.');
+ return{TH,drift,miss,vis,sFail,hv,dmg,eff,tip,nEx,status,phi,wob,sway,exS,exW,exD,exR,hiR,why,rec}}
+function lsPose(t,s){
+ const H=LS_H,TH=s.TH,yC=(s.drift+1.9)*TH+2.6,yI=1.9*TH+2.6+H;let x=0,y=yI,rz=0,fl=0,alt=H,spd=0,b0=0,b1=0,ph='STANDBY',u2=0,xF=s.drift+1.9;
+ if(t<LS_T0){const k=sst(0,LS_T0,t);y=yI+(yC+H-yI)*k;ph=t<1.8?'MISSION INITIALIZATION':'DESCENT THRUSTERS IGNITION';fl=t<1.8?0:sst(1.8,LS_T0,t)*.5}
+ else if(t<LS_T1){const u=(t-LS_T0)/LS_TD,A=H-s.hv*LS_TD,B=s.hv*LS_TD;alt=A*(1-u)*(1-u)+B*(1-u);spd=(2*A*(1-u)+B)/LS_TD;const f=1-alt/H;x=s.drift*Math.pow(f,1.5)+Math.sin(t*3.1)*s.sway*.6*(alt/H)*(1-.3*f);y=yC+alt;rz=Math.sin(t*2.3)*.03*s.sway*(alt/H);fl=.55+.45*clp(spd/6);ph='POWERED DESCENT'}
+ else{u2=clp((t-LS_T1)/3.3);alt=0;const sv=s.tip?u2*u2*(3-2*u2):u2>=1?1:1-Math.exp(-6*u2)*Math.cos(s.wob*20*u2),phi=s.phi*Math.PI/180*sv;
+  x=xF-1.9*Math.cos(phi)-2.6*Math.sin(phi);y=xF*TH-1.9*Math.sin(phi)+2.6*Math.cos(phi);rz=phi;fl=u2<.08?.3*(1-u2/.08):0;b0=s.dmg?sst(0,.4,u2)*(s.dmg===2?.9:.5):0;b1=s.dmg===2?sst(.05,.5,u2):0;
+  ph=t>=LS_T2?(s.status==='SUCCESSFUL'?'TOUCHDOWN CONFIRMED':s.status==='UNSTABLE'?'UNSTABLE TOUCHDOWN':'LANDING FAILED'):'LANDING LEGS CONTACT'}
+ return{x,y,rz,fl,alt,spd,b0,b1,ph,u2,xF}}
+function s3(){
+ if(!window.THREE){app.innerHTML=hud(2,'Rocket Landing Simulator')+'<p class="lead">The 3D engine could not be loaded. Check your connection and refresh the page.</p>';return}
+ const Z=CFG.zn,L={slope:+Z.slope||10,wind:+Z.wind||40,dust:+Z.dust||50},par={slope:10,wind:40,dust:50,rock:30},H=LS_H,CH=Math.max(1,+CFG.s3ch||5),TOL={slope:.6,wind:3,dust:4,rock:4};
+ const TGT=MD||(()=>{const b=mkCands(+CFG.s1seed||2026,L,25).best;return{id:b.id,x:b.x,y:b.y,slope:b.slope,wind:b.wind,dust:b.dust,rock:b.rock}})();let runs=0,verified=false,best3=-1;
+ const chk=p=>({slope:Math.abs(p.slope-TGT.slope)<=TOL.slope,wind:Math.abs(p.wind-TGT.wind)<=TOL.wind,dust:Math.abs(p.dust-TGT.dust)<=TOL.dust,rock:Math.abs(p.rock-TGT.rock)<=TOL.rock});
+ const PR=[{k:'slope',n:'Slope angle',u:'°',max:20},{k:'wind',n:'Wind speed',u:' km/h',max:80},{k:'dust',n:'Dust concentration',u:'%',max:100},{k:'rock',n:'Rock density',u:'%',max:100}];
+ app.style.width='min(1280px,100%)';
+ app.innerHTML=hud(2,'Rocket Landing Simulator')+`<p class="lead">Enter the landing-site conditions you recorded in Stage 1 (slope angle, wind speed, dust and rock density) and simulate the landing. You have ${CH} chances. ${info(2,4)} You can only continue once the data matches the site.</p>
+ <div class="mx x3"><div class="mp"><div class="lh">LANDING CONDITIONS</div>${PR.map(r=>`<div class="pr"><div class="ph"><span>${r.n}</span><b id="pv_${r.k}"></b></div><input type="range" class="rs" id="in_${r.k}" min="0" max="${r.max}" step="0.1" value="${par[r.k]}" aria-label="${r.n}" style="--p:${par[r.k]/r.max*100}%"><div class="pl"><span>0</span><span>${r.max}${r.u.trim()}</span></div></div>`).join('')}<div class="lh" style="margin-top:12px">SIMULATION CHANCES</div><div id="wl"></div></div>
+ <div id="cv"><div class="ov" id="ov"></div><div class="hu"><div class="hp" id="hph">STANDBY</div><div class="ht"><span>ALT <b id="hal">${H.toFixed(1)}</b> m</span><span>SPEED <b id="hsp">0.0</b> m/s</span></div><div class="hw" id="hwl"></div><div class="hb"><i id="hbar"></i></div></div><div class="dz" id="dz"></div><div class="sf" id="sf" hidden>SENSOR VISIBILITY FAILURE</div></div>
+ <div class="mp" id="rp"></div></div>
+ <div class="mb"><button class="btn go" id="bSim" type="button" style="padding:12px 24px">SIMULATE LANDING</button><button class="btn" id="bRst" type="button">RESET SLIDERS</button><button class="btn" id="bRep" type="button" hidden>REPLAY LAST (FREE)</button><button class="btn go" id="bNx" type="button" hidden style="padding:12px 24px">CONTINUE TO STAGE 4</button></div><div class="msg" id="msg"></div>`;
+ const cv=$('#cv');let rn;try{rn=new THREE.WebGLRenderer({antialias:true})}catch(e){app.innerHTML=hud(2,'Rocket Landing Simulator')+'<p class="lead">This browser could not start WebGL. Use an up-to-date desktop browser.</p>';app.style.width='';return}
+ rn.setPixelRatio(Math.min(devicePixelRatio||1,2));rn.shadowMap.enabled=true;rn.shadowMap.type=THREE.PCFSoftShadowMap;cv.prepend(rn.domElement);
+ const BG=0x140d10,sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(45,1,.1,900),V=THREE.Vector3;sc.background=new THREE.Color(BG);sc.fog=new THREE.FogExp2(BG,.004);
+ const sun=new THREE.DirectionalLight(0xfff0dc,1.8);sun.position.set(35,50,25);sun.target.position.set(0,12,0);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);const sh=sun.shadow.camera;sh.left=sh.bottom=-38;sh.right=sh.top=38;sh.near=5;sh.far=150;sun.shadow.bias=-.0005;sun.shadow.normalBias=.05;sc.add(sun,sun.target,new THREE.HemisphereLight(0x9bb8ff,0x3a1a12,.55));
+ const st=new Float32Array(1200);for(let i=0;i<400;i++){const a=rng(11+i)()*6.28,e=.15+rng(77+i)()*1.2;st[i*3]=Math.cos(a)*Math.cos(e)*420;st[i*3+1]=Math.sin(e)*420;st[i*3+2]=Math.sin(a)*Math.cos(e)*420-60}
+ sc.add(new THREE.Points(new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(st,3)),new THREE.PointsMaterial({color:0xcfe9ff,size:1.6,sizeAttenuation:false})));
+ /* terrain: flat pad in the middle, uneven ground and mountains around it */
+ const NZ=perlin(rng(7)),TG=new THREE.Group();sc.add(TG);const ht=(x,z)=>{const r=Math.hypot(x,z),m=sst(14,45,r);return(NZ(x*.03,0,z*.03)*3+NZ(x*.1,3,z*.1)*.8+NZ(x*.35,7,z*.35)*.12)*m+sst(70,125,r)*12*(NZ(x*.02,9,z*.02)+.7)};
+ const pg=new THREE.PlaneGeometry(260,260,160,160);pg.rotateX(-Math.PI/2);const pp=pg.attributes.position,cl=new Float32Array(pp.count*3),rj=rng(5);
+ for(let i=0;i<pp.count;i++){const x=pp.getX(i),z=pp.getZ(i),h=ht(x,z);pp.setY(i,h);const t=clp((h+3)/14),j=(rj()-.5)*.05,c=t<.5?[.5+t*.5,.27+t*.2,.17+t*.15]:[.75+(t-.5)*.2,.5+(t-.5)*.5,.37+(t-.5)*.6];cl[i*3]=c[0]+j;cl[i*3+1]=c[1]+j;cl[i*3+2]=c[2]+j}
+ pg.setAttribute('color',new THREE.BufferAttribute(cl,3));pg.computeVertexNormals();const gm=new THREE.Mesh(pg,new THREE.MeshStandardMaterial({vertexColors:true,roughness:1}));gm.receiveShadow=true;TG.add(gm);
+ const tg=new THREE.Mesh(new THREE.RingGeometry(3.3,4,64),new THREE.MeshBasicMaterial({color:0x22d3ee,transparent:true,opacity:.9,side:THREE.DoubleSide}));tg.rotation.x=-Math.PI/2;tg.position.y=.06;TG.add(tg);
+ const tg2=new THREE.Mesh(new THREE.CircleGeometry(3.3,48),new THREE.MeshBasicMaterial({color:0x22d3ee,transparent:true,opacity:.12,side:THREE.DoubleSide}));tg2.rotation.x=-Math.PI/2;tg2.position.y=.05;TG.add(tg2);
+ const RM=260,rks=new THREE.InstancedMesh(new THREE.IcosahedronGeometry(1,0),new THREE.MeshStandardMaterial({color:0x4a342d,roughness:1,flatShading:true}),RM),rr=rng(21),RD=Array.from({length:RM},()=>({r:3+Math.sqrt(rr())*44,a:rr()*6.28,s:.35+rr()*1.1,q:[rr()*6,rr()*6,rr()*6]})).sort((a,b)=>a.r-b.r),M4=new THREE.Matrix4();rks.castShadow=rks.receiveShadow=true;TG.add(rks);
+ const setRocks=rk=>{const n=Math.round(25+rk/100*(RM-25)),k=.75+rk/100*.5;rks.count=n;for(let i=0;i<n;i++){const d=RD[i],x=Math.cos(d.a)*d.r,z=Math.sin(d.a)*d.r;M4.compose(new V(x,ht(x,z)+d.s*.25,z),new THREE.Quaternion().setFromEuler(new THREE.Euler(...d.q)),new V(d.s*k,d.s*k*.65,d.s*k));rks.setMatrixAt(i,M4)}rks.instanceMatrix.needsUpdate=true};
+ /* dust + wind + particle pool */
+ const tx=f=>{const c=document.createElement('canvas');c.width=c.height=32;const x=c.getContext('2d'),q=x.createRadialGradient(16,16,0,16,16,16);q.addColorStop(0,'rgba(255,255,255,.9)');q.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=q;x.fillRect(0,0,32,32);return new THREE.CanvasTexture(c)},soft=tx();
+ const DN=1100,dp=new Float32Array(DN*3),dr=rng(3);for(let i=0;i<DN;i++){dp[i*3]=(dr()-.5)*100;dp[i*3+1]=.5+dr()*11;dp[i*3+2]=(dr()-.5)*80}
+ const dg=new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(dp,3)),dust=new THREE.Points(dg,new THREE.PointsMaterial({map:soft,color:0xc98a5c,size:3.4,transparent:true,opacity:.4,depthWrite:false}));TG.add(dust);
+ const WN=220,wp=new Float32Array(WN*3),wr=rng(9);for(let i=0;i<WN;i++){wp[i*3]=(wr()-.5)*120;wp[i*3+1]=2+wr()*36;wp[i*3+2]=(wr()-.5)*60}
+ const wg=new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(wp,3)),wind=new THREE.Points(wg,new THREE.PointsMaterial({color:0xe6f4ff,size:.45,transparent:true,opacity:.0,depthWrite:false}));sc.add(wind);
+ const PN=300,pl=new Float32Array(PN*3),pc=new Float32Array(PN*3),pv=Array.from({length:PN},()=>({l:0,m:1,v:new V(),c:[1,1,1],g:0}));pl.fill(-999);
+ const pg2=new THREE.BufferGeometry().setAttribute('position',new THREE.BufferAttribute(pl,3)).setAttribute('color',new THREE.BufferAttribute(pc,3)),pool=new THREE.Points(pg2,new THREE.PointsMaterial({map:soft,vertexColors:true,size:2.4,transparent:true,opacity:.9,depthWrite:false}));pool.frustumCulled=false;sc.add(pool);let pi=0;
+ const emit=(n,x,y,z,sp,up,c,g,life)=>{for(let k=0;k<n;k++){const p=pv[pi=(pi+1)%PN],a=Math.random()*6.28,s=sp*(.4+Math.random()*.6);p.l=p.m=life*(.6+Math.random()*.4);p.v.set(Math.cos(a)*s,up*(.3+Math.random()),Math.sin(a)*s);p.c=c;p.g=g;pl[pi*3]=x;pl[pi*3+1]=y;pl[pi*3+2]=z}};
+ /* lander */
+ const RK=new THREE.Group(),hm=new THREE.MeshStandardMaterial({color:0xdfe9f5,metalness:.5,roughness:.4}),dk=new THREE.MeshStandardMaterial({color:0x334155,metalness:.6,roughness:.5}),ac=new THREE.MeshStandardMaterial({color:0xf97316,roughness:.5});
+ const mk=(g,m,x,y,z)=>{const o=new THREE.Mesh(g,m);o.position.set(x,y,z);o.castShadow=true;RK.add(o);return o};
+ mk(new THREE.CylinderGeometry(1.1,1.1,3.4,24),hm,0,.4,0);mk(new THREE.ConeGeometry(1.1,1.8,24),ac,0,3,0);mk(new THREE.CylinderGeometry(1.12,1.12,.35,24),ac,0,-1.1,0);mk(new THREE.CylinderGeometry(.5,.95,.9,20,1,true),dk,0,-1.8,0);
+ const legP=[0,1,2,3].map(k=>{const P=new THREE.Group();P.rotation.y=k*Math.PI/2;const G=new THREE.Group();G.position.set(.9,-1,0);const s=new THREE.Mesh(new THREE.CylinderGeometry(.09,.09,2.06,8),dk);s.position.set(.65,-.8,0);s.rotation.z=.68;s.castShadow=true;const f=new THREE.Mesh(new THREE.CylinderGeometry(.55,.65,.14,16),hm);f.position.set(1.3,-1.6,0);f.castShadow=true;G.add(s,f);P.add(G);RK.add(P);return{P,G}});
+ const fl=new THREE.Mesh(new THREE.ConeGeometry(.6,3,16),new THREE.MeshBasicMaterial({color:0xffa040,transparent:true,opacity:.85,blending:THREE.AdditiveBlending,depthWrite:false}));fl.rotation.x=Math.PI;fl.position.y=-3.3;RK.add(fl);const fl2=new THREE.Mesh(new THREE.ConeGeometry(.3,2,12),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.9,blending:THREE.AdditiveBlending,depthWrite:false}));fl2.rotation.x=Math.PI;fl2.position.y=-2.8;RK.add(fl2);
+ const fli=new THREE.PointLight(0xff8c3a,0,30);fli.position.y=-2.4;RK.add(fli);sc.add(RK);
+ /* state */
+ let T=0,tilt=par.slope*Math.PI/180,tiltT=tilt,run=null,held=null,locked=false,last=null,mine=null,optR=null,raf=0,fr=0,cur=simLand(par,L),th=null;const lk=new V(0,24,0),camT=new V(),lkT=new V(),ev=[];
+ const thOn=()=>{const a=au();if(!a||MUTE||th)return;const b=a.createBuffer(1,a.sampleRate,a.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;const s=a.createBufferSource();s.buffer=b;s.loop=true;const f=a.createBiquadFilter();f.type='lowpass';f.frequency.value=420;const g=a.createGain();g.gain.value=.0001;s.connect(f);f.connect(g);g.connect(a.destination);s.start();th={s,g,a}},
+ thSet=v=>{if(th)th.g.gain.setTargetAtTime(v*.2+.0001,th.a.currentTime,.1)},thOff=()=>{if(th){try{th.g.gain.setTargetAtTime(.0001,th.a.currentTime,.08);th.s.stop(th.a.currentTime+.4)}catch(e){}th=null}};
+ const syncUI=()=>{PR.forEach(r=>{const v=par[r.k];$('#pv_'+r.k).textContent=v.toFixed(1)+r.u;const e=$('#in_'+r.k);e.value=v;e.style.setProperty('--p',v/r.max*100+'%')});updWl()};
+ const updWl=()=>{const e=$('#wl');if(!e)return;const left=CH-runs;e.innerHTML=`<div class="wn${verified?' ok':''}">Chances used: ${runs} / ${CH}</div>`+(verified?'<div class="wn ok">✓ Data verified against Stage 1</div>':`<div class="dim" style="font-size:11px">Enter the data you noted for the landing site in Stage 1, then press SIMULATE LANDING. ${left>0?left+' chance'+(left===1?'':'s')+' left.':'No chances left.'} You can only continue once all four values match.</div>`);const b=$('#bSim');if(b&&!run){b.disabled=verified||left<=0;b.textContent=left>0&&!verified?`SIMULATE LANDING (${left} LEFT)`:'SIMULATE LANDING'}};
+ const env=()=>{tiltT=par.slope*Math.PI/180;setRocks(par.rock);const k=cur.exD?cur.vis:1;dust.material.opacity=.12+.5*par.dust/100;dg.setDrawRange(0,Math.round(DN*par.dust/100));sc.fog.density=.0045+par.dust/100*.006+(cur.exD?(1-cur.vis)*.03:0);wind.material.opacity=Math.min(.7,par.wind/80*.8);wg.setDrawRange(0,Math.round(WN*par.wind/80));$('#dz').style.opacity=(1-k)*.8};
+ const setPar=p=>{Object.assign(par,p);cur=simLand(par,L);syncUI();env()};
+ const rpDef=()=>{$('#rp').innerHTML=`<div class="lh">MISSION INFO</div><p>The lander flies the descent by itself. Set the sliders to the conditions of the landing site you identified in Stage 1: slope angle, wind speed, dust concentration and rock density.</p><div class="lh">RULES</div><p>You have ${CH} simulation chances. After each run you are told which values match and which do not, but not what they should be. Replays are free. You can only continue once the data matches the site, or when all your chances are used.</p>`};
+ const card=(r,p,t)=>`<div class="stb ${r.status==='SUCCESSFUL'?'ok':r.status==='UNSTABLE'?'wn':'bd'}">LANDING STATUS: ${r.status}</div><div class="kv"><span>Slope</span><b>${p.slope.toFixed(1)}°</b></div><div class="kv"><span>Wind</span><b>${p.wind.toFixed(1)} km/h</b></div><div class="kv"><span>Dust</span><b>${p.dust.toFixed(1)}%</b></div><div class="kv"><span>Rocks</span><b>${p.rock.toFixed(1)}% · ${p.rock<33?'Low':p.rock<66?'Medium':'High'}</b></div><div class="lh" style="margin-top:10px">${t[0]}</div><ul class="al">${r.why.map(x=>`<li>${x}</li>`).join('')}</ul><div class="lh">${t[1]}</div><ul class="al">${r.rec.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+ const showRes=r=>{$('#rp').innerHTML=`<div class="lh">LANDING ANALYSIS</div>`+card(r.res,r.par,['HAZARDS AND WHAT HAPPENED','RECOMMENDATIONS']);if(optR&&mine)cmp()};
+ const cmp=()=>{const row=(n,f)=>`<tr><td>${n}</td><td>${f(mine.par,mine.res)}</td><td>${f(optR.par,optR.res)}</td></tr>`;$('#rp').insertAdjacentHTML('beforeend',`<div class="lh" style="margin-top:12px">COMPARISON</div><table class="ct"><tr><th></th><th>YOUR ATTEMPT</th><th>OPTIMAL</th></tr>${row('Slope',p=>p.slope.toFixed(1)+'°')}${row('Wind',p=>p.wind.toFixed(1))}${row('Dust',p=>p.dust.toFixed(1)+'%')}${row('Rocks',p=>p.rock.toFixed(1)+'%')}${row('Status',(p,r)=>`<b class="${r.status==='SUCCESSFUL'?'ok':r.status==='UNSTABLE'?'wn':'bd'}">${r.status}</b>`)}${row('Off target',(p,r)=>r.drift.toFixed(1)+' m')}</table><p style="margin-top:8px">The optimal run uses a recommended configuration. It is not the only safe one.</p>`)};
+ const buttons=on=>{const b1=$('#bSim'),b2=$('#bRst');if(b1)b1.disabled=!on||verified||runs>=CH;if(b2)b2.disabled=!on||verified||runs>=CH;['bRep','bNx'].forEach(k=>{const b=$('#'+k);if(b)b.disabled=!on})};
+ const log=(t,c)=>{const e=$('#hwl');e.insertAdjacentHTML('beforeend',`<div class="${c||''}">${t}</div>`);while(e.children.length>4)e.firstChild.remove();if(c==='bd'||c==='wn')tone(c==='bd'?880:660,.12,'square',.035,0,0),tone(c==='bd'?880:660,.12,'square',.035,0,.2)};
+ const launch=kind=>{if(run)return;if(kind==='try'){if(runs>=CH||verified)return;runs++;updWl()}const p={...par},res=simLand(p,L);tilt=tiltT=p.slope*Math.PI/180;held=null;run={t:0,res,par:p,kind,ei:0,burst:false};$('#hwl').innerHTML='';buttons(false);rpDef();thOn();SFX.click();
+  const E=[[.2,'MISSION INITIALIZED',''],[1.9,'DESCENT THRUSTERS ONLINE','']];if(res.exW)E.push([LS_T0+.25*LS_TD,`WIND SHEAR DETECTED · ${p.wind.toFixed(0)} km/h`,'wn']);if(res.exD)E.push([LS_T0+.35*LS_TD,`DUST ${p.dust.toFixed(0)}% · SENSOR VISIBILITY ${Math.round(res.vis*100)}%`,'wn']);if(res.sFail)E.push([LS_T0+.6*LS_TD,'SENSOR VISIBILITY FAILURE','bd']);if(res.exR)E.push([LS_T0+.75*LS_TD,'ROCK HAZARD FIELD AHEAD','wn']);if(res.exS)E.push([LS_T0+.85*LS_TD,'SLOPE HAZARD DETECTED','wn']);
+  E.push([LS_T1,'LANDING LEGS CONTACT','']);E.push([LS_T1+.6,res.tip?'TIP-OVER DETECTED':res.dmg?'LANDING LEG DAMAGE DETECTED':res.status==='SUCCESSFUL'?'STABLE TOUCHDOWN':'UNSTABLE TOUCHDOWN',res.tip||res.dmg?'bd':res.status==='SUCCESSFUL'?'ok':'wn']);if(res.miss)E.push([LS_T1+1.2,`TARGET MISSED · ${res.drift.toFixed(1)} m OFF-CENTRE`,'bd']);run.E=E.sort((a,b)=>a[0]-b[0])};
+ const finish=()=>{const r=run;run=null;thOff();held={res:r.res,t:LS_END};last={par:r.par,kind:'replay'};r.res.status==='SUCCESSFUL'?SFX.win():r.res.status==='FAILED'?SFX.lose():tone(330,.4,'triangle',.06);showRes(r);
+  if(r.kind==='try'){const m=chk(r.par),n=Object.values(m).filter(Boolean).length,ok=n===4;best3=Math.max(best3,n);const mk=v=>v?'<b class="ok">✓ matches</b>':'<b class="bd">✗ does not match</b>';
+   $('#rp').insertAdjacentHTML('afterbegin',`<div class="stb ${ok?'ok':'bd'}">${ok?'DATA VERIFIED · SITE '+TGT.id:'DATA MISMATCH'}</div><div class="kv"><span>Slope angle</span>${mk(m.slope)}</div><div class="kv"><span>Wind speed</span>${mk(m.wind)}</div><div class="kv"><span>Dust</span>${mk(m.dust)}</div><div class="kv"><span>Rock density</span>${mk(m.rock)}</div><p style="margin:8px 0 12px">${ok?'These match the conditions recorded in Stage 1. You may continue.':runs>=CH?'No chances left.':'Re-check your Stage 1 notes and try again.'}</p>`);
+   if(ok){verified=true;fin(2,4,0,4,true);if(!G)return;$('#bRep').hidden=false;$('#bNx').hidden=false;$('#bSim').hidden=true;$('#bRst').hidden=true;buttons(true);updWl()}
+   else if(runs>=CH){fin(2,best3,4-best3,4,true);if(!G)return;$('#bRep').hidden=false;$('#bNx').hidden=false;buttons(true);updWl()}else{buttons(true);updWl()}}
+  else buttons(true)};
+ $('#bSim').onclick=()=>launch('try');$('#bRst').onclick=()=>{if(!run&&!verified&&runs<CH){held=null;setPar({slope:10,wind:40,dust:50,rock:30});rpDef();SFX.click()}};
+ $('#bRep').onclick=()=>{if(run||!last)return;setPar(last.par);launch('replay')};$('#bNx').onclick=()=>{if(!run)next()};
+ PR.forEach(r=>$('#in_'+r.k).addEventListener('input',e=>{if(run||verified||runs>=CH)return;held=null;par[r.k]=+e.target.value;cur=simLand(par,L);syncUI();env()}));
+ /* loop */
+ const ro=new ResizeObserver(()=>{const w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;rn.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()});ro.observe(cv);
+ setRocks(par.rock);syncUI();env();rpDef();cam.position.set(18,26,56);
+ let lt=performance.now();
+ const loop=now=>{raf=requestAnimationFrame(loop);const dt=Math.min(.05,(now-lt)/1000);lt=now;T+=dt;fr++;
+  tilt+=(tiltT-tilt)*.12;TG.rotation.z=tilt;const TH=Math.tan(tilt);tg.material.opacity=.6+.3*Math.sin(T*3);
+  let ps,res=cur;if(run){run.t+=dt;res=run.res;ps=lsPose(run.t,res);while(run.ei<run.E.length&&run.t>=run.E[run.ei][0]){const e=run.E[run.ei++];log(e[1],e[2])}
+   if(ps.alt<14&&ps.alt>0&&fr%2===0){const sx=ps.x,sy=sx*TH+.2;emit(2,sx+(Math.random()-.5)*2,sy,(Math.random()-.5)*2,9+(14-ps.alt)*.4,1.5,[.78,.54,.36],0,1.4)}
+   if(run.t>=LS_T1&&!run.burst){run.burst=true;SFX.land();tone(70,.6,'sawtooth',.08,35);emit(70,ps.xF,ps.xF*TH+.3,0,13,3,[.78,.54,.36],0,2.2);if(res.dmg||res.tip){emit(34,ps.xF,ps.xF*TH+.3,0,9,8,[1,.65,.2],14,.9);tone(220,.3,'square',.06,60)}}
+   thSet(ps.fl);$('#hph').textContent=ps.ph;$('#hal').textContent=ps.alt.toFixed(1);$('#hsp').textContent=ps.spd.toFixed(1);$('#hbar').style.width=clp(run.t/LS_END)*100+'%';$('#sf').hidden=!(res.sFail&&run.t>LS_T0+.6*LS_TD&&run.t<LS_T1+1.5);
+   if(run.t>=LS_END)finish()}
+  else if(held){ps=lsPose(LS_END,held.res);res=held.res;$('#hph').textContent='SIMULATION COMPLETE';$('#hal').textContent='0.0';$('#hsp').textContent='0.0';$('#hbar').style.width='100%';$('#sf').hidden=true}
+  else{ps=lsPose(0,cur);ps.x=0;ps.y=1.9*TH+2.6+H;$('#hph').textContent='STANDBY · READY TO SIMULATE';$('#hal').textContent=H.toFixed(1);$('#hsp').textContent='0.0';$('#hbar').style.width='0%';$('#sf').hidden=true}
+  RK.position.set(ps.x,ps.y,0);RK.rotation.z=ps.rz;const fs=ps.fl*(.85+.15*Math.sin(T*60));fl.scale.set(1,Math.max(.01,fs),1);fl2.scale.set(1,Math.max(.01,fs*.8),1);fl.visible=fl2.visible=fs>.02;fli.intensity=fs*2.2;
+  legP.forEach((l,i)=>{l.G.rotation.z=i===0?ps.b0:0;l.P.position.y=i===1?-4*ps.b1:0;l.P.rotation.x=i===1?ps.b1*1.3:0});
+  /* camera */
+  const a=T*.1;if(run||held){const p0=ps;if(p0.u2>0||(held&&true)){camT.set(p0.xF+9+Math.sin(T*.25)*2,3.5,15);lkT.set(p0.xF-1.5,p0.xF*TH+3,0)}else{const al=p0.alt;camT.set(p0.x+16+al*.35,6+al*.55,30+al*.55);lkT.set(p0.x*.8,Math.max(4,p0.y*.75),0)}}else{camT.set(18+Math.sin(a)*8,26,56);lkT.set(0,24,0)}
+  camT.y=Math.max(camT.y,camT.x*TH+3.5);cam.position.lerp(camT,.05);lk.lerp(lkT,.06);cam.lookAt(lk);
+  /* particles */
+  const dpa=dg.attributes.position.array,sp=1+par.wind*.12;for(let i=0;i<DN*(par.dust/100);i++){let x=dpa[i*3]+sp*dt*(.6+(i%7)*.1);if(x>50)x-=100;dpa[i*3]=x;dpa[i*3+1]=.5+((i*13)%110)/10+Math.sin(T*.8+i)*.4}dg.attributes.position.needsUpdate=true;
+  const wpa=wg.attributes.position.array,ws=par.wind*.7;for(let i=0;i<WN*(par.wind/80);i++){let x=wpa[i*3]+ws*dt;if(x>60)x-=120;wpa[i*3]=x}wg.attributes.position.needsUpdate=true;
+  for(let i=0;i<PN;i++){const p=pv[i];if(p.l>0){p.l-=dt;p.v.y-=p.g*dt;pl[i*3]+=p.v.x*dt;pl[i*3+1]+=p.v.y*dt;pl[i*3+2]+=p.v.z*dt;p.v.multiplyScalar(1-dt*(p.g?0:1.2));const f=clamp01(p.l/p.m);pc[i*3]=.08+(p.c[0]-.08)*f;pc[i*3+1]=.05+(p.c[1]-.05)*f;pc[i*3+2]=.06+(p.c[2]-.06)*f;if(p.l<=0)pl[i*3+1]=-999}}
+  pg2.attributes.position.needsUpdate=true;pg2.attributes.color.needsUpdate=true;rn.render(sc,cam)};
+ const clamp01=x=>x<0?0:x>1?1:x;
+ raf=requestAnimationFrame(loop);
+ KILL=()=>{cancelAnimationFrame(raf);ro.disconnect();thOff();try{pg.dispose();rn.dispose();rn.forceContextLoss()}catch(e){}app.style.width='';KILL=null};
+}
+
+
+/* ---------- Stage 5 · physics (real-time, fixed-step, deterministic, allocation-free step) ---------- */
+const FP={g:3.72,tmax:8.5,kf:14,cf:3,tr:.55,kb:1200,brk:.6,m:1,I:5,aCtl:1.7,dAir:2.4,rcs:2.4,fuelMain:2,fuelRcs:.6,fuelCtl:.05,k:900,c:34,mu:.9,dtp:1/120};
+const FOOT0=[[1.8,-2.125],[2.9,-3.5]],BASE=[[.9,-2.25,0],[-.9,-2.25,0],[0,-2.25,.9],[0,-2.25,-.9]],NOSE=[0,3.9,0],FDIR=[[1,0],[0,1],[-1,0],[0,-1]];
+let FS=null;
+function fsInit(){const V=THREE.Vector3;FS={up:new V(),ctl:new V(),a:new V(),yaw:new V(),rt:new V(),tq:new V(),r:new V(),wp:new V(),vp:new V(),f:new V(),vt:new V(),t1:new V(),Y:new V(0,1,0),dq:new THREE.Quaternion(),loc:Array.from({length:9},()=>new V()),part:[0,1,2,3,-1,-1,-1,-1,-2]};BASE.forEach((b,i)=>FS.loc[4+i].set(b[0],b[1],b[2]));FS.loc[8].set(NOSE[0],NOSE[1],NOSE[2])}
+function fpNew(){if(!FS)fsInit();const T=THREE,s={p:new T.Vector3(-55,190,60),v:new T.Vector3(2.4,-10,-2.6),q:new T.Quaternion(),w:new T.Vector3(),thr:0,fuel:100,gear:0,gearT:0,gtar:0,hov:false,hovY:0,cutLatch:false,comp:[0,0,0,0],broken:[0,0,0,0],t:0,contact:null,imp:null,settle:0,done:false,warn:0,dead:false};s.pp=s.p.clone();s.pq=s.q.clone();return s}
+function fpFeet(s,i,out){const b=s.broken[i],g=s.gearT,o0=b?1.5:FOOT0[0][0]+(FOOT0[1][0]-FOOT0[0][0])*g,o1=b?-1:FOOT0[0][1]+(FOOT0[1][1]-FOOT0[0][1])*g,d=FDIR[i];return out.set(d[0]*o0,o1,d[1]*o0)}
+function fpUp(s){return new THREE.Vector3(0,1,0).applyQuaternion(s.q)}
+function fpTilt(s){const y=2*(s.q.x*s.q.x+s.q.z*s.q.z);return Math.acos(Math.max(-1,Math.min(1,1-y)))*57.2958}
+function fpStep(s,k,gH,dt){const F=FS,up=F.up,ctl=F.ctl,a=F.a,yaw=F.yaw,rt=F.rt,tq=F.tq,r=F.r,wp=F.wp,vp=F.vp,f=F.f,vt=F.vt,t1=F.t1;
+ s.pp.copy(s.p);s.pq.copy(s.q);
+ up.set(0,1,0).applyQuaternion(s.q);
+ /* controls act as torques on the craft's own axes; nothing levels the craft unless assist is on */
+ ctl.set((k.down?1:0)-(k.up?1:0),(k.yl?1:0)-(k.yr?1:0),(k.left?1:0)-(k.right?1:0)).multiplyScalar(FP.aCtl).applyQuaternion(s.q);
+ if(k.assist&&s.contact===null){t1.copy(up).cross(F.Y);ctl.addScaledVector(t1,7).addScaledVector(s.w,-3.5)}
+ const had=ctl.lengthSq()>0;
+ if(s.cutLatch||k.cut){s.thr=0;s.hov=false}
+ else if(s.hov&&s.contact===null&&s.fuel>0){if(k.thrUp)s.hovY+=4*dt;if(k.rev)s.hovY-=2.5*dt;const want=(FP.g+1.6*(s.hovY-s.p.y)-2.4*s.v.y)/(FP.tmax*Math.max(.35,up.y)),tg=Math.max(0,Math.min(1,want)),dd=tg-s.thr,mx=1.5*dt;s.thr+=Math.max(-mx,Math.min(mx,dd))}
+ else{if(k.thrUp)s.thr=Math.min(1,s.thr+.55*dt);else s.thr=Math.max(0,s.thr-.5*dt)}
+ if(s.fuel<=0){s.fuel=0;s.thr=0;s.dead=true}
+ a.set(0,-FP.g,0);let use=s.thr*FP.fuelMain;if(s.fuel>0){a.addScaledVector(up,FP.tmax*s.thr);if(k.rev&&!s.hov){a.addScaledVector(up,-FP.rcs*1.4);use+=FP.fuelRcs*1.5}}
+ yaw.set(0,0,-1).applyQuaternion(s.q);yaw.y=0;if(yaw.lengthSq()<1e-6)yaw.set(0,0,-1);yaw.normalize();rt.set(-yaw.z,0,yaw.x);
+ const fw=(k.w?1:0)-(k.s?1:0),sd=(k.d?1:0)-(k.a?1:0);if(s.fuel>0&&(fw||sd)){a.addScaledVector(yaw,fw*FP.rcs).addScaledVector(rt,sd*FP.rcs);use+=(Math.abs(fw)+Math.abs(sd))*FP.fuelRcs}
+ if(had)use+=FP.fuelCtl;s.fuel=Math.max(0,s.fuel-use*dt);
+ const gd=s.gtar-s.gearT;s.gearT+=Math.sign(gd)*Math.min(Math.abs(gd),.7*dt);s.gearT=Math.max(0,Math.min(1,s.gearT));
+ /* ground contact: spring and damper at feet, base ring and nose */
+ tq.set(0,0,0);let hit=false;s.comp[0]=s.comp[1]=s.comp[2]=s.comp[3]=0;
+ for(let i=0;i<9;i++){if(i<4)fpFeet(s,i,F.loc[i]);r.copy(F.loc[i]).applyQuaternion(s.q);wp.copy(s.p).add(r);const pen=gH(wp.x,wp.z)-wp.y;if(pen<=0)continue;hit=true;
+  vp.crossVectors(s.w,r).add(s.v);const pt=F.part[i];
+  if(!s.imp){s.imp={vv:-s.v.y,hv:Math.hypot(s.v.x,s.v.z),tilt:fpTilt(s),gearDown:s.gearT>.9,x:wp.x,z:wp.z,dist:Math.hypot(s.p.x,s.p.z),fuel:s.fuel,part:pt,t:s.t,dead:s.fuel<=0&&s.dead}}
+  let kk=FP.k,cc=FP.c,ex=0;if(pt>=0){kk=FP.kf;cc=FP.cf;s.comp[pt]=pen;if(pen>FP.tr)ex=FP.kb*(pen-FP.tr);if(pen>FP.brk&&!s.broken[pt]){s.broken[pt]=1;s.legBreak=true}}
+  const fn=Math.max(0,kk*pen-cc*vp.y+ex);f.set(0,fn,0);vt.set(vp.x,0,vp.z);const sp=vt.length();if(sp>1e-4)f.addScaledVector(vt,-Math.min(FP.mu*fn/sp,8));
+  a.addScaledVector(f,1/FP.m);tq.add(t1.crossVectors(r,f))}
+ if(hit&&s.contact===null)s.contact=s.t;if(hit)s.hov=false;
+ s.v.addScaledVector(a,dt);s.p.addScaledVector(s.v,dt);
+ tq.multiplyScalar(1/FP.I).add(ctl);s.w.addScaledVector(tq,dt);s.w.multiplyScalar(Math.exp(-(hit?1.6:FP.dAir)*dt));
+ const ang=s.w.length()*dt;if(ang>1e-9){t1.copy(s.w).normalize();F.dq.setFromAxisAngle(t1,ang);s.q.premultiply(F.dq).normalize()}
+ s.t+=dt;
+ if(s.contact!==null){const calm=s.v.length()<.12&&s.w.length()<.05;s.settle=calm?s.settle+dt:0;if(s.settle>1||s.t-s.contact>7)s.done=true}
+ return hit}
+function fpEval(s,C){const i=s.imp;if(!i)return null;const tilt=fpTilt(s),dist=Math.hypot(s.p.x,s.p.z),vv=Math.max(0,i.vv),hv=i.hv,Z=C.zone;let r;
+ const okV=vv<=C.vv,okH=hv<=C.hv,okT=i.tilt<=C.tilt&&tilt<=C.tilt*3,okG=i.gearDown&&!s.broken.some(Boolean),okZ=dist<=Z;
+ if(vv>C.vv*2.7||(i.part<0&&vv>C.vv*1.7))r='COLLISION / CRASH';else if(tilt>55)r='SPACECRAFT TIP-OVER';else if(!i.gearDown||s.broken.some(Boolean))r='LANDING GEAR FAILURE';
+ else if(i.dead&&!(okV&&okH))r='FUEL DEPLETION';else if(!okZ)r='LANDING OUTSIDE TARGET';else if(vv>C.vv)r='HARD LANDING';else if(!okH||!okT)r='UNSTABLE LANDING';
+ else r=(vv<=C.vv*.5&&hv<=C.hv*.4&&i.tilt<=C.tilt*.4&&dist<=Z*.35&&i.fuel>20)?'PERFECT LANDING':'SUCCESSFUL LANDING';
+ const good=r==='PERFECT LANDING'||r==='SUCCESSFUL LANDING',cl=x=>Math.max(0,Math.min(1,x));
+ const sc={acc:Math.round(25*cl(1-dist/(Z*2))),spd:Math.round(25*cl(1-(vv/C.vv-.3)/2)*cl(1-(hv/C.hv-.3)/3)),stab:Math.round(20*cl(1-tilt/(C.tilt*4))),fuel:Math.round(15*cl(i.fuel/50)),proc:(i.gearDown?8:0)+(s.warn<=3?7:s.warn<=8?3:0)};
+ let tot=sc.acc+sc.spd+sc.stab+sc.fuel+sc.proc;if(!good)tot=Math.round(tot*.35);
+ return{r,good,okV,okH,okT,okG,okZ,vv,hv,tilt:i.tilt,rest:tilt,dist,fuel:i.fuel,sc,tot,met:[okV,okH,okT,okG,okZ].filter(Boolean).length}}
+
+/* ---------- Stage 5 · Manual spacecraft landing simulator ---------- */
+function s5(){
+ if(!window.THREE){app.innerHTML=hud(4,'Final Landing Simulator')+'<p class="lead">The 3D engine could not be loaded. Check your connection and refresh the page.</p>';return}
+ const C=Object.assign({vv:3,hv:2,tilt:5,zone:8},CFG.s5||{}),Z=C.zone,T=THREE,V=T.Vector3;FP.gv=C.vv*1.8;
+ const SITE=MD||(()=>{const b=mkCands(+CFG.s1seed||2026,{slope:+CFG.zn.slope||10,wind:+CFG.zn.wind||40,dust:+CFG.zn.dust||50},25).best;return{id:b.id,x:b.x,y:b.y,slope:b.slope,wind:b.wind,dust:b.dust,rock:b.rock}})();
+ const KB={up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD',thrUp:'Space',cut:'KeyE',assist:'KeyU',hover:'KeyH',rev:'KeyZ',gear:'KeyG',yl:'KeyQ',yr:'KeyC',lvl:'KeyR',pause:'KeyP'},ALT={up:'ArrowUp',down:'ArrowDown',left:'ArrowLeft',right:'ArrowRight',pause:'Escape'},
+ KN={up:'Tilt rocket away from you',down:'Tilt rocket towards you',left:'Tilt rocket left',right:'Tilt rocket right',thrUp:'Increase thrust (hold)',cut:'Emergency engine cutoff',assist:'Toggle automatic stabilisation',hover:'Hover mode (hold altitude)',rev:'Reverse thrust (push down)',gear:'Landing gear',yl:'Yaw left',yr:'Yaw right',lvl:'Level craft',pause:'Pause'},
+ kn=c=>c.replace('Arrow','').replace('Key','').replace('Space','Space');
+ app.style.width='min(1560px,100%)';
+ app.innerHTML=hud(4,'Final Landing Simulator')+`<div class="s5" id="s5w"><div id="cv5"></div><div class="xh"></div><div class="tst" id="tst"></div><div class="mk" id="mkz">LZ</div>
+ <div class="gp tl"><div class="gk">MARSFALL · STAGE 5</div><div class="gt">MANUAL LANDING</div><div class="gk">FLIGHT T+ <b id="ft">00:00</b> · <span id="stt">BRIEFING</span></div><div class="gk">LANDING SITE <b>${SITE.id}</b> · X <b>${SITE.x.toFixed(2)}</b> · Y <b>${SITE.y.toFixed(2)}</b></div></div>
+ <div class="gp vb" id="vb"><button class="gb" data-v="front" type="button">FRONT</button><button class="gb" data-v="back" type="button">BACK</button><button class="gb" data-v="left" type="button">LEFT</button><button class="gb" data-v="right" type="button">RIGHT</button><button class="gb" data-v="top" type="button">TOP</button><button class="gb" data-v="bottom" type="button">BOTTOM</button></div><div class="tr"><button class="gb" id="bEnd" type="button">END MISSION</button><button class="gb" id="bPause" type="button">PAUSE</button><button class="gb" id="bAsst" type="button">STABILISE: OFF</button><button class="gb" id="bHov" type="button">HOVER: OFF</button><button class="gb" id="bReset" type="button">RESET SHIP</button><button class="gb" id="bCam" type="button">CAMERA RESET</button><button class="gb" id="bSet" type="button">SETTINGS</button></div>
+ <div class="gp pl"><div class="gh">FLIGHT TELEMETRY</div><div class="gbd"><div class="ai"><svg viewBox="-50 -50 100 100"><clipPath id="aic"><circle r="46"/></clipPath><g clip-path="url(#aic)"><g id="ahz"><rect x="-130" y="-130" width="260" height="130" fill="#17436f"/><rect x="-130" y="0" width="260" height="130" fill="#5a3320"/><line x1="-130" x2="130" stroke="#bfefff" stroke-width="1"/></g></g><circle r="46" fill="none" stroke="rgba(160,220,255,.5)" stroke-width="1.5"/><path d="M-22 0h14M8 0h14M0 -3v6" stroke="#fbbf24" stroke-width="2" fill="none"/></svg><div class="fb"><i id="fbar"></i><span id="fpc">100%</span></div><div class="fb tb"><i id="tbar"></i><span id="tpc">0%</span></div></div>
+  ${[['alt','ALTITUDE','m'],['vv','VERTICAL SPEED','m/s'],['hs','HORIZONTAL SPEED','m/s'],['ts','TOTAL SPEED','m/s'],['pit','PITCH','°'],['rol','ROLL','°'],['yaw','YAW','°'],['gr','LANDING GEAR',''],['rv','REVERSE THRUST',''],['em','ENGINE MODE',''],['stab','STABILISER',''],['td','TARGET DISTANCE','m'],['xy','CRAFT X / Y',''],['tg','LANDING SITE X / Y',''],['pv','PREDICTED TOUCHDOWN','m/s']].map(r=>`<div class="tr2"><span>${r[1]}</span><b id="t_${r[0]}">–</b><em>${r[2]}</em></div>`).join('')}</div></div>
+ <div class="gp pr2"><div class="gh">REQUIRED VS CURRENT</div><div class="gbd" id="cmp"></div></div>
+ <div class="gp pm"><canvas id="mm" width="140" height="140"></canvas></div>
+ <div class="gp bc" id="gd"></div>
+ <div class="gp br"><div class="gh">LANDING READINESS</div><div id="rdy" class="rdy">NOT READY</div><div id="rdc" class="rdc"></div><div id="adv"></div></div>
+ <div class="gp st" id="setp" hidden></div>
+ <div class="ovl" id="brf"><div class="gp card"><div class="gk">MISSION BRIEFING</div><h4>MANUAL LANDING CHALLENGE</h4><p>You have full control. Fly the lander down to the glowing landing zone and touch down gently. The physics is real: gravity pulls constantly, thrust follows the way the craft is tilted, and nothing corrects your mistakes unless you switch on automatic stabilisation (U) or hover mode (H). Hold SPACE for thrust; let go and it fades.</p><div class="req" style="margin-top:0"><span>Landing site <b>${SITE.id}</b></span><span>X <b>${SITE.x.toFixed(2)}</b></span><span>Y <b>${SITE.y.toFixed(2)}</b></span><span>Slope <b>${SITE.slope.toFixed(1)}°</b></span><span>Wind <b>${SITE.wind.toFixed(1)} km/h</b></span><span>Dust <b>${SITE.dust.toFixed(1)}%</b></span><span>Rock <b>${SITE.rock.toFixed(1)}%</b></span></div><div class="req"><span>Vertical speed ≤ <b>${C.vv}</b> m/s</span><span>Horizontal speed ≤ <b>${C.hv}</b> m/s</span><span>Tilt ≤ <b>${C.tilt}°</b></span><span>Inside <b>${Z} m</b> zone</span><span>Gear deployed</span><span>Fuel remaining</span></div><div class="keys" id="kg"></div><p class="dim">Mouse (view only): drag with the left button to orbit 360°, drag with the right button to pan, scroll to zoom, double-click to reset, or use the FRONT / BACK / LEFT / RIGHT / TOP / BOTTOM buttons. The camera never affects the craft. The flight never stops when you touch down or crash: lift off again or press RESET SHIP and keep flying. Every touchdown is recorded quietly. Press END MISSION when you are finished to see the mission report and submit your best landing.</p><button class="btn go" id="bGo" type="button" style="padding:14px 30px">START FLIGHT</button></div></div>
+ <div class="ovl" id="rep" hidden></div><div class="ovl psd" id="psd" hidden><div class="gp card" style="text-align:center"><div class="gt">PAUSED</div><p class="dim">Physics is stopped. The mission clock is still running.</p><div class="rb2" style="justify-content:center"><button class="btn go" id="bRes" type="button" style="padding:12px 26px">RESUME</button><button class="btn" id="bRs2" type="button">RESET SHIP</button></div><p class="dim">You can also press P or Esc.</p></div></div></div>`;
+ const cv=$('#cv5');let rn;try{rn=new T.WebGLRenderer({antialias:true})}catch(e){app.innerHTML=hud(4,'Final Landing Simulator')+'<p class="lead">This browser could not start WebGL. Use an up-to-date desktop browser.</p>';app.style.width='';return}
+ rn.setPixelRatio(Math.min(devicePixelRatio||1,1.5));rn.shadowMap.enabled=true;rn.shadowMap.type=T.PCFShadowMap;cv.appendChild(rn.domElement);
+ const BG=0x120c10,sc=new T.Scene(),cam=new T.PerspectiveCamera(45,1,.6,2200);sc.background=new T.Color(BG);sc.fog=new T.FogExp2(BG,.0022+SITE.dust/100*.0035);
+ try{const ec=document.createElement('canvas');ec.width=256;ec.height=128;const ex=ec.getContext('2d'),eg=ex.createLinearGradient(0,0,0,128);eg.addColorStop(0,'#0b1730');eg.addColorStop(.45,'#5b6f93');eg.addColorStop(.5,'#d99b6a');eg.addColorStop(.56,'#6a3b26');eg.addColorStop(1,'#1d0f0b');ex.fillStyle=eg;ex.fillRect(0,0,256,128);const et=new T.CanvasTexture(ec);et.mapping=T.EquirectangularReflectionMapping;const pm=new T.PMREMGenerator(rn);sc.environment=pm.fromEquirectangular(et).texture;pm.dispose()}catch(e){}
+ const sun=new T.DirectionalLight(0xfff0dc,1.9),L0=new V(40,60,30);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);const sh=sun.shadow.camera;sh.left=sh.bottom=-30;sh.right=sh.top=30;sh.near=10;sh.far=300;sun.shadow.bias=-.0005;sun.shadow.normalBias=.06;sc.add(sun,sun.target,new T.HemisphereLight(0x9bb8ff,0x3a1a12,.6));
+ const st=new Float32Array(1500);for(let i=0;i<500;i++){const a=rng(11+i)()*6.28,e=.1+rng(77+i)()*1.3;st[i*3]=Math.cos(a)*Math.cos(e)*900;st[i*3+1]=Math.sin(e)*900;st[i*3+2]=Math.sin(a)*Math.cos(e)*900}
+ sc.add(new T.Points(new T.BufferGeometry().setAttribute('position',new T.BufferAttribute(st,3)),new T.PointsMaterial({color:0xcfe9ff,size:1.6,sizeAttenuation:false,fog:false})));
+ /* terrain, rocks, pad: one height function is shared by the mesh and the collision physics */
+ const NZ=perlin(rng(31)),cr=Array.from({length:6},(_,i)=>{const r=rng(40+i),a=r()*6.28,d=40+r()*70;return{x:Math.cos(a)*d,z:Math.sin(a)*d,r:10+r()*16,k:2+r()*3.5}}),
+ ht=(x,z)=>{const r=Math.hypot(x,z),m=sst(16,50,r);let h=(NZ(x*.02,0,z*.02)*7+NZ(x*.07,3,z*.07)*1.6+NZ(x*.3,7,z*.3)*.2)*m+sst(110,200,r)*30*(NZ(x*.012,9,z*.012)+.8);for(const c of cr){const t=Math.hypot(x-c.x,z-c.z)/c.r;if(t<1)h-=m*c.k*(1-t*t);else if(t<1.5)h+=m*c.k*.3*Math.exp(-(((t-1.15)/.2)**2))}return h},
+ RN=70,rr=rng(55),rocks=Array.from({length:RN},()=>{const a=rr()*6.28,sz=1.2+rr()*2.4,d=Z+sz+4+Math.sqrt(rr())*66;return{x:Math.cos(a)*d,z:Math.sin(a)*d,r:sz,h:.5+rr()*1.5,q:[rr()*6,rr()*6,rr()*6]}}),
+ gH=(x,z)=>{let h=ht(x,z);for(const k of rocks){const dx=x-k.x,dz=z-k.z;if(Math.abs(dx)<k.r&&Math.abs(dz)<k.r){const d=Math.hypot(dx,dz);if(d<k.r)h=Math.max(h,ht(k.x,k.z)+k.h*Math.sqrt(1-(d/k.r)**2))}}return h};
+ const pg=new T.PlaneGeometry(440,440,150,150);pg.rotateX(-Math.PI/2);const pp=pg.attributes.position,cl=new Float32Array(pp.count*3),rj=rng(5);
+ for(let i=0;i<pp.count;i++){const x=pp.getX(i),z=pp.getZ(i),h=ht(x,z);pp.setY(i,h);const t=clp((h+5)/22),j=(rj()-.5)*.05,c=t<.5?[.5+t*.5,.27+t*.2,.17+t*.15]:[.75+(t-.5)*.2,.5+(t-.5)*.5,.37+(t-.5)*.6];cl[i*3]=c[0]+j;cl[i*3+1]=c[1]+j;cl[i*3+2]=c[2]+j}
+ pg.setAttribute('color',new T.BufferAttribute(cl,3));pg.computeVertexNormals();const gm=new T.Mesh(pg,new T.MeshStandardMaterial({vertexColors:true,roughness:1}));gm.receiveShadow=true;gm.material.envMapIntensity=.25;sc.add(gm);
+ const rks=new T.InstancedMesh(new T.IcosahedronGeometry(1,1),new T.MeshStandardMaterial({color:0x4a342d,roughness:1,flatShading:true}),RN),M4=new T.Matrix4();rocks.forEach((k,i)=>{M4.compose(new V(k.x,ht(k.x,k.z),k.z),new T.Quaternion().setFromEuler(new T.Euler(0,k.q[1],0)),new V(k.r,k.h,k.r));rks.setMatrixAt(i,M4)});rks.material.envMapIntensity=.2;rks.castShadow=rks.receiveShadow=true;sc.add(rks);
+ const ring=new T.Mesh(new T.RingGeometry(Z-.5,Z,64),new T.MeshBasicMaterial({color:0x22d3ee,side:T.DoubleSide,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-2}));ring.rotation.x=-Math.PI/2;ring.position.y=.08;sc.add(ring);
+ const disc=new T.Mesh(new T.CircleGeometry(Z-.5,48),new T.MeshBasicMaterial({color:0x22d3ee,transparent:true,opacity:.1,side:T.DoubleSide,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-2}));disc.rotation.x=-Math.PI/2;disc.position.y=.07;sc.add(disc);
+ const cross=new T.Mesh(new T.PlaneGeometry(Z*1.2,.35),new T.MeshBasicMaterial({color:0xfbbf24,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-2}));cross.rotation.x=-Math.PI/2;cross.position.y=.09;sc.add(cross);const c2=cross.clone();c2.rotation.z=Math.PI/2;sc.add(c2);
+ const beam=new T.Mesh(new T.CylinderGeometry(.5,.5,420,12,1,true),new T.MeshBasicMaterial({color:0x22d3ee,transparent:true,opacity:.14,blending:T.AdditiveBlending,depthWrite:false,side:T.DoubleSide,fog:false}));beam.position.y=210;sc.add(beam);
+ const bl=[0,1,2,3].map(i=>{const m=new T.Mesh(new T.SphereGeometry(.45,10,8),new T.MeshBasicMaterial({color:0xff5a4a}));m.position.set(Math.cos(i*1.571)*Z,.5,Math.sin(i*1.571)*Z);sc.add(m);return m});
+ /* dust pool */
+ const tx=()=>{const c=document.createElement('canvas');c.width=c.height=32;const x=c.getContext('2d'),q=x.createRadialGradient(16,16,0,16,16,16);q.addColorStop(0,'rgba(255,255,255,.9)');q.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=q;x.fillRect(0,0,32,32);return new T.CanvasTexture(c)},PN=320,pl=new Float32Array(PN*3).fill(-999),pc=new Float32Array(PN*3),pv=Array.from({length:PN},()=>({l:0,m:1,v:new V(),c:[1,1,1]}));
+ const pg2=new T.BufferGeometry().setAttribute('position',new T.BufferAttribute(pl,3)).setAttribute('color',new T.BufferAttribute(pc,3)),pool=new T.Points(pg2,new T.PointsMaterial({map:tx(),vertexColors:true,size:3,transparent:true,opacity:.85,depthWrite:false}));pool.frustumCulled=false;sc.add(pool);let pi=0;
+ const emit=(n,x,y,z,sp,up,c,life)=>{for(let k=0;k<n;k++){const p=pv[pi=(pi+1)%PN],a=Math.random()*6.28,s=sp*(.4+Math.random()*.6);p.l=p.m=life*(.6+Math.random()*.4);p.v.set(Math.cos(a)*s,up*(.3+Math.random()),Math.sin(a)*s);p.c=c;pl[pi*3]=x;pl[pi*3+1]=y;pl[pi*3+2]=z}};
+ /* spacecraft model */
+ const {RK,legs,fl,fl2,gl,fli,navs,rcsF}=mkLander(T,tx);sc.add(RK);
+ const vl=new T.Line(new T.BufferGeometry().setFromPoints([new V(),new V(0,1,0)]),new T.LineBasicMaterial({color:0x22d3ee,transparent:true,opacity:.8}));vl.frustumCulled=false;sc.add(vl);
+ /* state */
+ let S=fpNew(),state='brief',paused=false,assist=false,acc=0,rec=false,air=0,T0=0,raf=0,lt=performance.now(),az=Math.atan2(S.p.x,S.p.z),el=.45,dz=30,manual=false,att=[],best=null,sub=false,rebind=null,prevRed={},hist=[],hTick=0,th=null,clk=0;const held=new Set(),tgt=new V(S.p.x,S.p.y,S.p.z),cp=new V(),rt=new V(),rp=new V(),rq=new T.Quaternion(),lat={},advEls=new Map(),panV=new V();let dcur=60,fcur=.4,rcCache='',viewT=null;
+ const code=e=>e.code==='ShiftRight'?'ShiftLeft':e.code,H=a=>held.has(KB[a])||(ALT[a]&&held.has(ALT[a]));
+ const keys=()=>({left:H('left'),right:H('right'),up:H('up'),down:H('down'),thrUp:H('thrUp'),yl:H('yl'),yr:H('yr'),cut:H('cut'),rev:H('rev'),assist});
+ const thOn=()=>{const a=au();if(!a||MUTE||th)return;const b=a.createBuffer(1,a.sampleRate,a.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;const s=a.createBufferSource();s.buffer=b;s.loop=true;const f=a.createBiquadFilter();f.type='lowpass';f.frequency.value=380;const g=a.createGain();g.gain.value=.0001;s.connect(f);f.connect(g);g.connect(a.destination);s.start();th={s,g,a}},thSet=v=>{if(th)th.g.gain.setTargetAtTime(v*.22+.0001,th.a.currentTime,.08)},thOff=()=>{if(th){try{th.g.gain.setTargetAtTime(.0001,th.a.currentTime,.05);th.s.stop(th.a.currentTime+.3)}catch(e){}th=null}};
+ const level=()=>{const f=new V(0,0,-1).applyQuaternion(S.q);S.q.setFromAxisAngle(new V(0,1,0),Math.atan2(-f.x,-f.z));S.w.set(0,0,0)};
+ const setSt=t=>$('#stt').textContent=t;
+ const drawKeys=()=>{$('#kg').innerHTML=Object.keys(KB).filter(a=>a!=='pause').map(a=>`<span><kbd>${kn(KB[a])}${ALT[a]?' / '+kn(ALT[a]):''}</kbd>${KN[a]}</span>`).join('');$('#gd').innerHTML=`<span><kbd>${kn(KB.up)}${kn(KB.left)}${kn(KB.down)}${kn(KB.right)}</kbd>TILT</span><span><kbd>${kn(KB.thrUp)}</kbd>THRUST (HOLD)</span><span><kbd>${kn(KB.cut)}</kbd>CUT ENGINE</span><span><kbd>${kn(KB.hover)}</kbd>HOVER ${S.hov?'ON':'OFF'}</span><span><kbd>${kn(KB.assist)}</kbd>STABILISE ${assist?'ON':'OFF'}</span><span><kbd>${kn(KB.gear)}</kbd>GEAR</span><span><kbd>${kn(KB.rev)}</kbd>REVERSE</span>`};
+ const drawSet=()=>{const e=$('#setp');e.innerHTML=`<div class="gh">SETTINGS</div><div class="gbd">${Object.keys(KB).map(a=>`<div class="tr2"><span>${KN[a]}</span><button class="gb" data-a="${a}" type="button">${rebind===a?'PRESS A KEY…':kn(KB[a])}</button></div>`).join('')}<button class="gb" id="bAs" type="button" style="width:100%;margin-top:8px">AUTOMATIC STABILISATION: ${assist?'ON':'OFF'}</button></div>`;e.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{rebind=b.dataset.a;drawSet()});$('#bAs').onclick=()=>setAssist(!assist);drawKeys()};
+ const syncBtns=()=>{const a=$('#bAsst'),h=$('#bHov');if(a)a.textContent='STABILISE: '+(assist?'ON':'OFF');if(h)h.textContent='HOVER: '+(S.hov?'ON':'OFF')};
+ const setAssist=v=>{assist=v;syncBtns();drawKeys();if($('#setp')&&!$('#setp').hidden)drawSet();tone(assist?620:420,.12,'triangle',.04)};
+ const setHover=()=>{if(state!=='fly'||paused||S.contact!==null)return;S.hov=!S.hov;if(S.hov){S.hovY=S.p.y;S.cutLatch=false}syncBtns();drawKeys();tone(S.hov?700:450,.12,'triangle',.04)};
+ /* telemetry and advisories (read-only: they never touch the craft) */
+ const metr=()=>{const up=fpUp(S),g=gH(S.p.x,S.p.z),alt=Math.max(0,S.p.y-(2.125+1.375*S.gearT)-g),vy=S.v.y,hv=Math.hypot(S.v.x,S.v.z),f=new V(0,0,-1).applyQuaternion(S.q);f.y=0;if(f.lengthSq()<1e-6)f.set(0,0,-1);f.normalize();const r=new V(-f.z,0,f.x).negate().negate();
+  const aD=FP.g-(S.fuel>0?FP.tmax*S.thr*up.y:0),pv=aD>.05?Math.sqrt(Math.max(0,vy*vy+2*aD*alt)):Math.max(0,-vy),tp=alt/Math.max(.5,-vy),px=S.p.x+S.v.x*Math.min(30,tp),pz=S.p.z+S.v.z*Math.min(30,tp);
+  return{alt,vy,hv,spd:S.v.length(),tilt:fpTilt(S),pit:Math.asin(Math.max(-1,Math.min(1,-up.z)))*57.3,rol:Math.atan2(up.x,up.y)*57.3,yaw:Math.atan2(-f.x,-f.z)*57.3,dist:Math.hypot(S.p.x,S.p.z),pdist:Math.hypot(px,pz),pv,f,r,aD}};
+ const lvl=(x,r,k)=>{const pg=lat[k]==='g',py=lat[k]==='y';let c;if(x<=r*(pg?1:.92))c='g';else if(x<=r*(pg||py?1.6:1.5))c='y';else c='r';lat[k]=c;return c};
+ const evalRows=m=>{const A=m.alt,cv=Math.max(0,-m.vy),rV=C.vv+.18*Math.max(0,A-4),rH=C.hv+.06*Math.max(0,A-4),cvE=A<30?Math.max(cv,m.pv):cv,rT=C.tilt+(A>25?Math.min(20,(A-25)*.25):0),need=8+A*.05,gOk=S.gearT>.95,ln=m.f,dx=-S.p.x,dz2=-S.p.z,ah=dx*ln.x+dz2*ln.z,sd=dx*-ln.z+dz2*ln.x,R=[],st={};
+  const sg=x=>(x>0?'+':'')+x;
+  st.v=lvl(cvE,rV,'v');R.push(['VERTICAL DESCENT SPEED',`≤ ${rV.toFixed(1)} m/s`,m.vy>.5?`↑ ${m.vy.toFixed(1)} m/s`:`${cv.toFixed(1)} m/s`,sg((cvE-rV).toFixed(1)),st.v,st.v==='g'?'OPTIMAL':st.v==='y'?'WARNING':'TOO HIGH',st.v==='r'?`Reduce descent speed by at least ${(cvE-rV).toFixed(1)} m/s. Predicted touchdown: ${m.pv.toFixed(1)} m/s.`:st.v==='y'?`Predicted touchdown ${m.pv.toFixed(1)} m/s. Add some thrust.`:m.vy>.5?'Climbing. Reduce thrust to descend.':A<30?`Predicted touchdown ${m.pv.toFixed(1)} m/s: within limits.`:'Descent rate is within safe limits.']);
+  st.h=lvl(m.hv,rH,'h');R.push(['HORIZONTAL SPEED',`≤ ${rH.toFixed(1)} m/s`,`${m.hv.toFixed(1)} m/s`,sg((m.hv-rH).toFixed(1)),st.h,st.h==='g'?'OPTIMAL':st.h==='y'?'WARNING':'TOO HIGH',st.h==='g'?'Horizontal movement is within safe limits.':'Cancel sideways drift: tilt against it or use WASD.']);
+  st.t=lvl(m.tilt,rT,'t');R.push(['SPACECRAFT TILT',`≤ ${rT.toFixed(0)}°`,`${m.tilt.toFixed(1)}°`,sg((m.tilt-rT).toFixed(1)),st.t,st.t==='g'?'OPTIMAL':st.t==='y'?'WARNING':'EXCESSIVE',st.t==='g'?'Orientation is within limits.':'Stabilise the craft with the arrow keys.']);
+  st.f=S.fuel>=need*2?'g':S.fuel>=need?'y':'r';R.push(['FUEL',`≥ ${need.toFixed(0)}%`,`${S.fuel.toFixed(0)}%`,sg((S.fuel-need).toFixed(0)),st.f,st.f==='g'?'OPTIMAL':st.f==='y'?'LOW FUEL':'CRITICAL',st.f==='g'?'Fuel is sufficient for a safe landing.':'Monitor thrust consumption.']);
+  st.g=A>=60?'g':gOk?'g':S.gtar?'y':'r';R.push(['LANDING GEAR','DEPLOYED below 60 m',gOk?'DEPLOYED':S.gtar?'DEPLOYING':'RETRACTED','',st.g,A>=60&&!gOk?'STANDBY':st.g==='g'?'OPTIMAL':st.g==='y'?'DEPLOYING':'DEPLOY NOW',st.g==='r'?`Press ${kn(KB.gear)} to deploy the landing gear.`:'Gear status is acceptable.']);
+  st.d=m.dist<=Z?'g':m.dist<=Z*2.5+A*.3?'y':'r';R.push(['TARGET DISTANCE',`≤ ${Z} m`,`${m.dist.toFixed(0)} m`,sg((m.dist-Z).toFixed(0)),st.d,st.d==='g'?'IN ZONE':st.d==='y'?'CLOSE':'OFF TARGET',st.d==='g'?'Above the landing zone.':`Landing zone is ${Math.abs(ah).toFixed(0)} m ${ah>=0?'ahead':'behind'}, ${Math.abs(sd).toFixed(0)} m ${sd>=0?'right':'left'}.`]);return{R,st,cv,rV,rH,rT}};
+ const cmpEls=[];(()=>{const c=$('#cmp');for(let i=0;i<6;i++){const d=document.createElement('div');d.className='cr g';d.innerHTML='<div class="ch"><b></b><span class="chip3"></span></div><div class="cc"><span>REQ <b></b></span><span>NOW <b></b></span><span>Δ <b></b></span></div><div class="cf"></div>';c.appendChild(d);cmpEls.push({d,q:d.querySelectorAll('b,.chip3,.cf'),c:[]})}})();
+ const setC=(i,r)=>{const E=cmpEls[i],v=[r[0],r[5],r[1],r[2],r[3],r[6]];E.q.forEach((e,k)=>{if(E.c[k]!==v[k]){E.c[k]=v[k];e.textContent=v[k]}});const cl='cr '+r[4];if(E.d.className!==cl)E.d.className=cl};
+ const advise=(m,E)=>{const L=[],A=m.alt,st=E.st;if(A<60&&S.gearT<.95&&!S.gtar)L.push(['DEPLOY LANDING GEAR','r']);if(st.v!=='g')L.push([st.v==='r'?'REDUCE DESCENT SPEED':'DESCENT SPEED HIGH',st.v==='r'?'r':'y']);if(st.v==='r'&&S.thr<.2&&A<80)L.push(['INCREASE DESCENT THRUST','y']);if(m.vy>3)L.push(['ASCENDING: REDUCE THRUST','y']);if(st.h!=='g')L.push(['CORRECT HORIZONTAL DRIFT','y']);if(st.t!=='g')L.push([st.t==='r'?'EXCESSIVE TILT DETECTED':'STABILISE SPACECRAFT',st.t==='r'?'r':'y']);if(S.fuel<20&&S.fuel>0)L.push(['LOW FUEL WARNING','r']);if(S.fuel<=0)L.push(['FUEL DEPLETED: NO THRUST','r']);if(m.dist>Z&&m.dist<70&&A>5)L.push(['LANDING ZONE APPROACHING','i']);if(m.dist>200)L.push(['OUT OF RANGE: RETURN TO THE LANDING ZONE','y']);
+  if(!L.some(x=>x[1]!=='i')&&A<45)L.push(['LANDING CONDITIONS OPTIMAL','g']);return L};
+ const syncAdv=list=>{const box=$('#adv'),keys=list.map(a=>a[0]);advEls.forEach((e,k)=>{if(!keys.includes(k)){e.remove();advEls.delete(k)}});list.forEach((a,i)=>{let e=advEls.get(a[0]);if(!e){e=document.createElement('div');e.textContent=a[0];advEls.set(a[0],e);box.appendChild(e)}const c='ad '+a[1];if(e.className!==c)e.className=c;if(box.children[i]!==e)box.insertBefore(e,box.children[i]||null)})};
+ const ready=(m,E)=>{const f=[];if(m.pv>C.vv)f.push('VERTICAL');if(m.hv>C.hv)f.push('HORIZONTAL');if(m.tilt>C.tilt)f.push('TILT');if(S.gearT<.95)f.push('GEAR');if(m.pdist>Z)f.push('POSITION');if(S.fuel<=0)f.push('FUEL');const sc=(m.pv/C.vv+m.hv/C.hv+m.tilt/C.tilt+m.pdist/Z);let st='NOT READY',cl='r';if(!f.length){st='READY FOR TOUCHDOWN';cl='g'}else if(f.length===1){st='LANDING CAUTION';cl='y'}else{const o=hist.length?hist[0]:sc;if(sc<o*.9){st='CONDITIONS IMPROVING';cl='y'}}return{st,cl,f,sc}};
+ const num=(id,v,d)=>{const e=$('#t_'+id);if(!e)return;const t=typeof v==='number'?v.toFixed(d):v;if(e._t!==t){e._t=t;e.textContent=t}};
+ const hudUpdate=()=>{const m=metr(),E=evalRows(m),A=advise(m,E),R=ready(m,E);
+  num('alt',m.alt,1);num('vv',m.vy,1);num('hs',m.hv,1);num('ts',m.spd,1);num('pit',m.pit,1);num('rol',m.rol,1);num('yaw',m.yaw,0);num('gr',S.gearT>.95?'DEPLOYED':S.gtar?'DEPLOYING':S.gearT<.05?'RETRACTED':'RETRACTING');num('rv',state==='fly'&&!paused&&H('rev')&&S.fuel>0?'ACTIVE':'OFF');num('em',S.cutLatch?'CUT':S.hov?'HOVER '+S.hovY.toFixed(0)+'m':'MANUAL');num('stab',assist?'ON':'OFF');{const hb=$('#bHov'),ht2='HOVER: '+(S.hov?'ON':'OFF');if(hb&&hb.textContent!==ht2){hb.textContent=ht2;drawKeys()}}num('td',m.dist,0);num('xy',`${(SITE.x+S.p.x*.2).toFixed(1)} / ${(SITE.y+S.p.z*.2).toFixed(1)}`);num('tg',`${SITE.x.toFixed(1)} / ${SITE.y.toFixed(1)}`);num('pv',m.pv,1);
+  $('#ahz').setAttribute('transform',`rotate(${-m.rol}) translate(0 ${m.pit*1.1})`);$('#fbar').style.height=S.fuel+'%';$('#fbar').className=S.fuel<20?'lo':'';$('#fpc').textContent=S.fuel.toFixed(0)+'%';$('#tbar').style.height=S.thr*100+'%';$('#tpc').textContent=Math.round(S.thr*100)+'%';
+  E.R.forEach((r,i)=>setC(i,r));
+  const rd=$('#rdy'),rc='rdy '+R.cl;if(rd.textContent!==R.st)rd.textContent=R.st;if(rd.className!==rc)rd.className=rc;const rs=R.f.join(',');if(rs!==rcCache){rcCache=rs;$('#rdc').innerHTML=R.f.length?R.f.map(x=>`<span>${x}</span>`).join(''):'<span class="ok">ALL CRITERIA MET</span>'}
+  const order={r:0,y:1,g:2,i:3};A.sort((a,b)=>order[a[1]]-order[b[1]]);syncAdv(A.slice(0,4));
+  A.forEach(a=>{if(a[1]==='r'&&!prevRed[a[0]]){S.warn++;if(state==='fly')tone(820,.12,'square',.03,0),tone(820,.12,'square',.03,0,.18)}});prevRed={};A.forEach(a=>{if(a[1]==='r')prevRed[a[0]]=1});
+  if((hTick+=1)%5===0){hist.unshift(R.sc);hist.length=Math.min(hist.length,4)}return m};
+ const mm=$('#mm').getContext('2d'),drawMM=()=>{const w=140,sc2=w/2/95;mm.clearRect(0,0,w,w);mm.fillStyle='rgba(6,16,30,.5)';mm.fillRect(0,0,w,w);mm.strokeStyle='rgba(160,220,255,.25)';mm.beginPath();mm.arc(70,70,35,0,7);mm.moveTo(0,70);mm.lineTo(w,70);mm.moveTo(70,0);mm.lineTo(70,w);mm.stroke();
+  mm.fillStyle='rgba(120,80,60,.9)';rocks.forEach(k=>{const x=70+(k.x-S.p.x)*sc2,y=70+(k.z-S.p.z)*sc2;if(x>0&&x<w&&y>0&&y<w)mm.fillRect(x-1,y-1,2,2)});
+  const px=70+(0-S.p.x)*sc2,py=70+(0-S.p.z)*sc2;mm.strokeStyle='#22d3ee';mm.lineWidth=2;mm.beginPath();mm.arc(Math.max(6,Math.min(w-6,px)),Math.max(6,Math.min(w-6,py)),Z*sc2<3?3:Z*sc2,0,7);mm.stroke();
+  const f=new V(0,0,-1).applyQuaternion(S.q);mm.save();mm.translate(70,70);mm.rotate(Math.atan2(f.x,-f.z));mm.fillStyle='#fbbf24';mm.beginPath();mm.moveTo(0,-7);mm.lineTo(5,6);mm.lineTo(-5,6);mm.closePath();mm.fill();mm.restore();
+  mm.strokeStyle='#a5f3fc';mm.lineWidth=1.5;mm.beginPath();mm.moveTo(70,70);mm.lineTo(70+S.v.x*3,70+S.v.z*3);mm.stroke()};
+ /* attempt flow */
+ const startFlight=()=>{S=fpNew();acc=0;prevRed={};hist=[];state='fly';paused=false;sub=false;rec=false;air=0;$('#brf').hidden=true;$('#rep').hidden=true;$('#psd').hidden=true;pool.visible=true;pl.fill(-999);pv.forEach(p=>p.l=0);manual=false;dz=40;level0();syncBtns();drawKeys();setSt('FLIGHT ACTIVE');thOn();SFX.sel();$('#bPause').textContent='PAUSE'};
+ const level0=()=>{};
+ const evalNow=()=>{const e=fpEval(S,C);return e};
+ const toast=(t,c)=>{const box=$('#tst');if(!box)return;const d=document.createElement('div');d.className='ad '+c;d.textContent=t;box.appendChild(d);setTimeout(()=>d.remove(),10000)};
+ const recordAttempt=()=>{const e=evalNow();if(!e)return;e.time=S.t;e.warn=S.warn;e.gearTxt=S.broken.some(Boolean)?'DAMAGED':S.imp&&S.imp.gearDown?'INTACT':'NOT DEPLOYED';att.push(e);if(!best||e.tot>best.tot||(e.tot===best.tot&&e.met>best.met))best=e;e.good?SFX.win():SFX.lose();const why=[!e.okV&&`vertical ${e.vv.toFixed(1)} m/s (max ${C.vv})`,!e.okH&&`horizontal ${e.hv.toFixed(1)} m/s (max ${C.hv})`,!e.okT&&`tilt ${e.tilt.toFixed(1)}° (max ${C.tilt}°)`,!e.okG&&'landing gear',!e.okZ&&`${e.dist.toFixed(0)} m from centre (max ${Z} m)`].filter(Boolean).join(', ');toast('LANDING '+att.length+': '+e.r+' · '+e.tot+'/100'+(why?' · '+why:''),e.good?'g':'r')};
+ const endMission=()=>{if(state!=='fly')return;state='report';thOff();setSt('MISSION REPORT');showRep()};
+ const showRep=()=>{const r=$('#rep'),e=best,bar=(n,v,mx)=>`<div class="sb"><span>${n}</span><i><u style="width:${v/mx*100}%"></u></i><b>${v}/${mx}</b></div>`;
+  const btn=`<div class="msg" id="msg"></div><div class="rb2"><button class="btn" id="bRsm" type="button">RESUME FLIGHT</button><button class="btn" id="bRp" type="button">RESET SHIP</button><button class="btn" id="bBr" type="button">RETURN TO BRIEFING</button><button class="btn go" id="bSub" type="button">${e?'SUBMIT BEST LANDING':'SUBMIT WITHOUT A LANDING'}</button><button class="btn go" id="bFin" type="button" hidden>COMPLETE MISSION</button></div>`;
+  r.innerHTML=e?`<div class="gp card"><div class="gk">MISSION REPORT · BEST OF ${att.length} RECORDED LANDING${att.length>1?'S':''}</div><h4 class="${e.good?'ok':'bd'}">${e.r}</h4><div class="rg"><div><span>Landing accuracy</span><b class="${e.okZ?'ok':'bd'}">${e.dist.toFixed(1)} m from centre (max ${Z})</b></div><div><span>Speed at first contact</span><b class="${e.okV?'ok':'bd'}">${e.vv.toFixed(1)} m/s (max ${C.vv})</b></div><div><span>Final horizontal speed</span><b class="${e.okH?'ok':'bd'}">${e.hv.toFixed(1)} m/s (max ${C.hv})</b></div><div><span>Final tilt</span><b class="${e.okT?'ok':'bd'}">${e.tilt.toFixed(1)}° (max ${C.tilt}°)</b></div><div><span>Fuel remaining</span><b>${e.fuel.toFixed(0)}%</b></div><div><span>Landing gear</span><b class="${e.okG?'ok':'bd'}">${e.gearTxt}</b></div><div><span>Time taken</span><b>${e.time.toFixed(0)} s</b></div><div><span>Warnings</span><b>${e.warn}</b></div></div>
+  <div class="gk" style="margin:10px 0 4px">PERFORMANCE SCORE</div>${bar('Landing accuracy',e.sc.acc,25)}${bar('Touchdown speed',e.sc.spd,25)}${bar('Stability',e.sc.stab,20)}${bar('Fuel efficiency',e.sc.fuel,15)}${bar('Landing procedure',e.sc.proc,15)}<div class="tot5">TOTAL <b>${e.tot}</b> / 100</div>
+  <p class="dim">All landings: ${att.map(a=>a.r+' ('+a.tot+')').join(' · ')}. The best one is submitted.</p>${btn}</div>`:`<div class="gp card"><div class="gk">MISSION REPORT</div><h4 class="bd">NO LANDING RECORDED</h4><p>You have not touched down yet. Resume the flight and land, or submit with no landing for zero points.</p>${btn}</div>`;r.hidden=false;
+  $('#bRsm').onclick=()=>{r.hidden=true;state='fly';thOn();setSt('FLIGHT ACTIVE')};$('#bRp').onclick=startFlight;$('#bBr').onclick=()=>{r.hidden=true;$('#brf').hidden=false;state='brief';S=fpNew();setSt('BRIEFING')};$('#bSub').onclick=()=>submit();$('#bFin').onclick=()=>next()};
+ const submit=auto=>{if(sub)return;sub=true;const cb=$('#bSub');if(cb)cb.disabled=true;['bRp','bBr','bRsm'].forEach(k=>{const b=$('#'+k);if(b)b.disabled=true});fin(4,best?best.met:0,best?(best.good?0:1):1,5,true);if(!G)return;const f=$('#bFin');if(f)f.hidden=false;if(auto)next()};
+ G.c=Math.max(5,G.t-3);G.auto=()=>{if(best&&!sub){submit(true)}else if(!sub)end(false,'Mission time ran out.')};
+ /* input */
+ const actOf=c=>Object.keys(KB).find(a=>KB[a]===c)||Object.keys(ALT).find(a=>ALT[a]===c);
+ const kd=e=>{if(rebind){e.preventDefault();const c=code(e);if(c!=='Escape')KB[rebind]=c;rebind=null;drawSet();return}if(e.target&&/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;const c=code(e),act=actOf(c);if(!act)return;e.preventDefault();held.add(c);if(e.repeat)return;
+  if(act==='pause'){if(state==='fly')tp();return}
+  if(state==='fly'&&!paused){if(act==='gear'&&S.contact===null){S.gtar=S.gtar?0:1;tone(S.gtar?520:380,.14,'triangle',.05)}else if(act==='lvl'&&S.contact===null)level();else if(act==='assist')setAssist(!assist);else if(act==='hover')setHover();else if(act==='cut'){S.cutLatch=true;S.hov=false;S.thr=0;syncBtns();drawKeys();tone(220,.25,'square',.05)}else if(act==='thrUp'){S.cutLatch=false}}};
+ const ku=e=>held.delete(code(e)),bl2=()=>held.clear(),tp=()=>{paused=!paused;$('#psd').hidden=!paused;$('#bPause').textContent=paused?'RESUME':'PAUSE';if(paused)thSet(0)};
+ addEventListener('keydown',kd);addEventListener('keyup',ku);addEventListener('blur',bl2);
+ const W5=$('#s5w'),grab=()=>{if(!manual){manual=true;dz=dcur}viewT=null};let dr=null;
+ W5.addEventListener('pointerdown',e=>{if(e.target.closest('button,.ovl,#setp,.pl,.pr2')&&!e.target.closest('.xh'))return;if(e.button>2)return;dr={x:e.clientX,y:e.clientY,b:e.button};try{W5.setPointerCapture(e.pointerId)}catch(x){}});
+ W5.addEventListener('pointermove',e=>{if(!dr)return;const dx=e.clientX-dr.x,dy=e.clientY-dr.y;dr.x=e.clientX;dr.y=e.clientY;grab();
+  if(dr.b===2){const s=dcur*.0016;panV.x+=-Math.cos(az)*dx*s;panV.z+=Math.sin(az)*dx*s;panV.y+=dy*s}else{az-=dx*.006;el=clp(el+dy*.006,-1.5,1.5)}});
+ const up2=()=>dr=null;W5.addEventListener('pointerup',up2);W5.addEventListener('pointercancel',up2);W5.addEventListener('contextmenu',e=>{if(!e.target.closest('.pl,.pr2,#setp,.ovl'))e.preventDefault()});
+ W5.addEventListener('wheel',e=>{if(e.target.closest('.pl,.pr2,#setp,.ovl'))return;e.preventDefault();grab();dz=clp(dz*(1+e.deltaY*.0012),8,450)},{passive:false});
+ const camReset=()=>{manual=false;viewT=null;panV.set(0,0,0);az=Math.atan2(S.p.x,S.p.z);el=.45};W5.addEventListener('dblclick',e=>{if(!e.target.closest('button,.gp,.ovl'))camReset()});
+ document.querySelectorAll('#vb [data-v]').forEach(b=>b.onclick=()=>{grab();const f=new V(0,0,-1).applyQuaternion(S.q);f.y=0;if(f.lengthSq()<1e-6)f.set(0,0,-1);f.normalize();const v=b.dataset.v,fa=Math.atan2(f.x,f.z),ra=Math.atan2(-f.z,f.x);viewT=v==='front'?{az:fa,el:.25}:v==='back'?{az:fa+Math.PI,el:.25}:v==='right'?{az:ra,el:.25}:v==='left'?{az:ra+Math.PI,el:.25}:v==='top'?{az,el:1.5}:{az,el:-1.5};if(dz>60)dz=40});
+ $('#s5w').addEventListener('click',e=>{const b=e.target.closest('button');if(b)b.blur()});
+ $('#bGo').onclick=()=>{au();startFlight()};$('#bPause').onclick=()=>{if(state==='fly')tp()};$('#bAsst').onclick=()=>setAssist(!assist);$('#bHov').onclick=()=>setHover();$('#bEnd').onclick=()=>endMission();$('#bRes').onclick=()=>tp();$('#bRs2').onclick=()=>startFlight();$('#bReset').onclick=()=>{if(state==='fly'||state==='report'){startFlight()}};$('#bCam').onclick=()=>camReset();$('#bSet').onclick=()=>{const s=$('#setp');s.hidden=!s.hidden;if(!s.hidden)drawSet()};
+ document.querySelectorAll('.gp .gh').forEach(h=>h.onclick=()=>h.parentElement.classList.toggle('col'));
+ const ro=new ResizeObserver(()=>{const w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;rn.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix()});ro.observe(cv);drawKeys();
+ /* loop */
+ let fr=0;const pj=new V();
+ const loop=now=>{raf=requestAnimationFrame(loop);const dt=Math.min(.05,(now-lt)/1000);lt=now;fr++;
+  if(state==='fly'&&!paused){acc+=dt;let n=0;const k=keys();let hitAny=false;while(acc>=FP.dtp&&n<8){if(fpStep(S,k,gH,FP.dtp))hitAny=true;acc-=FP.dtp;n++}if(n>=8)acc=0;thSet(S.thr);if(hitAny)air=0;else air+=dt;if(S.done&&!rec){rec=true;recordAttempt()}if(rec&&air>1.2){rec=false;S.contact=null;S.imp=null;S.settle=0;S.done=false;S.cutLatch=false}
+   const alt=S.p.y-(2.125+1.375*S.gearT)-gH(S.p.x,S.p.z);if(alt<28&&S.thr>.04&&fr%2===0){const gy=gH(S.p.x,S.p.z)+.3;emit(3,S.p.x,gy,S.p.z,5+S.thr*14,1.5+S.thr*3,[.78,.54,.36],1.6)}
+   if(S.legBreak){S.legBreak=false;tone(180,.3,'square',.06,50);emit(30,S.p.x,S.p.y-2.3,S.p.z,8,6,[1,.65,.2],.8)}}
+  const ia=state==='fly'&&!paused?Math.min(1,acc/FP.dtp):1;rp.copy(S.pp).lerp(S.p,ia);rq.copy(S.pq).slerp(S.q,ia);
+  RK.position.copy(rp);RK.quaternion.copy(rq);legs.forEach((G2,i)=>{const b=S.broken[i],s0=.45+.55*S.gearT;G2.scale.setScalar(b?.8:s0*(1-Math.min(.4,S.comp[i]/(3.2*s0))));G2.rotation.z=b?.9:0});
+  const fs=S.fuel>0?S.thr:0,fk=.93+.07*Math.sin(now*.045)*Math.sin(now*.017+1),sy=Math.max(.01,fs*1.5*fk),sy2=Math.max(.01,fs*1.1*fk);fl.scale.set(1,sy,1);fl.position.y=-2.45-1.5*sy;fl2.scale.set(1,sy2,1);fl2.position.y=-2.45-sy2;fl.visible=fl2.visible=gl.visible=fs>.02;fli.intensity=fs*2.5;gl.scale.setScalar(2+fs*5);gl.material.opacity=.3+.5*fs;
+  const rvOn=state==='fly'&&!paused&&H('rev')&&S.fuel>0;rcsF.forEach(c=>{c.visible=rvOn;if(rvOn)c.scale.set(1,.7+.5*Math.abs(Math.sin(now*.05)),1)});
+  navs.forEach((n,i)=>n.visible=((now/450+i*.5)|0)%2===0);
+  const va=vl.geometry.attributes.position.array;va[0]=rp.x;va[1]=rp.y;va[2]=rp.z;va[3]=rp.x+S.v.x*.8;va[4]=rp.y+S.v.y*.8;va[5]=rp.z+S.v.z*.8;vl.geometry.attributes.position.needsUpdate=true;
+  /* camera: rigid follow of the interpolated craft, only the framing is smoothed (independent of the physics) */
+  const alt2=Math.max(0,rp.y-ht(rp.x,rp.z)),dA=manual?dz:clp(32+alt2*.9,32,260),fT=manual?0:clp(alt2/220,0,.45),ks=1-Math.exp(-dt*5);dcur+=(dA-dcur)*ks;fcur+=(fT-fcur)*ks;if(!manual&&!viewT){const hf=new V(0,0,-1).applyQuaternion(rq);hf.y=0;if(hf.lengthSq()>1e-4){const ta=Math.atan2(-hf.x,-hf.z),dd=Math.atan2(Math.sin(ta-az),Math.cos(ta-az));az+=dd*(1-Math.exp(-dt*2.5))}el+=(.38-el)*ks*.5}if(viewT){const da=Math.atan2(Math.sin(viewT.az-az),Math.cos(viewT.az-az));az+=da*ks*1.6;el+=(viewT.el-el)*ks*1.6;if(Math.abs(da)<.01&&Math.abs(viewT.el-el)<.01)viewT=null}tgt.set(rp.x*(1-fcur)+panV.x,rp.y*(1-fcur)+panV.y,rp.z*(1-fcur)+panV.z);
+  cp.set(tgt.x+Math.sin(az)*Math.cos(el)*dcur,tgt.y+Math.sin(el)*dcur,tgt.z+Math.cos(az)*Math.cos(el)*dcur);const gC=ht(cp.x,cp.z)+3;if(cp.y<gC)cp.y=gC;cam.position.copy(cp);cam.lookAt(tgt);cam.updateMatrixWorld();
+  sun.target.position.set(Math.round(rp.x),Math.round(ht(rp.x,rp.z)),Math.round(rp.z));sun.position.copy(sun.target.position).add(L0);
+  for(let i=0;i<PN;i++){const p=pv[i];if(p.l>0){p.l-=dt;pl[i*3]+=p.v.x*dt;pl[i*3+1]+=p.v.y*dt;pl[i*3+2]+=p.v.z*dt;p.v.multiplyScalar(1-dt*1.1);p.v.y-=3.7*dt*.3;const q=Math.max(0,p.l/p.m);pc[i*3]=.07+(p.c[0]-.07)*q;pc[i*3+1]=.05+(p.c[1]-.05)*q;pc[i*3+2]=.06+(p.c[2]-.06)*q;if(p.l<=0)pl[i*3+1]=-999}}pg2.attributes.position.needsUpdate=true;pg2.attributes.color.needsUpdate=true;
+  bl.forEach((m,i)=>m.visible=((now/500+i*.5)|0)%2===0);beam.material.opacity=.1+.06*Math.sin(now/400);
+  if(fr%5===0){const m=hudUpdate();$('#ft').textContent=fmt(Math.floor(state==='brief'?0:S.t));drawMM();
+   pj.set(0,4,0).project(cam);const w=cv.clientWidth,h=cv.clientHeight,behind=pj.z>1,x=clp((pj.x*.5+.5)*w,34,w-34),y=clp((-pj.y*.5+.5)*h,34,h-34),mk2=$('#mkz');mk2.style.transform=`translate(${behind?w/2:x}px,${behind?h-60:y}px) translate(-50%,-50%)`;mk2.textContent='LZ '+SITE.id+' · '+m.dist.toFixed(0)+' m'}
+  rn.render(sc,cam)};
+ raf=requestAnimationFrame(loop);
+ KILL=()=>{cancelAnimationFrame(raf);ro.disconnect();thOff();removeEventListener('keydown',kd);removeEventListener('keyup',ku);removeEventListener('blur',bl2);try{pg.dispose();rn.dispose();rn.forceContextLoss()}catch(e){}app.style.width='';KILL=null};
+}
+
+async function save(g,used,pts){
+ const e=$('#sv');if(!e)return;e.className='msg';e.textContent='Saving score…';
+ try{const r=await fetch(SB.url+'rpc/save_l3',{method:'POST',headers:HD,body:JSON.stringify({p_id:g.id,p_pass:g.pw,p_sec:used,p_pts:pts})});
+  if(!r.ok)throw new Error('Server replied '+r.status+' '+(await r.text()).slice(0,120));
+  if((await r.json())!==true)throw new Error('The score was not accepted. It may already be saved for this team.');
+  e.className='msg good';e.textContent='Score saved.'}
+ catch(x){e.className='msg bad';e.innerHTML='Could not save: '+esc(x.message)+' <button class="btn" id="rt" type="button" style="padding:6px 12px;margin-left:8px">RETRY</button>';$('#rt').onclick=()=>save(g,used,pts)}
+}
+function end(win,why){
+ KILL&&KILL();clearInterval(tm);const used=Math.min(TOTAL,TOTAL-Math.max(0,G.t)),g=G,pts=Math.round(sum(g.pts));G=null;
+ if(win){const b=store('vp_runs')||[];b.push({team:g.team,used,pen:g.pen});b.sort((a,c)=>a.used-c.used);store('vp_runs',b.slice(0,20))}
+ app.innerHTML=`<div class="res"><span class="chip">${win?'MISSION COMPLETE':'MISSION FAILED'}</span><h2 style="margin-top:22px;color:${win?'var(--ok)':'var(--bad)'}">${win?'Touchdown on Mars':'Signal lost'}</h2>
+ <p class="lead" style="margin:0 auto">${esc(g.team)} · ID ${esc(g.id)}${win?'':'. '+why}</p>
+ <div class="stats"><div><small>POINTS</small>${pts} / ${tp()}</div><div><small>TIME USED</small>${fmt(used)} (${used}s)</div><div><small>WRONG ANSWERS</small>${g.pen}</div></div>
+ <div class="msg" id="sv"></div>
+ <p style="color:var(--mu);margin-top:12px">Returning to Welcome Page in <span id="cd">6</span> seconds...</p></div>`;
+ save(g,used,pts).then(()=>{
+   let left=6;
+   const cd=document.getElementById('cd');
+   const t=setInterval(()=>{
+     left--;
+     if(cd) cd.textContent=left;
+     if(left<=0){
+       clearInterval(t);
+       try{
+         if(window.parent && window.parent !== window){
+           window.parent.postMessage({type:'round3_complete'}, '*');
+           return;
+         }
+       }catch(e){}
+       try{ window.location.href = window.location.origin + window.location.pathname.replace('marsfall.html','index.html'); } catch(e){ landing(); }
+     }
+   },1000);
+ });
+}
+
+/* ---------- admin ---------- */
+const ADMIN_PW='void2026';let ADM='';
+const ea=s=>String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+const rpc=async(f,b)=>{const r=await fetch(SB.url+'rpc/'+f,{method:'POST',headers:HD,body:JSON.stringify(b||{})});if(!r.ok)throw new Error('Server replied '+r.status);return r.json()};
+async function loadCfg(){CFG=DEF();try{const d=await rpc('get_config');if(d&&d.st)CFG=Object.assign(DEF(),d)}catch(e){}TOTAL=CFG.total*60;PEN=CFG.pen}
+const getp=p=>p.split('.').reduce((o,k)=>o[k],CFG),setp=(p,v)=>{const k=p.split('.'),l=k.pop();k.reduce((o,x)=>o[x],CFG)[l]=v};
+const NEW={q1:()=>['New sequence, ?',0],q4:()=>['New question',0],sq:()=>'New step','pw.sys':()=>({n:'System',min:0,ref:'',mult:0}),'zn.zones':()=>({n:'Z',slope:5,wind:20,dust:20,rock:'Low'})};
+const closeAdm=()=>$('#adm').classList.remove('on');
+$('#admBtn').onclick=()=>{$('#adm').classList.add('on');$('#admBody').innerHTML=`<label class="field" style="width:100%"><span style="color:var(--mu);font-size:12px">ADMIN PASSWORD</span><input type="password" id="pw" autocomplete="off" style="width:100%;background:rgba(2,8,18,.8);border:1px solid var(--ln);border-radius:10px;color:var(--tx);font:600 15px 'JetBrains Mono',monospace;padding:12px 14px"></label><div class="msg" id="am"></div><button class="btn" id="in" type="button">LOG IN</button> <button class="btn" id="cl" type="button">CLOSE</button>`;
+ $('#cl').onclick=closeAdm;
+ $('#in').onclick=async()=>{const m=(t,c)=>{$('#am').className='msg '+(c||'bad');$('#am').textContent=t};m('Checking…','');
+  if($('#pw').value!==ADMIN_PW)return m('Wrong password.');ADM=ADMIN_PW;await loadCfg();renderAdm()}};
+function renderAdm(msg){const C=CFG;
+ const n=(p,v,w)=>`<input type="number" data-p="${p}" value="${ea(v)}" style="width:${w||80}px;padding:8px">`,
+ t=(p,v,w)=>`<input type="text" data-p="${p}" value="${ea(v)}" style="width:${w||'100%'};flex:${w?'none':1};min-width:90px;padding:8px">`,
+ b=(a,l,i)=>`<button class="zb" data-a="${a}" data-i="${i??''}" type="button">${l}</button>`,
+ row=h=>`<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px;align-items:center">${h}</div>`,
+ hd=(k,ti)=>`<h3 style="margin:24px 0 8px;font-size:18px">${ti}</h3>`+row(`Stage marks ${n('st.'+k+'.max',C.st[k].max,70)} Deduct ${n('st.'+k+'.neg',C.st[k].neg,70)}% of an item’s marks per wrong answer`)+`<p id="inf${k}" style="color:var(--am);margin:0 0 10px"></p>`;
+ const ql=k=>C[k].map((q,i)=>row(t(k+'.'+i+'.0',q[0])+'Answer '+n(k+'.'+i+'.1',q[1],100)+b('del:'+k,'✕',i))).join('')+b('add:'+k,'+ Add question');
+ $('#admBody').innerHTML=`<p class="lead" style="margin-bottom:0">Changes apply to teams that log in after you save.</p>`+row(`Mission time (minutes) ${n('total',C.total,70)} Time lost per wrong answer (seconds, max 3 per stage) ${n('pen',C.pen,70)}`)+
+ hd(0,'Stage 1 · Mission X (3D landing game)')+row(`Time limit (seconds) ${n('s1t',C.s1t,70)} Planet seed ${n('s1seed',C.s1seed,80)}`)+`<p class="lead" style="margin:0 0 8px">One item: choose the best landing site out of 25. Each site shows its coordinates plus slope, wind, dust and rock data. Every team gets the same planet for a given seed, and the best site is calculated from the terrain. Its data is reused in Stage 3, and Stage 5 lands on its coordinates.</p>`+
+ hd(1,'Stage 2 · Restore the Systems')+row(`Energy budget ${n('pw.budget',C.pw.budget,80)}`)+C.pw.sys.map((s,i)=>row(t('pw.sys.'+i+'.n',s.n,'140px')+'min '+n('pw.sys.'+i+'.min',s.min,64)+' and at least '+n('pw.sys.'+i+'.mult',s.mult,56)+'× of '+t('pw.sys.'+i+'.ref',s.ref,'130px')+b('del:pw.sys','✕',i))).join('')+b('add:pw.sys','+ Add system')+
+ hd(2,'Stage 3 · Rocket Landing Simulator')+row(`Safe if slope < ${n('zn.slope',C.zn.slope,64)}° · wind ≤ ${n('zn.wind',C.zn.wind,64)} km/h · dust ≤ ${n('zn.dust',C.zn.dust,64)}% · rock density Low (below 33%)`)+`<p class="lead" style="margin:0 0 8px">Players must enter the landing-site data they noted in Stage 1 (slope within ±0.6°, wind ±3 km/h, dust ±4%, rock ±4%). Four items, one per value. These limits also decide which Stage 1 sites are safe.</p>`+row(`Simulation chances ${n('s3ch',C.s3ch,64)}`)+
+ hd(3,'Stage 4 · Calculate the Descent')+ql('q4')+
+ hd(4,'Stage 5 · Manual Landing Simulator')+row(`Max touchdown vertical speed ${n('s5.vv',C.s5.vv,64)} m/s · horizontal ${n('s5.hv',C.s5.hv,64)} m/s · tilt ${n('s5.tilt',C.s5.tilt,64)}° · landing zone radius ${n('s5.zone',C.s5.zone,64)} m`)+`<p class="lead" style="margin:0 0 8px">Five landing criteria, one item each: vertical speed, horizontal speed, tilt, landing gear, inside the zone. Players fly as many attempts as the mission clock allows and the best one is submitted. The landing zone sits at the Stage 1 site coordinates.</p>`+
+ `<p id="tot" style="font-weight:700;margin:22px 0 8px"></p><div class="msg ${msg&&msg[1]||''}" id="am">${msg?msg[0]:''}</div><button class="btn go" id="sv2" type="button" style="padding:12px 22px">SAVE TO SERVER</button> <button class="btn" id="df" type="button">RESET TO DEFAULTS</button> <button class="btn" id="cl" type="button">CLOSE</button>`;
+ upd();$('#cl').onclick=closeAdm;$('#df').onclick=()=>{CFG=DEF();renderAdm(['Defaults loaded. Save to apply them.','good'])};
+ $('#sv2').onclick=async()=>{const m=(t,c)=>{$('#am').className='msg '+c;$('#am').textContent=t},c=counts();
+  if(c.some(x=>x<1))return m('Every stage needs at least one item.','bad');
+  if(!(+C.s1t>=30))return m('Stage 1 time limit must be at least 30 seconds.','bad');
+  if(C.pw.sys.reduce((a,s)=>a+s.min,0)>C.pw.budget)return m('The system minimums add up to more than the energy budget.','bad');
+  if(!(C.s5.vv>0&&C.s5.hv>0&&C.s5.tilt>0&&C.s5.zone>0))return m('Stage 5 limits must be above zero.','bad');
+  if(!(C.zn.slope>0&&C.zn.wind>0&&C.zn.dust>0))return m('Stage 3 limits must be above zero.','bad');
+  m('Saving…','');try{if(await rpc('admin_save_config',{p_pw:ADM,p_data:CFG})!==true)throw new Error('the server admin password is not void2026. Update game_admin in Supabase');m('Saved. New teams will play this version.','good')}catch(e){m('Could not save: '+e.message,'bad')}};
+}
+const counts=()=>[1,CFG.pw.sys.length,4,CFG.q4.length,5];
+function upd(){const c=counts();CFG.st.forEach((s,k)=>{const p=s.max/Math.max(1,c[k]),e=$('#inf'+k);if(e)e.textContent=`${c[k]} items · ${r2(p)} pts each · −${r2(p*s.neg/100)} pts per wrong answer`});const e=$('#tot');if(e)e.textContent='Total marks: '+tp()}
+$('#admBody').addEventListener('input',e=>{const p=e.target.dataset.p;if(!p)return;setp(p,e.target.type==='number'?+e.target.value:e.target.value);upd()});
+$('#admBody').addEventListener('click',e=>{const a=e.target.dataset.a;if(!a)return;const [op,k]=a.split(':'),i=+e.target.dataset.i;
+ if(op==='add')getp(k).push(NEW[k]());else if(op==='del')getp(k).splice(i,1);
+ else{const L=CFG.sq,j=op==='up'?i-1:i+1;if(j<0||j>=L.length)return;[L[i],L[j]]=[L[j],L[i]]}renderAdm()});
+
+/* ---------- space background ---------- */
+(()=>{const c=$('#bg'),x=c.getContext('2d');let W,H,D,st=[],nd=[];
+ const init=()=>{D=Math.min(devicePixelRatio||1,2);W=c.width=innerWidth*D;H=c.height=innerHeight*D;const a=W*H/(D*D);
+  st=Array.from({length:Math.floor(a/5000)},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4*D+.3*D,p:Math.random()*6}));
+  nd=Array.from({length:Math.floor(a/32000)+8},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25*D,vy:(Math.random()-.5)*.25*D,k:Math.random()<.3?'#a855f7':'#22d3ee'}))};
+ const f=t=>{x.clearRect(0,0,W,H);const g=x.createRadialGradient(W*.5,H*.45,0,W*.5,H*.45,Math.max(W,H)*.7);g.addColorStop(0,'#08142a');g.addColorStop(1,'#050914');x.fillStyle=g;x.fillRect(0,0,W,H);
+  st.forEach(s=>{x.globalAlpha=.35+.35*Math.sin(t/900+s.p);x.fillStyle='#cfe9ff';x.beginPath();x.arc(s.x,s.y,s.r,0,7);x.fill()});
+  const L=170*D;nd.forEach((n,i)=>{n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1;
+   for(let j=i+1;j<nd.length;j++){const m=nd[j],d=Math.hypot(n.x-m.x,n.y-m.y);if(d<L){x.globalAlpha=(1-d/L)*.35;x.strokeStyle='#22d3ee';x.lineWidth=D;x.beginPath();x.moveTo(n.x,n.y);x.lineTo(m.x,m.y);x.stroke()}}
+   x.globalAlpha=.9;x.fillStyle=n.k;x.beginPath();x.arc(n.x,n.y,2.4*D,0,7);x.fill()});
+  x.globalAlpha=1;if(!matchMedia('(prefers-reduced-motion:reduce)').matches)requestAnimationFrame(f)};
+ addEventListener('resize',init);init();requestAnimationFrame(f)})();
+
+async function checkHold(){try{const s=await rpc('get_status'),g=(s&&s.game)||{},on=!!g.on&&!G&&!$('#again');$('#hold').hidden=!on;app.hidden=on;if(on)$('#hm').textContent=g.message||'The mission portal opens soon. Please wait.'}catch(e){}}
+if(matchMedia('(prefers-reduced-motion:reduce)').matches)document.querySelectorAll('#hold animate,#hold animateMotion,#hold animateTransform').forEach(a=>a.remove());
+landing();checkHold();setInterval(checkHold,15000);
+(()=>{const L=['Calibrating thrusters','Aligning orbit','Stabilising signal','Syncing mission data'],rm=matchMedia('(prefers-reduced-motion:reduce)').matches;let last='';
+ setInterval(()=>{const h=$('#hold');if(!h||h.hidden)return;const st=$('#stl'),t=L[Math.floor(Date.now()/2400)%L.length]+'…';
+  if(st&&t!==last){st.textContent=t;last=t}},500)})();
+</script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Void Paradigm · Display Board</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@500;700&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#050914;--pan:rgba(8,20,34,.8);--ln:rgba(34,211,238,.3);--cy:#22d3ee;--pu:#a855f7;--tx:#e6f4ff;--mu:#7c93ab;--gold:#fbbf24}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--tx);font:16px 'JetBrains Mono',ui-monospace,Consolas,monospace;display:flex;flex-direction:column;min-height:100vh}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+header,main,footer{position:relative;z-index:1}
+header{padding:20px clamp(18px,4vw,40px);border-bottom:1px solid rgba(34,211,238,.18);background:rgba(5,9,20,.75);backdrop-filter:blur(6px);text-align:center}
+header h1{margin:0;font:800 clamp(28px,6vw,56px) 'Orbitron',sans-serif;letter-spacing:.2em;background:linear-gradient(90deg,#fff,#a5f3fc,#d8b4fe);-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{margin:8px 0 0;color:var(--cy);font-size:clamp(12px,2vw,16px);letter-spacing:.24em}
+main{flex:1;width:min(1600px,98%);margin:0 auto;padding:clamp(18px,4vw,40px);display:flex;flex-direction:column;gap:24px}
+.card{background:var(--pan);border:1px solid var(--ln);border-radius:18px;padding:clamp(18px,4vw,32px)}
+.row{display:grid;grid-template-columns:80px 1.6fr 100px 100px 100px 120px;gap:16px;align-items:center;padding:16px 22px;border-radius:14px;border:1px solid rgba(34,211,238,.16);margin-bottom:10px;background:var(--pan)}
+.row.h{border:0;background:none;color:var(--mu);font-size:clamp(10px,1.2vw,12px);letter-spacing:.16em;padding-bottom:4px}
+.rk{font:800 28px 'Space Grotesk',sans-serif;text-align:center}.nm{font-weight:800;font-size:clamp(18px,2.6vw,26px);overflow-wrap:anywhere}.nm small{display:block;color:var(--mu);font-weight:400;margin-top:4px;font-size:clamp(11px,1.4vw,14px)}
+.tot{font:800 26px 'Space Grotesk',sans-serif;color:var(--cy);text-align:right}.lv{text-align:center;font-size:clamp(16px,2vw,22px)}
+.row.top{border-color:rgba(251,191,36,.6);background:linear-gradient(90deg,rgba(251,191,36,.14),var(--pan))}
+.row.idle{opacity:.5}
+.msg{text-align:center;color:var(--mu);padding:40px 0;font-size:clamp(16px,2vw,22px)}
+.notice{border:1px solid rgba(168,85,247,.55);background:rgba(168,85,247,.16);border-radius:18px;padding:clamp(18px,4vw,36px);text-align:center}
+.notice .hl{font:800 12px 'JetBrains Mono',monospace;letter-spacing:.32em;color:#d8b4fe;margin-bottom:12px}
+.notice p{margin:0;color:var(--tx);font-size:clamp(20px,4vw,48px);line-height:1.6;white-space:pre-wrap;font-weight:700}
+.split{display:grid;grid-template-columns:2.2fr 1fr;gap:24px;align-items:start}
+.split .side{position:sticky;top:24px}
+@media(max-width:1100px){.split{grid-template-columns:1fr}.row{grid-template-columns:60px 1fr auto}.lv,.row.h .lv{display:none}}
+#hold{position:relative;overflow:hidden;text-align:center}
+#hold:not([hidden]){animation:hin .6s ease-out}@keyframes hin{from{opacity:0;transform:scale(.97)}}
+#hold:before,#hold:after{content:"";position:absolute;width:28px;height:28px;border:2px solid var(--cy);opacity:.7}
+#hold:before{top:16px;left:16px;border-right:0;border-bottom:0}#hold:after{bottom:16px;right:16px;border-left:0;border-top:0}
+.hl{color:var(--cy);font-size:clamp(10px,1.6vw,14px);letter-spacing:.36em;margin-bottom:10px}
+.stl{color:var(--mu);font-size:clamp(12px,1.8vw,16px);letter-spacing:.18em;margin:16px 0 0;min-height:22px}
+h3.gl{animation:gl 5s infinite}@keyframes gl{0%,91%,100%{text-shadow:none;transform:none}92%{text-shadow:3px 0 #22d3ee,-3px 0 #a855f7;transform:translateX(3px)}94%{text-shadow:-3px 0 #22d3ee,3px 0 #a855f7;transform:translateX(-3px)}96%{text-shadow:none;transform:none}}
+footer{padding:16px clamp(18px,4vw,40px);color:var(--mu);font-size:clamp(10px,1.4vw,14px);border-top:1px solid rgba(34,211,238,.12);background:rgba(5,9,20,.75);text-align:center;letter-spacing:.18em}
+[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<header>
+  <h1>VOID PARADIGM</h1>
+  <p>GRADIENT PRESENTS · LIVE DISPLAY</p>
+</header>
+
+<main>
+  <section class="card" id="hold" hidden>
+    <div class="hl">VOID PARADIGM // STANDBY</div>
+    <svg viewBox="-12 -12 224 224" role="img" aria-label="Loading: a rocket orbiting a planet" style="width:min(360px,40vw);height:auto;display:block;margin:0 auto 18px">
+      <defs>
+        <filter id="glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <radialGradient id="pg" cx=".35" cy=".3" r=".9"><stop offset="0" stop-color="#a78bfa"/><stop offset=".6" stop-color="#5b3fd1"/><stop offset="1" stop-color="#1d2a7a"/></radialGradient>
+        <radialGradient id="ps" cx=".3" cy=".3" r=".9"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".55"/></radialGradient>
+        <clipPath id="pc"><circle cx="100" cy="100" r="42"/></clipPath>
+        <g id="tl"><rect x="0" y="22" width="84" height="9" fill="#c4b5fd" opacity=".35"/><rect x="0" y="52" width="84" height="12" fill="#22d3ee" opacity=".22"/><circle cx="24" cy="44" r="7" fill="#1d2a7a" opacity=".45"/><circle cx="60" cy="68" r="5" fill="#1d2a7a" opacity=".45"/><circle cx="52" cy="26" r="4" fill="#1d2a7a" opacity=".4"/></g>
+      </defs>
+      <path d="M180.0,100.0 L182.1,102.9 L184.0,105.9 L185.6,109.0 L186.6,112.2 L187.1,115.4 L187.0,118.5 L186.3,121.5 L184.9,124.4 L183.0,127.0 L180.6,129.3 L177.8,131.4 L174.8,133.3 L171.6,134.9 L168.4,136.4 L165.4,137.8 L162.5,139.1 L160.0,140.5 L157.8,142.0 L156.0,143.7 L154.5,145.7 L153.3,148.0 L152.4,150.6 L151.7,153.6 L151.1,156.7 L150.4,160.1 L149.6,163.5 L148.7,167.0 L147.4,170.3 L145.8,173.3 L143.9,176.0 L141.6,178.3 L139.0,180.0 L136.1,181.1 L133.0,181.7 L129.7,181.7 L126.4,181.1 L123.0,180.1 L119.7,178.8 L116.4,177.3 L113.4,175.8 L110.4,174.2 L107.7,172.9 L105.0,171.9 L102.5,171.2 L100.0,171.0 L97.5,171.2 L95.0,171.9 L92.3,172.9 L89.6,174.2 L86.6,175.8 L83.6,177.3 L80.3,178.8 L77.0,180.1 L73.6,181.1 L70.3,181.7 L67.0,181.7 L63.9,181.1 L61.0,180.0 L58.4,178.3 L56.1,176.0 L54.2,173.3 L52.6,170.3 L51.3,167.0 L50.4,163.5 L49.6,160.1 L48.9,156.7 L48.3,153.6 L47.6,150.6 L46.7,148.0 L45.5,145.7 L44.0,143.7 L42.2,142.0 L40.0,140.5 L37.5,139.1 L34.6,137.8 L31.6,136.4 L28.4,134.9 L25.2,133.3 L22.2,131.4 L19.4,129.3 L17.0,127.0 L15.1,124.4 L13.7,121.5 L13.0,118.5 L12.9,115.4 L13.4,112.2 L14.4,109.0 L16.0,105.9 L17.9,102.9 L20.0,100.0 L22.2,97.3 L24.4,94.7 L26.4,92.3 L28.2,89.9 L29.5,87.6 L30.5,85.2 L31.0,82.8 L31.1,80.2 L30.8,77.5 L30.3,74.6 L29.5,71.5 L28.6,68.2 L27.8,64.8 L27.2,61.3 L26.8,57.7 L26.9,54.3 L27.3,51.0 L28.4,47.9 L29.9,45.2 L31.9,42.9 L34.4,41.0 L37.4,39.5 L40.6,38.5 L44.0,37.8 L47.6,37.5 L51.1,37.5 L54.6,37.5 L57.9,37.6 L61.0,37.6 L63.9,37.5 L66.5,37.0 L68.9,36.2 L71.0,35.0 L73.1,33.3 L75.0,31.3 L76.9,28.9 L78.9,26.3 L80.9,23.6 L83.2,20.8 L85.6,18.2 L88.2,15.8 L90.9,13.8 L93.9,12.3 L96.9,11.3 L100.0,11.0 L103.1,11.3 L106.1,12.3 L109.1,13.8 L111.8,15.8 L114.4,18.2 L116.8,20.8 L119.1,23.6 L121.1,26.3 L123.1,28.9 L125.0,31.3 L126.9,33.3 L129.0,35.0 L131.1,36.2 L133.5,37.0 L136.1,37.5 L139.0,37.6 L142.1,37.6 L145.4,37.5 L148.9,37.5 L152.4,37.5 L156.0,37.8 L159.4,38.5 L162.6,39.5 L165.6,41.0 L168.1,42.9 L170.1,45.2 L171.6,47.9 L172.7,51.0 L173.1,54.3 L173.2,57.7 L172.8,61.3 L172.2,64.8 L171.4,68.2 L170.5,71.5 L169.7,74.6 L169.2,77.5 L168.9,80.2 L169.0,82.8 L169.5,85.2 L170.5,87.6 L171.8,89.9 L173.6,92.3 L175.6,94.7 L177.8,97.3 L180.0,100.0" fill="none" stroke="rgba(34,211,238,.18)" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M180.0,100.0 L182.1,102.9 L184.0,105.9 L185.6,109.0 L186.6,112.2 L187.1,115.4 L187.0,118.5 L186.3,121.5 L184.9,124.4 L183.0,127.0 L180.6,129.3 L177.8,131.4 L174.8,133.3 L171.6,134.9 L168.4,136.4 L165.4,137.8 L162.5,139.1 L160.0,140.5 L157.8,142.0 L156.0,143.7 L154.5,145.7 L153.3,148.0 L152.4,150.6 L151.7,153.6 L151.1,156.7 L150.4,160.1 L149.6,163.5 L148.7,167.0 L147.4,170.3 L145.8,173.3 L143.9,176.0 L141.6,178.3 L139.0,180.0 L136.1,181.1 L133.0,181.7 L129.7,181.7 L126.4,181.1 L123.0,180.1 L119.7,178.8 L116.4,177.3 L113.4,175.8 L110.4,174.2 L107.7,172.9 L105.0,171.9 L102.5,171.2 L100.0,171.0 L97.5,171.2 L95.0,171.9 L92.3,172.9 L89.6,174.2 L86.6,175.8 L83.6,177.3 L80.3,178.8 L77.0,180.1 L73.6,181.1 L70.3,181.7 L67.0,181.7 L63.9,181.1 L61.0,180.0 L58.4,178.3 L56.1,176.0 L54.2,173.3 L52.6,170.3 L51.3,167.0 L50.4,163.5 L49.6,160.1 L48.9,156.7 L48.3,153.6 L47.6,150.6 L46.7,148.0 L45.5,145.7 L44.0,143.7 L42.2,142.0 L40.0,140.5 L37.5,139.1 L34.6,137.8 L31.6,136.4 L28.4,134.9 L25.2,133.3 L22.2,131.4 L19.4,129.3 L17.0,127.0 L15.1,124.4 L13.7,121.5 L13.0,118.5 L12.9,115.4 L13.4,112.2 L14.4,109.0 L16.0,105.9 L17.9,102.9 L20.0,100.0 L22.2,97.3 L24.4,94.7 L26.4,92.3 L28.2,89.9 L29.5,87.6 L30.5,85.2 L31.0,82.8 L31.1,80.2 L30.8,77.5 L30.3,74.6 L29.5,71.5 L28.6,68.2 L27.8,64.8 L27.2,61.3 L26.8,57.7 L26.9,54.3 L27.3,51.0 L28.4,47.9 L29.9,45.2 L31.9,42.9 L34.4,41.0 L37.4,39.5 L40.6,38.5 L44.0,37.8 L47.6,37.5 L51.1,37.5 L54.6,37.5 L57.9,37.6 L61.0,37.6 L63.9,37.5 L66.5,37.0 L68.9,36.2 L71.0,35.0 L73.1,33.3 L75.0,31.3 L76.9,28.9 L78.9,26.3 L80.9,23.6 L83.2,20.8 L85.6,18.2 L88.2,15.8 L90.9,13.8 L93.9,12.3 L96.9,11.3 L100.0,11.0 L103.1,11.3 L106.1,12.3 L109.1,13.8 L111.8,15.8 L114.4,18.2 L116.8,20.8 L119.1,23.6 L121.1,26.3 L123.1,28.9 L125.0,31.3 L126.9,33.3 L129.0,35.0 L131.1,36.2 L133.5,37.0 L136.1,37.5 L139.0,37.6 L142.1,37.6 L145.4,37.5 L148.9,37.5 L152.4,37.5 L156.0,37.8 L159.4,38.5 L162.6,39.5 L165.6,41.0 L168.1,42.9 L170.1,45.2 L171.6,47.9 L172.7,51.0 L173.1,54.3 L173.2,57.7 L172.8,61.3 L172.2,64.8 L171.4,68.2 L170.5,71.5 L169.7,74.6 L169.2,77.5 L168.9,80.2 L169.0,82.8 L169.5,85.2 L170.5,87.6 L171.8,89.9 L173.6,92.3 L175.6,94.7 L177.8,97.3 L180.0,100.0" id="wvp" pathLength="1000" filter="url(#glow)" fill="none" stroke="#22d3ee" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1000" stroke-dashoffset="1000"><animate attributeName="stroke-dashoffset" from="1000" to="0" dur="7s" repeatCount="indefinite"/></path>
+      <circle cx="100" cy="100" r="53" fill="none" stroke="#22d3ee" stroke-opacity=".5" stroke-width="1" stroke-dasharray="4 7"><animateTransform attributeName="transform" type="rotate" from="0 100 100" to="360 100 100" dur="18s" repeatCount="indefinite"/></circle>
+      <circle cx="100" cy="100" r="60" fill="none" stroke="#a855f7" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="1 9" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" from="360 100 100" to="0 100 100" dur="26s" repeatCount="indefinite"/></circle>
+      <circle cx="100" cy="100" r="43.5" fill="none" stroke="#a78bfa" stroke-opacity=".7" stroke-width="2" filter="url(#glow)"/>
+      <g clip-path="url(#pc)"><rect x="58" y="58" width="84" height="84" fill="url(#pg)"/><g><use href="#tl" x="58" y="58"/><use href="#tl" x="142" y="58"/><use href="#tl" x="226" y="58"/><animateTransform attributeName="transform" type="translate" from="0 0" to="-84 0" dur="7s" repeatCount="indefinite"/></g><circle cx="100" cy="100" r="42" fill="url(#ps)"/></g>
+      <g filter="url(#glow)"><g transform="scale(1.15)"><path d="M-9,0 L-17,-3 L-14,0 L-17,3Z" fill="#fb923c"><animate attributeName="opacity" values="1;.4;1" dur=".25s" repeatCount="indefinite"/></path><path d="M12,0 C8,-5 2,-5 -9,-4 L-9,4 C2,5 8,5 12,0Z" fill="#e6f4ff"/><path d="M-3,-4 L-9,-9 L-9,-4Z M-3,4 L-9,9 L-9,4Z" fill="#a855f7"/><circle cx="2" cy="0" r="2.3" fill="#22d3ee"/></g><animateMotion dur="7s" repeatCount="indefinite" rotate="auto"><mpath href="#wvp"/></animateMotion></g>
+    </svg>
+    <h3 class="gl" style="margin:0 0 10px;font:800 28px 'Space Grotesk',sans-serif;letter-spacing:.2em">PLEASE WAIT</h3>
+    <p id="hm" style="margin:0 auto;color:var(--tx);font-size:clamp(16px,2.4vw,24px)"></p>
+    <p class="stl" id="stl"></p>
+  </section>
+
+  <div id="mainContent">
+    <div id="splitWrap">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:12px">
+          <div>
+            <div class="hl">LEADERBOARD</div>
+            <h2 style="margin:6px 0 0;font:800 clamp(22px,4vw,38px) 'Space Grotesk',sans-serif;letter-spacing:.12em">TOP TEAMS</h2>
+          </div>
+          <div class="upd" id="upd" style="color:var(--mu);font-size:clamp(11px,1.6vw,15px)">Loading…</div>
+        </div>
+        <div id="list"><p class="msg">Loading scores…</p></div>
+      </div>
+      <aside id="annSide" class="card side" hidden>
+        <div class="hl">ANNOUNCEMENTS</div>
+        <h2 style="margin:6px 0 18px;font:800 clamp(18px,3vw,28px) 'Space Grotesk',sans-serif;letter-spacing:.14em">UPDATES</h2>
+        <div id="annText" style="white-space:pre-wrap;line-height:1.9;font-size:clamp(16px,2.6vw,28px);font-weight:600"></div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<footer>VOID PARADIGM · DISPLAY BOARD · AUTO-REFRESH</footer>
+
+<script>
+const $ = s => document.querySelector(s);
+const SB = { url: 'https://jbydaklyvepixtzrcgfp.supabase.co/rest/v1', key: 'sb_publishable_z-SnsaEpRt47cE7rOumIwA_DwY3tgJE' };
+const esc = s => String(s === null || s === undefined ? '' : s).replace(/[&<>\"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;', "'": '&#39;' }[c]));
+
+async function rpc(fn, body) {
+  const res = await fetch(`${SB.url}/rpc/${fn}`, {
+    method: 'POST',
+    headers: { apikey: SB.key, Authorization: `Bearer ${SB.key}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body || {})
+  });
+  if (!res.ok) throw new Error('Server replied ' + res.status);
+  return res.json();
+}
+
+let T = [];
+async function load() {
+  try {
+    const rows = await rpc('public_scores', {});
+    T = Array.isArray(rows) ? rows : [];
+    const active = T.filter(t => t.d1 || t.d2 || t.d3).sort((x,y)=>y.cum-x.cum||x.id-y.id);
+    let prev=null,rk=0;
+    active.forEach((t,i)=>{ if(!prev||t.cum!==prev.cum)rk=i+1; t.rank=rk; prev=t; });
+    T = active.concat(T.filter(t=>!(t.d1||t.d2||t.d3)).sort((x,y)=>x.id-y.id));
+    $('#upd').textContent = 'Updated ' + new Date().toLocaleTimeString();
+    draw();
+  } catch(e) {
+    $('#upd').textContent = 'Refresh failed';
+    if(!T.length) $('#list').innerHTML = '<p class="msg">Could not load scores.</p>';
+  }
+}
+
+function draw() {
+  const v = (d,p)=> d?p:'—';
+  const list = T.slice(0, 20);
+  if(!list.length){ $('#list').innerHTML = '<p class="msg">No scores yet</p>'; return; }
+  $('#list').innerHTML = '<div class="row h"><span>RANK</span><span>TEAM</span><span class="lv">LEVEL 1</span><span class="lv">LEVEL 2</span><span class="lv">LEVEL 3</span><span style="text-align:right">TOTAL</span></div>' +
+    list.map(t=>`<div class="row${t.rank&&t.rank<=3?' top':''}${t.rank?'':' idle'}">
+      <span class="rk">${t.rank?(t.rank===1?'🥇':t.rank===2?'🥈':t.rank===3?'🥉':t.rank):'–'}</span>
+      <span class="nm">${esc(t.name)}<small>TEAM ID ${t.id}</small></span>
+      <span class="lv">${v(t.d1,t.p1)}</span>
+      <span class="lv">${v(t.d2,t.p2)}</span>
+      <span class="lv">${v(t.d3,t.p3)}</span>
+      <span class="tot">${t.cum}</span>
+    </div>`).join('');
+}
+
+async function checkState() {
+  try {
+    const [status, cfg] = await Promise.all([rpc('get_status',{}), rpc('get_config',{}).catch(()=>null)]);
+    const vp = cfg && cfg.vp ? cfg.vp : {};
+    const display = vp.display || {};
+    const loadingOn = display.loading ? display.loading.on !== false : (vp.scoreboard && vp.scoreboard.loading ? vp.scoreboard.loading.on !== false : true);
+    const showAnn = display.announcements ? !!display.announcements.on : (vp.scoreboard && vp.scoreboard.split ? !!vp.scoreboard.split.on : false);
+    const hold = (status && status.score) || {};
+    const on = loadingOn && !!hold.on;
+    $('#hold').hidden = !on;
+    $('#mainContent').hidden = on;
+    if(on && $('#hm')) $('#hm').textContent = hold.message || 'We are updating the scores. Please wait.';
+
+    const notice = vp.notice || {};
+    const annSide = $('#annSide');
+    const annText = $('#annText');
+    const splitWrap = $('#splitWrap');
+    if(showAnn && notice.on && String(notice.text||'').trim()) {
+      splitWrap.classList.add('split');
+      annSide.hidden = false;
+      if(annText) annText.textContent = notice.text || '';
+    } else {
+      splitWrap.classList.remove('split');
+      annSide.hidden = true;
+    }
+  } catch(e) {}
+}
+
+load(); checkState();
+setInterval(load, 8000);
+setInterval(checkState, 5000);
+
+(() => {
+  const c=$('#bg'),x=c.getContext('2d');let W,H,stars=[];
+  const init=()=>{W=c.width=innerWidth;H=c.height=innerHeight;stars=Array.from({length:Math.floor(W*H/5000)},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.4,p:Math.random()*6}));};
+  const frame=t=>{x.clearRect(0,0,W,H);const g=x.createRadialGradient(W/2,H*.4,0,W/2,H*.4,Math.max(W,H)*.8);g.addColorStop(0,'#08142a');g.addColorStop(1,'#050914');x.fillStyle=g;x.fillRect(0,0,W,H);stars.forEach(s=>{x.globalAlpha=.3+.4*Math.sin(t/900+s.p);x.fillStyle='#cfe9ff';x.beginPath();x.arc(s.x,s.y,s.r,0,Math.PI*2);x.fill();});x.globalAlpha=1;if(!matchMedia('(prefers-reduced-motion:reduce)').matches)requestAnimationFrame(frame);};
+  addEventListener('resize',init);init();requestAnimationFrame(frame);
+})();
+
+setInterval(()=>{
+  const h=$('#hold'); if(!h||h.hidden)return;
+  const lines=['Calibrating thrusters','Aligning orbit','Stabilising signal','Syncing mission data','Awaiting transmission'];
+  const el=$('#stl'); if(el) el.textContent = lines[Math.floor(Date.now()/2200)%lines.length]+'…';
+},600);
+</script>
+</body>
+</html>
