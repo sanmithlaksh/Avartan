@@ -50,6 +50,10 @@ export interface Board {
     earthNode: number;
     /** Seconds the planet ↔ zodiac reference chart stays on screen. */
     chartSeconds: number;
+    /** Level 1 scoring configuration */
+    totalPoints?: number;
+    wrongPenalty?: number;
+    minPoints?: number;
   };
   /** Level 2 (Pattern Recognition) scoring configuration */
   l2?: {
@@ -84,7 +88,7 @@ export const DEFAULT_BOARD: Board = {
   },
   r3: { on: false, msg: 'Stand by — the next round will unlock shortly.' },
   notice: { on: false, text: '' },
-  l1: { durationSeconds: 2100, maxAttempts: 3, earthNode: 1, chartSeconds: 30 },
+  l1: { durationSeconds: 2100, maxAttempts: 3, earthNode: 1, chartSeconds: 30, totalPoints: 1000, wrongPenalty: 100, minPoints: 300 },
   l2: {
     pointsPerBox: 100,
     perfectBonus: 100,
@@ -210,10 +214,13 @@ function normaliseBoard(raw: any): Board {
       text: typeof b.notice?.text === 'string' ? b.notice.text : ''
     },
     l1: {
-      durationSeconds: Math.max(60, Number(b.l1?.durationSeconds) || DEFAULT_BOARD.l1.durationSeconds),
+      durationSeconds: Math.max(10, Number(b.l1?.durationSeconds) || DEFAULT_BOARD.l1.durationSeconds),
       maxAttempts: Math.max(1, Number(b.l1?.maxAttempts) || DEFAULT_BOARD.l1.maxAttempts),
       earthNode: Number.isFinite(Number(b.l1?.earthNode)) ? Number(b.l1.earthNode) : 1,
-      chartSeconds: Math.max(10, Number(b.l1?.chartSeconds) || DEFAULT_BOARD.l1.chartSeconds)
+      chartSeconds: Math.max(5, Number(b.l1?.chartSeconds) || DEFAULT_BOARD.l1.chartSeconds),
+      totalPoints: Math.max(0, Number(b.l1?.totalPoints) ?? DEFAULT_BOARD.l1.totalPoints ?? 1000),
+      wrongPenalty: Math.max(0, Number(b.l1?.wrongPenalty) ?? DEFAULT_BOARD.l1.wrongPenalty ?? 100),
+      minPoints: Math.max(0, Number(b.l1?.minPoints) ?? DEFAULT_BOARD.l1.minPoints ?? 300)
     },
     l2: {
       pointsPerBox: Math.max(0, Number(l2.pointsPerBox) || defL2.pointsPerBox),

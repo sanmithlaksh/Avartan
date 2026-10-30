@@ -164,8 +164,9 @@ const DEFAULT_SETTINGS: GameSettings = {
   roundOneCodeLockSeconds: 15
 };
 
-const TOTAL_ROUND_ONE_POINTS = 1000;
-const PER_WRONG_PENALTY = 100;
+const DEFAULT_TOTAL_ROUND_ONE_POINTS = 1000;
+const DEFAULT_PER_WRONG_PENALTY = 100;
+const DEFAULT_MIN_ROUND_ONE_POINTS = 300;
 // The clearance terminal stays sealed for the first 15 seconds of the round.
 // Demos use a short gate so the whole flow can be exercised quickly.
 const ROUND_ONE_CODE_LOCK_SECONDS = 15;
@@ -529,8 +530,11 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setShowCodeModal(false);
     setActiveRiddlePlanet(null);
 
+    const l1Cfg = board?.l1 || {};
+    const totalPointsL1 = Math.max(0, Number(l1Cfg.totalPoints) ?? DEFAULT_TOTAL_ROUND_ONE_POINTS);
+
     if (isDemoMode) {
-      if (report.points >= TOTAL_ROUND_ONE_POINTS) {
+      if (report.points >= totalPointsL1) {
         const codeSuffix = Math.floor(1000 + Math.random() * 9000);
         setLaunchCode(`ORBIT-${currentMission.codeName.replace('OP-', '')}-${codeSuffix}`);
         soundFx.playSuccessTone();
@@ -555,7 +559,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
         report.points + (base['level 2 points'] || 0) + (base['level 3 points'] || 0)
     };
 
-    if (report.points >= TOTAL_ROUND_ONE_POINTS) {
+    if (report.points >= totalPointsL1) {
       const codeSuffix = Math.floor(1000 + Math.random() * 9000);
       setLaunchCode(`ORBIT-${currentMission.codeName.replace('OP-', '')}-${codeSuffix}`);
       soundFx.playSuccessTone();
@@ -572,7 +576,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const elapsed = Math.max(0, settings.missionDurationSeconds - timeRemaining);
     backendService.saveRoundScore(1, elapsed, report.points).then(setLastSave);
     setPhase('round_report');
-  }, [activeAccount, teamName, currentMission.codeName, isDemoMode, settings.missionDurationSeconds, timeRemaining]);
+  }, [activeAccount, teamName, currentMission.codeName, isDemoMode, settings.missionDurationSeconds, timeRemaining, board]);
 
   // Kept in a ref so the ticking effect can finalise without restarting.
   const finaliseRoundOneRef = useRef(finaliseRoundOne);
@@ -597,9 +601,11 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
           window.clearInterval(interval);
           soundFx.playErrorTone();
           const attempt = latestAttemptRef.current;
+          const l1Cfg = board?.l1 || {};
+          const minPoints = Math.max(0, Number(l1Cfg.minPoints) ?? DEFAULT_MIN_ROUND_ONE_POINTS);
           let points = attempt?.points ?? 0;
           if (!attempt || attempt.correct === 0 || !attempt.code || attempt.code.trim() === '') {
-            points = 300;
+            points = minPoints;
           }
           finaliseRoundOneRef.current({
             points,
@@ -618,7 +624,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
     }, 1000);
     return () => window.clearInterval(interval);
-  }, [isTimerRunning, currentMission.targets]);
+  }, [isTimerRunning, currentMission.targets, board]);
 
   // Planet selection
   const selectPlanet = useCallback((id: PlanetId | null) => {
@@ -758,15 +764,20 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const expectedDigits = currentMission.targets.map(t => t.targetSectorId + 1);
     const enteredDigits = splitCode(code, expectedDigits);
 
+    const l1Cfg = board?.l1 || {};
+    const totalPointsL1 = Math.max(0, Number(l1Cfg.totalPoints) ?? DEFAULT_TOTAL_ROUND_ONE_POINTS);
+    const wrongPenalty = Math.max(0, Number(l1Cfg.wrongPenalty) ?? DEFAULT_PER_WRONG_PENALTY);
+    const minPoints = Math.max(0, Number(l1Cfg.minPoints) ?? DEFAULT_MIN_ROUND_ONE_POINTS);
+
     let correct = 0;
     expectedDigits.forEach((digit, idx) => {
       if (enteredDigits[idx] === digit) correct += 1;
     });
 
     const wrong = expectedDigits.length - correct;
-    let points = Math.max(0, TOTAL_ROUND_ONE_POINTS - PER_WRONG_PENALTY * wrong);
+    let points = Math.max(0, totalPointsL1 - wrongPenalty * wrong);
     if (correct === 0 || enteredDigits.length === 0 || code.trim() === '') {
-      points = 300;
+      points = minPoints;
     }
     const attempts = (latestAttemptRef.current?.attempts ?? 0) + 1;
 
@@ -790,15 +801,17 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     return attempt;
-  }, [currentMission.targets]);
+  }, [currentMission.targets, board]);
 
   /** Closes Round 1 early. The latest submitted PIN is the one that is graded. */
   const endRoundOne = useCallback(() => {
     const attempt = latestAttemptRef.current;
     const expectedDigits = currentMission.targets.map(t => t.targetSectorId + 1);
+    const l1Cfg = board?.l1 || {};
+    const minPoints = Math.max(0, Number(l1Cfg.minPoints) ?? DEFAULT_MIN_ROUND_ONE_POINTS);
     let points = attempt?.points ?? 0;
     if (!attempt || attempt.correct === 0 || !attempt.code || attempt.code.trim() === '') {
-      points = 300;
+      points = minPoints;
     }
     finaliseRoundOne({
       points,
@@ -808,7 +821,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
       expectedCode: expectedDigits.join('-'),
       enteredCode: attempt?.code ?? ''
     });
-  }, [currentMission.targets, finaliseRoundOne]);
+  }, [currentMission.targets, finaliseRoundOne, board]);
 
   /**
    * Persists the round-2 result for this team: level-2 points, levels completed

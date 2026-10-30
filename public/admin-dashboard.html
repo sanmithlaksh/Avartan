@@ -152,7 +152,7 @@ const DEFAULT_BOARD = {
   notice: { on: false, text: '' },
   scoreboard: { loading: { on: true }, split: { on: false } },
   display: { loading: { on: true }, announcements: { on: false } },
-  l1: { durationSeconds: 2100, maxAttempts: 3, earthNode: 1, chartSeconds: 30 },
+  l1: { durationSeconds: 2100, maxAttempts: 3, earthNode: 1, chartSeconds: 30, totalPoints: 1000, wrongPenalty: 100, minPoints: 300 },
   l2: {
     pointsPerBox: 100,
     perfectBonus: 100,
@@ -224,10 +224,13 @@ function normBoard(raw) {
       }
     },
     l1: {
-      durationSeconds: Math.max(60, Number(b.l1 && b.l1.durationSeconds) || DEFAULT_BOARD.l1.durationSeconds),
+      durationSeconds: Math.max(10, Number(b.l1 && b.l1.durationSeconds) || DEFAULT_BOARD.l1.durationSeconds),
       maxAttempts: Math.max(1, Number(b.l1 && b.l1.maxAttempts) || DEFAULT_BOARD.l1.maxAttempts),
       earthNode: Number.isFinite(Number(b.l1 && b.l1.earthNode)) ? Number(b.l1.earthNode) : 1,
-      chartSeconds: Math.max(10, Number(b.l1 && b.l1.chartSeconds) || DEFAULT_BOARD.l1.chartSeconds)
+      chartSeconds: Math.max(5, Number(b.l1 && b.l1.chartSeconds) || DEFAULT_BOARD.l1.chartSeconds),
+      totalPoints: Math.max(0, Number(b.l1 && b.l1.totalPoints) != null ? b.l1.totalPoints : (DEFAULT_BOARD.l1.totalPoints != null ? DEFAULT_BOARD.l1.totalPoints : 1000)),
+      wrongPenalty: Math.max(0, Number(b.l1 && b.l1.wrongPenalty) != null ? b.l1.wrongPenalty : (DEFAULT_BOARD.l1.wrongPenalty != null ? DEFAULT_BOARD.l1.wrongPenalty : 100)),
+      minPoints: Math.max(0, Number(b.l1 && b.l1.minPoints) != null ? b.l1.minPoints : (DEFAULT_BOARD.l1.minPoints != null ? DEFAULT_BOARD.l1.minPoints : 300))
     },
     l2: {
       pointsPerBox: Math.max(0, Number(l2.pointsPerBox)||defL2.pointsPerBox),
@@ -595,12 +598,18 @@ function renderPanel() {
             <div style="flex:1;min-width:180px"><label class="f">MESSAGE SHOWN WHEN CLOSED</label><input type="text" data-msg="l1" value="${esc(B.levels.l1.msg)}"></div>
           </div>
           <div class="row">
-            <div><label class="f">TIMER (SECONDS)</label><input type="number" id="l1dur" value="${B.l1.durationSeconds}"></div>
+            <div><label class="f">TIMER (SECONDS)</label><input type="number" id="l1dur" min="5" value="${B.l1.durationSeconds}"></div>
             <div><label class="f">MAX ATTEMPTS</label><input type="number" id="l1att" value="${B.l1.maxAttempts}"></div>
           </div>
           <div class="row">
-            <div style="flex:1"><label class="f">REFERENCE CHART (SECONDS)</label><input type="number" id="l1chart" min="10" value="${B.l1.chartSeconds}"></div>
+            <div style="flex:1"><label class="f">REFERENCE CHART (SECONDS)</label><input type="number" id="l1chart" min="5" value="${B.l1.chartSeconds}"></div>
             <div style="flex:1;color:var(--mu);font-size:11px;padding-bottom:9px">How long the planet ↔ zodiac chart stays on screen once the riddles are sealed.</div>
+          </div>
+          <label class="f">POINTS ALLOTMENT (ROUND 1)</label>
+          <div class="row">
+            <div><label class="f">TOTAL POINTS</label><input type="number" id="l1tpts" min="0" value="${B.l1.totalPoints != null ? B.l1.totalPoints : 1000}"></div>
+            <div><label class="f">PENALTY PER WRONG</label><input type="number" id="l1wpen" min="0" value="${B.l1.wrongPenalty != null ? B.l1.wrongPenalty : 100}"></div>
+            <div><label class="f">MIN POINTS (NO ATTEMPT/WRONG)</label><input type="number" id="l1mpts" min="0" value="${B.l1.minPoints != null ? B.l1.minPoints : 300}"></div>
           </div>
           <label class="f">EARTH STARTING NODE</label>
           <select id="l1node">${EARTH_NODES.map((n, i) => `<option value="${i}" ${i === B.l1.earthNode ? 'selected' : ''}>${n}</option>`).join('')}</select>
@@ -734,10 +743,14 @@ function renderPanel() {
     const next = JSON.parse(JSON.stringify(BOARD));
     document.querySelectorAll('[data-msg]').forEach(el => { next.levels[el.dataset.msg].msg = el.value; });
     next.r3.msg = $('#r3msg').value;
-    next.l1.durationSeconds = Math.max(60, +$('#l1dur').value || 2100);
+    if (!next.l1) next.l1 = {};
+    next.l1.durationSeconds = Math.max(5, +$('#l1dur').value || 2100);
     next.l1.maxAttempts = Math.max(1, +$('#l1att').value || 3);
     next.l1.earthNode = +$('#l1node').value || 0;
-    next.l1.chartSeconds = Math.max(10, +$('#l1chart').value || 30);
+    next.l1.chartSeconds = Math.max(5, +$('#l1chart').value || 30);
+    if ($('#l1tpts')) next.l1.totalPoints = Math.max(0, +$('#l1tpts').value || 1000);
+    if ($('#l1wpen')) next.l1.wrongPenalty = Math.max(0, +$('#l1wpen').value || 100);
+    if ($('#l1mpts')) next.l1.minPoints = Math.max(0, +$('#l1mpts').value || 300);
     if (!next.l2) next.l2 = { pointsPerBox: 100, perfectBonus: 100, stages: [] };
     next.l2.pointsPerBox = Math.max(0, +$('#l2ppb').value || 100);
     next.l2.perfectBonus = Math.max(0, +$('#l2pb').value || 100);
