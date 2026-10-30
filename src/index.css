@@ -16,11 +16,9 @@
     -webkit-user-select: none;
     overscroll-behavior: none;
   }
-  canvas {
-    image-rendering: optimizeSpeed;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: pixelated;
-  }
+  /* No image-rendering override here: this game is not pixel art, and forcing
+     `pixelated` made every canvas (3D scene, 2D map, space backdrop) render as
+     hard blocks whenever its backing store was smaller than its display size. */
 }
 
 /* Custom futuristic scrollbar */

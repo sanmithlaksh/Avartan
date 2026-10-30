@@ -174,7 +174,7 @@ export const SolarSystem3D: React.FC = () => {
     try {
       renderer = new THREE.WebGLRenderer({
         canvas: canvasRef.current,
-        antialias: false,
+        antialias: true,
         powerPreference: 'high-performance',
         failIfMajorPerformanceCaveat: false,
         preserveDrawingBuffer: false,
@@ -187,7 +187,7 @@ export const SolarSystem3D: React.FC = () => {
       try {
         renderer = new THREE.WebGLRenderer({
           canvas: canvasRef.current,
-          antialias: false,
+          antialias: true,
           powerPreference: 'low-power',
           stencil: false,
           depth: true,
@@ -207,7 +207,10 @@ export const SolarSystem3D: React.FC = () => {
 
     rendererRef.current = renderer;
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, lowPower ? 0.8 : 1.0));
+    // Render at the display's real density (capped at 2x) instead of capping at
+    // 1x and dropping to 0.8 on 6-core machines: that downscale was what made
+    // the planets look blocky on ordinary laptops.
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
     renderer.shadowMap.enabled = false;
