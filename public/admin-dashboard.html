@@ -791,7 +791,9 @@ function renderPanel() {
   $('#l3Refresh').onclick = () => loadAll(false);
 
   $('#applyGame').onclick = () => applyHold('game', $('#holdGame').checked, $('#holdGameMsg').value, 'gameMsg');
+  $('#holdGame').onchange = () => applyHold('game', $('#holdGame').checked, $('#holdGameMsg').value, 'gameMsg');
   $('#applyScore').onclick = () => applyHold('score', $('#holdScore').checked, $('#holdScoreMsg').value, 'scoreMsg');
+  $('#holdScore').onchange = () => applyHold('score', $('#holdScore').checked, $('#holdScoreMsg').value, 'scoreMsg');
 
   $('#saveRules').onclick = async () => {
     const a = [+$('#c1').value, +$('#c2').value, +$('#cw').value];
