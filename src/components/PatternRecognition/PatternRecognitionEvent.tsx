@@ -21,6 +21,7 @@ import {
 } from '../../engine/patterns';
 import { PlanetGlyph } from './PlanetGlyph';
 import { soundFx } from '../../utils/audio';
+import type { Board } from '../../utils/api';
 import {
   Grid3x3,
   Timer,
@@ -279,7 +280,10 @@ const PatternGrid: React.FC<{
 export const PatternRecognitionEvent: React.FC = () => {
   const { teamName, completePatternEvent, isDemoMode, board } = useGame();
 
-  const l2Cfg = board?.l2 || {};
+  // Round 2 scoring comes from the shared admin board. Defaulting to an empty
+  // object here kept the config untyped, so the fallbacks below read properties
+  // that only exist on the real shape.
+  const l2Cfg: Partial<NonNullable<Board['l2']>> = board?.l2 ?? {};
   const defaultPointsPerBox = Number(l2Cfg.pointsPerBox) || DEFAULT_POINTS_PER_BOX;
   const defaultPerfectBonus = Number(l2Cfg.perfectBonus) || DEFAULT_PERFECT_BONUS;
 
