@@ -414,7 +414,7 @@ export const GameProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const emergencyRevealAvailable =
     !chartUsed && !allRiddlesSolved && emergencySecondsLeft <= 0 && isRoundOne;
   // Admin-tunable viewing window for the planet ↔ zodiac reference chart.
-  const chartSeconds = Math.max(10, Number(board.l1.chartSeconds) || DEFAULT_CHART_SECONDS);
+  const chartSeconds = Math.max(1, Number(board.l1?.chartSeconds) || DEFAULT_CHART_SECONDS);
 
   const totalPoints = useMemo(() => {
     if (!activeAccount) return 0;
